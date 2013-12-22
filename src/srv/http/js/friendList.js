@@ -49,55 +49,125 @@ function friendList(friend_list_gui){
     this.friend_id_list = this.user_object.friends_list;
     this.n_friends = this.friend_id_list.length;    
     this.friend_list = new Array();
+    this.candidates = new Array(); // for friend searching
 }
 
 /**
-* Send request for the friends list of user
-*/
+ * Send request for the data of friends specified
+ * by the friend list of the user.
+ * The rest is performed by the {@link gotFriendsDataHandler} function
+ * on reception of server's response.
+ */
 friendList.prototype.populateList = function(){
-   connection.send("getUserData", this.friend_id_list);
+    connection.send("getFriendsData", {"list":this.friend_id_list} );
 }
 
 /**
-* Get user login by number on FriendList.
-* @param i refers to number of index in internal friend_list
-* @return return login of friend
-*/
+ * Get user login by number on FriendList.
+ * @param i refers to number of index in internal friend_list
+ * @return return login of friend
+ */
 friendList.prototype.getFriendLogin = function(i){
     return this.friend_list[i].login;
 }
 
 /**
-* Send request with user data to server. Server will find list of users.
-* @param data data with user info to find
-*/
+ * Send request with user data to server.
+ * Server will find list of users matching the given data and
+ * respond with a "matchingUsers" packet containing a list of IDs.
+ * @param data data with user info to find; form:
+ *  {"login": "...", "first_name":"...", "second_name":"...", "email":"..."}
+ *  where "..." may be an empty string but at least one of the above values
+ *  will not be empty.
+ */
 friendList.prototype.searchFriends = function(data){
     connection.send("searchFriends", data);
 }
 
 /**
-* User invites friend
-* @param id ID of friend
-*/
+ * Handler function for reception of the "matchingUsers" packet
+ * Sends request for detailed data if the candidates. The rest
+ * is performed by the {@link gotCandidatesDataHandler} on
+ * reception of the server's response.
+ * @param data data part of the received packet; is of the form
+ *  {'list':[id1,id2,id3,...]} 
+ */
+friendList.prototype.gotMathchingUsersHandler = function(data){
+    connection.send("getCandidatesData", data);
+}
+
+
+/**
+ * User invites friend
+ * @param id ID of friend
+ */
 friendList.prototype.sendInvitation = function(id){
-        connection.send("sendInvitation", id);
+    connection.send("sendInvitation", id);
 }
 
 /**
-* Confirm relationship
-* @param isAccepted 
-*/
+ * Confirm relationship
+ * @param isAccepted 
+ */
 friendList.prototype.confirmation = function(isAccepted){
-        connection.send("confirmation", isAccepted);
+    connection.send("confirmation", isAccepted);
 }
 
 
 friendList.prototype.addFriend = function(userInfo){
-        this.friend_id_list.push(userInfo.id);
-        this.friend_list.push(userInfo);
-
+    this.friend_id_list.push(userInfo.id);
+    this.friend_list.push(userInfo);
 }
 
+/**
+ * Handler function for reception of the "foundFriends" packet
+ * @param data data part of the received packet; is of the form
+ *  {'list':[id1,id2,id3,...]} 
+ */
 friendList.prototype.createListFromFoundId = function(data){
-        this.arrayOfUsers = data[list];
+    this.array_of_users = data[list];
+}
+
+
+/**
+ * Handler function for reception of the "friendsData" packet
+ * @param data data part of the received packet; is of the form
+ *  {'user_data_list':[user1, user2, user3,...]} where userX is
+ *  in the format as stored on the server
+ */
+friendList.prototype.gotFriendsDataHandler = function(data){
+    var list = data["user_data_list"];
+    for( var i=0; i<list.length; i++ ){
+	var user_info = {};
+	user_info["first_name"] = list[i]["first_name"];
+	user_info["last_name"] = list[i]["last_name"];
+	user_info["login"] = list[i]["login"];
+	this.addFriend( user_info );
+    }
+    // update GUI component to the new friend list
+    this.friend_list_gui.update();
+}
+
+/**
+ * Handler function for reception of the "candidatesData" packet
+ * @param data data part of the received packet; is of the form
+ *  {'user_data_list':[user1, user2, user3,...]} where userX is
+ *  in the format as stored on the server
+ */
+friendList.prototype.gotCandidatesDataHandler = function(data){
+    var list = data["user_data_list"];
+
+    // clear the list
+    this.candidates = [];
+
+    for( var i=0; i<list.length; i++ ){
+	var user_info = {};
+	user_info["first_name"] = list[i]["first_name"];
+	user_info["last_name"] = list[i]["last_name"];
+	user_info["login"] = list[i]["login"];
+	user_info["id"] = list[i]["id"];
+	candidates[i] = user_info;
+    }
+
+    // TODO: make friendListGUI draw the list of candidates
 }
