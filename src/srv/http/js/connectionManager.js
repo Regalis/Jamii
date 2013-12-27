@@ -33,6 +33,9 @@ function ConnectionManager( serverAddr, serverPort ){
     // TODO: error control
     this.socket = io.connect( serverAddr + ":" + serverPort );   
 
+    // message counter
+    this.counter = 0;
+
     // TODO: acquire session ID from server
     this.sessionID = "";
 
@@ -40,8 +43,8 @@ function ConnectionManager( serverAddr, serverPort ){
 
 /**
  * Sends a request along with a 'data' JSON object to the server
- * Wraps the data object to be sent into an object with two fields:
- * the session id and the data object 
+ * Wraps the data object to be sent into an object with three fields:
+ * the session id, message number and the data object 
  *
  * @param header text identifying type of the request
  * @param data data object to be sent; its structure depends on the header
@@ -49,8 +52,11 @@ function ConnectionManager( serverAddr, serverPort ){
  */
 ConnectionManager.prototype.send = function( header, data ){
 
+    this.counter++;
+
     var cargo = {};
     cargo['sessionID'] = this.sessionID;
+    cargo['number'] = this.counter;
     cargo['data'] = data;
     
     this.socket.emit( header, cargo );

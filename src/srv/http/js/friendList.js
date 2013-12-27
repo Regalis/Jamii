@@ -99,10 +99,11 @@ friendList.prototype.gotMathchingUsersHandler = function(data){
 
 /**
  * User invites friend
- * @param id ID of friend
+ * @param id ID of a user to be invited to friends
  */
 friendList.prototype.sendInvitation = function(id){
-    connection.send("sendInvitation", id);
+    connection.send("sendInvitation", {"inviter":this.user_object.id,
+				       "invitee":id} );
 }
 
 /**
@@ -115,8 +116,12 @@ friendList.prototype.confirmation = function(isAccepted){
 
 
 friendList.prototype.addFriend = function(userInfo){
+    
+    this.n_friends++;
     this.friend_id_list.push(userInfo.id);
     this.friend_list.push(userInfo);
+    // update GUI
+    this.friend_list_gui.update();
 }
 
 /**
@@ -170,4 +175,47 @@ friendList.prototype.gotCandidatesDataHandler = function(data){
     }
 
     // TODO: make friendListGUI draw the list of candidates
+    
+}
+
+/**
+ * Handler function for reception of the "friendInvitation" packet
+ * @param data data part of the received packet; is of the form
+ *  {"inviter": userX } where userX is data of the inviting user
+ *  in the format as stored on the server
+ */
+friendList.prototype.gotFriendInvitationHandler = function(data){
+    
+    this.friend_list_gui.displayInvitation( data );
+    
+}
+
+/**
+ * Sends the "invitationResponse" package to the server.
+ * Should be called by the friendListGUI object after user
+ * considers a friend invitation.
+ * @param invitation data object received with the "friendInvitation" packet
+ * @param decision true if friendship accepted, otherwise false
+ */
+friendList.prototype.respondInvitation = function( invitation, decision ){
+    
+    var data = {};
+    data["inviter"] = invitation.id;
+    data["invitee"] = this.user_object.id;
+    data["decision"] = decision;
+    
+    connection.send("invitationResponse", data );
+    
+}
+
+/**
+ * Handler function for reception of the "newFriend" packet
+ * @param data data part of the received packet; it is a user data
+ *  object as stored on the server
+ */
+friendList.prototype.gotNewFriendHandler = function(data){
+
+    // TODO: convert user data format if necessary
+    this.addFriend( data );
+
 }
