@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta name="robots" content="noindex, nofollow" />
 	<title>Welcome to Jamii</title>
-	<link rel="stylesheet" href="style.css" type="text/css" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript">
 		var socket = null;
@@ -40,8 +40,8 @@
 			</ul>
 			<div>
 				<ul>
-					<li><a>Sign in</a></li>
-					<li><a>Log in</a></li>
+					<li><a href="#signin_form">Sign in</a></li>
+					<li><a href="#login_form">Log in</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -50,18 +50,40 @@
 				<h1>Welcome to Jamii!</h1>
 				<p>Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem Lorem ipsum lorem ipsum lorem </p>
 				<p>Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem Lorem ipsum lorem ipsum lorem </p>
-				<a>Sign in</a>
-				<a>Log in</a>
-				<form>
-					<label>Login or email: </label><input type="text" />
-					<br />
-					<label>Password: </label><input type="text" />
-				</form>
+				<a href="#signin_form">Sign in</a>
+				<a href="#login_form">Log in</a>
 				<a href="#" class="temporary">Connect</a>
 				<pre id="status">Server debug messages here.
 </pre>
 			</div>
-			<img src="computers.png" alt="responsive" />
+			<img src="images/computers.png" alt="responsive" />
 		</section>
+		<section class="features">
+		</section>
+		<div id="login_form" class="popup_form">
+			<a href="#" class="close"></a>
+			<form>
+				<fieldset>
+					<legend>Log in to Jamii</legend>
+					<label for="login">Login: </label><input id="login" type="text" /><br />
+					<label for="passwd">Password: </label><input id="passwd" type="password" /><br /><br />
+					<input type="button" value="Register" />
+				</fieldset>
+			</form>
+		</div>
+		<div id="signin_form" class="popup_form">
+			<a href="#" class="close"></a>
+			<form>
+				<fieldset>
+					<legend>Registration form</legend>
+					<label for="login">Login: </label><input id="login" type="text" /><br />
+					<label for="first_name">First name: </label><input id="first_name" type="text" /><br />
+					<label for="last_name">Last name: </label><input id="last_name" type="text" /><br />
+					<label for="email">Email: </label><input id="email" type="text" /><br />
+					<label for="passwd">Password: </label><input id="passwd" type="password" /><br /><br />
+					<input type="button" value="Register" />
+				</fieldset>
+			</form>
+		</div>
 	</body>
 </html>
