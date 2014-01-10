@@ -31,7 +31,7 @@ var fs = require("fs");
 var clients = {};
 
 var clients_register = function(client_id) {
-	clients[user_id] = false;
+	clients[client_id] = false;
 }
 
 var clients_authenticate = function(client_id, user_id) {
