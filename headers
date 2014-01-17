@@ -1,0 +1,12 @@
+Headers
+
+Client -> Server 
+login - Packet with login and password
+register - Packet with all registration data
+
+
+Server -> Client
+loginOK - message with authentication
+loginBAD - message with login/password error
+registerOK - message with registartion success
+

@@ -15,20 +15,41 @@
 		window.onload = function() {
 		        window.connection = new ConnectionManager("http://localhost","9393");
 
+				document.getElementsByClassName("login_button")[0].onclick = function() {
+					log("Get login data");
+					var data  = {};
 
-			document.getElementsByClassName("login_button")[0].onclick = function() {
-				log("Get login data");
-				var data  = {};
+					data ["login"] = document.getElementById("login").value;
+					data ["passwd"] = document.getElementById("passwd").value;
+					window.connection.send("login", data);
+					window.connection.registerHandler("loginOK", function(data){
+						window.location.href = "/page.html";
+					});
 
-				data ["login"] = document.getElementById("login").value;
-				data ["passwd"] = document.getElementById("passwd").value;
-				window.connection.send("login", data);
-				window.connection.registerHandler("loginOK", function(data){
-					window.location.href = "/page.html";
-				});
-		
-				return false;
-			}
+
+			
+					return false;
+				}
+
+
+				document.getElementsByClassName("register_button")[0].onclick = function() {
+					log("Get register data");
+					var data  = {};
+
+					data ["login"] = document.getElementById("login").value;
+					data ["first_name"] = document.getElementById("first_name").value;
+					data ["last_name"] = document.getElementById("last_name").value;
+					data ["email"] = document.getElementById("email").value;
+					data ["passwd"] = document.getElementById("passwd").value;
+
+					window.connection.send("register", data);
+					window.connection.registerHandler("registerOK", function(data){
+							log("Registration complete");
+					});
+
+					return false;
+				}
+
 
 		}
 	</script>
@@ -85,7 +106,7 @@
 					<label for="last_name">Last name: </label><input id="last_name" type="text" /><br />
 					<label for="email">Email: </label><input id="email" type="text" /><br />
 					<label for="passwd">Password: </label><input id="passwd" type="password" /><br /><br />
-					<input type="button" value="Register" />
+					<input class="register_button" type="button" value="Register" />
 				</fieldset>
 			</form>
 		</div>
