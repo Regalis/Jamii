@@ -25,6 +25,29 @@
 				});
 				return false;
 			}
+
+			document.getElementsByClassName("login_button")[0].onclick = function() {
+				log("Get login data");
+				var data  = {};
+
+				data ["login"] = document.getElementById("login").value;
+				data ["passwd"] = document.getElementById("passwd").value;
+				var socket = io.connect("http://localhost:9393");
+				socket.on("connect", function() {
+					log("Connected to the server...");
+					log("Sending login data...");
+					socket.emit("login", data);
+					log("Data: " + data["login"]+" " + data["passwd"]);
+
+
+				});
+				socket.on("loginOK", function(data) {
+					log("Login ok");
+					window.location.href = "http://www.lonet.eu";
+				});
+				return false;
+			}
+
 		}
 	</script>
 	</head>
@@ -67,7 +90,7 @@
 					<legend>Log in to Jamii</legend>
 					<label for="login">Login: </label><input id="login" type="text" /><br />
 					<label for="passwd">Password: </label><input id="passwd" type="password" /><br /><br />
-					<input type="button" value="Register" />
+					<input class="login_button" type="button" value="Log in" />
 				</fieldset>
 			</form>
 		</div>
