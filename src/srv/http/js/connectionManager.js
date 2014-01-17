@@ -33,12 +33,16 @@ function ConnectionManager( serverAddr, serverPort ){
     // TODO: error control
     this.socket = io.connect( serverAddr + ":" + serverPort );   
 
+    this.sessionID = "";
+    
+    this.socket.on("welcome", function(data){
+	this.sessionID = data["sessionID"];
+	console.log("Got session ID: " + this.sessionID );
+    });
+    
     // message counter
     this.counter = 0;
-
-    // TODO: acquire session ID from server
-    this.sessionID = "";
-
+    
 }
 
 /**

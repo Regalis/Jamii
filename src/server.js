@@ -29,6 +29,42 @@ var fs = require("fs");
 /*** Clients block ***/
 
 var clients = {};
+// dict: sessionID : socketID
+var sessionCounter = 0;
+var sessions = {};
+
+var  start_session = function(sock_id){
+    sessionCounter++;
+    sessions[ sessionCounter ] =  sock_id;
+    return sessionCounter;
+}
+
+var get_user_by_session = function( session_id ){
+    return clients[ sessions[ session_id ] ]; 
+}
+
+/** 
+    Function to retreieve data object from object received by a socket
+    Could do some additional checking for session ID if necesary.
+
+    @param cargo object received directly by a socket
+    @return data object taken from cargo object
+*/
+var  strip_data_object = function(cargo){
+    var data = cargo["data"];
+    return data;
+}
+
+/** 
+    dummy function imitating checking login data
+
+    @param data data object received with the "login" packet
+    @return userID if user exists and login OK, -1=no user with login, -2=wrong passwd
+*/
+var user_login = function(data){
+    
+    return 1; 
+}
 
 var clients_register = function(client_id) {
 	clients[client_id] = false;
@@ -157,14 +193,37 @@ var http_server = http.createServer(function(request, response) {
 var io = require("socket.io").listen(http_server);
 
 io.sockets.on("connection", function(socket) {
-	console.info("Got new WebSocket connection (" + socket.id + ")...");
-	clients_register(socket.id);
-	socket.on('ping', function(data) {
-		console.log("Got ping command from client...");
-		socket.emit("pong", data);
-		console.log("Sending pong...");
-	});
-	
+    // start a new session
+    var session_id = start_session( socket.id );
+    console.info("Got new WebSocket connection (" + socket.id + ")...");
+    console.info("Assigning session ID: " + session_id );
+    // send welcome message and session ID
+    socket.emit("welcome", {"sessionID" : session_id});
+    clients_register(socket.id);
+
+    // ping for testing
+    socket.on('ping', function(data) {
+	console.log("Got ping command from client...");
+	socket.emit("pong", data);
+	console.log("Sending pong...");
+    });
+    
+    // handle user login
+    socket.on("login", function(data) {
+	console.log("Got login data from client");
+	var ret = user_login( data );
+	if( ret >= 0 ){ // login OK
+	    var user_id = ret;
+	    socket.emit("loginOK", {} );
+	    clients_authenticate(socket.id, user_id);
+	}else if( ret == -1 ){ // no such user
+	    socket.emit("loginBAD", {"what":"No such user"});
+	}else if(ret == -2){ // login OK
+	    socket.emit("loginBAD", {"what":"Wrong password"});	    
+	}
+    });
+    
+    
 });
 
 http_server.listen(9393);
