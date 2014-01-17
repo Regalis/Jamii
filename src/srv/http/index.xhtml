@@ -6,25 +6,15 @@
 	<title>Welcome to Jamii</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" />
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="js/connectionManager.js"></script>
 	<script type="text/javascript">
 		var socket = null;
 		function log(data) {
 			document.getElementById("status").textContent += data + "\n";
 		}
 		window.onload = function() {
-			document.getElementsByClassName("temporary")[0].onclick = function() {
-				log("Connecting to WebSocket server...");
-				var socket = io.connect("http://localhost:9393");
-				socket.on("connect", function() {
-					log("Connected to the server...");
-					log("Sending ping message...");
-					socket.emit("ping", {"test": 123});
-				});
-				socket.on("pong", function(data) {
-					log("Got pong message...");
-				});
-				return false;
-			}
+		        window.connection = new ConnectionManager("http://localhost","9393");
+
 
 			document.getElementsByClassName("login_button")[0].onclick = function() {
 				log("Get login data");
@@ -32,19 +22,11 @@
 
 				data ["login"] = document.getElementById("login").value;
 				data ["passwd"] = document.getElementById("passwd").value;
-				var socket = io.connect("http://localhost:9393");
-				socket.on("connect", function() {
-					log("Connected to the server...");
-					log("Sending login data...");
-					socket.emit("login", data);
-					log("Data: " + data["login"]+" " + data["passwd"]);
-
-
+				window.connection.send("login", data);
+				window.connection.registerHandler("loginOK", function(data){
+					window.location.href = "/page.html";
 				});
-				socket.on("loginOK", function(data) {
-					log("Login ok");
-					window.location.href = "http://www.lonet.eu";
-				});
+		
 				return false;
 			}
 
@@ -75,7 +57,6 @@
 				<p>Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem Lorem ipsum lorem ipsum lorem </p>
 				<a href="#signin_form">Sign in</a>
 				<a href="#login_form">Log in</a>
-				<a href="#" class="temporary">Connect</a>
 				<pre id="status">Server debug messages here.
 </pre>
 			</div>
