@@ -17,7 +17,7 @@
  *
  * Contributors:
  *  -> Patryk Jaworski <regalis@regalis.com.pl>
- *
+ *  -> Aleksander Gajos <alek.gajos@gmail.com>
  */
 
 var sys = require("sys");
@@ -29,8 +29,9 @@ var fs = require("fs");
 /*** Clients block ***/
 
 var clients = {};
-// dict: sessionID : socketID
+
 var sessionCounter = 0;
+// dict: sessionID : socketID
 var sessions = {};
 
 var  start_session = function(sock_id){
@@ -42,6 +43,7 @@ var  start_session = function(sock_id){
 var get_user_by_session = function( session_id ){
     return clients[ sessions[ session_id ] ]; 
 }
+
 
 /** 
     Function to retreieve data object from object received by a socket
@@ -141,25 +143,66 @@ function UsersDatabase() {
 			throw "Bad user id";
 	}
 
-	this.save_user_data = function(user) {
-		validate_user(user);
-		fs.writeFileSync(path.join(db_path, user.id.toString()), user.export_to_json(), 'utf8', function(err) {
-			if (err)
-				throw err;
-		});
-		return true;
-	}
+    this.save_user_data = function(user) {
+	validate_user(user);
+	fs.writeFileSync(path.join(db_path, user.id.toString()), user.export_to_json(), 'utf8', function(err) {
+	    if (err)
+		throw err;
+	});
+	return true;
+    }
+    
+    this.read_user_data = function(user_id) {
+	var json = fs.readFileSync(path.join(db_path, user_id.toString()), 'utf8');
+	if (!json)
+	    throw "Unable to read user data...";
+	if (Buffer.isBuffer(json))
+	    json = json.toString('utf8');
+	return new_user_from_json(json);
+    }
+    
+
+    /**
+       Return an array of objects representing users whose value of 'key' is 'value'
+
+       @param key name of a user object field to be checked
+       @param value value to which the value of user.key must be equal fro user to be selected
+
+       @return dictionary of matching user objects, form: {id:object} 
+     */
+    this.findUsers = function(key, value){
+	var file_list = fs.readdirSync(db_path);
+	console.info( file_list );
+	var matching = {};
+	var user;
+	file_list.forEach( function(id){
+	    if( isNaN( id ) )
+		return;
+	    user = this.read_user_data( id );
+	    if( user["_"+key] == value ){ // found matching user
+		matching[id] = user;
+	    }
+	}, this );
 	
-	this.read_user_data = function(user_id) {
-		var json = fs.readFileSync(path.join(db_path, user_id.toString()), 'utf8');
-		if (!json)
-			throw "Unable to read user data...";
-		if (Buffer.isBuffer(json))
-			json = json.toString('utf8');
-		return new_user_from_json(json);
-	}
+	return matching;
+    }
 
 }
+
+var udb = new UsersDatabase();
+
+var testUDB = function(){
+//     var u = new User();
+//     u.id = 43;
+//     u._login = "alek";
+//     u._first_name = "Aleksander";
+//     u._last_name = "Gajos";
+//     u._password = "dupa";
+//     udb.save_user_data( u );
+
+console.log( "found  " + Object.keys(udb.findUsers( "first_name", "Sarah" ) ) );
+}
+
 
 var http_server = http.createServer(function(request, response) {
 	var requested_path = url.parse(request.url).pathname;
@@ -210,6 +253,9 @@ io.sockets.on("connection", function(socket) {
     
     // handle user login
     socket.on("login", function(data) {
+
+	testUDB();
+
 	console.log("Got login data from client");
 	var ret = user_login( data );
 	if( ret >= 0 ){ // login OK
