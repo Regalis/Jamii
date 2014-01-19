@@ -64,7 +64,18 @@ var  strip_data_object = function(cargo){
     @return userID if user exists and login OK, -1=no user with login, -2=wrong passwd
 */
 var user_login = function(data){
-    
+
+    var user = udb.findUsers( "login",  data.login );
+    if( Object.keys( user ).length != 1 ){
+	return -1;
+    }
+    var user_id = Object.keys( user )[0];
+    if( data.passwd ==  user[ user_id ]._password && typeof data.passwd != 'undefined' ){
+	console.info("User " + user[ user_id ]._login + " successfully logged in" );
+	return 1;
+    }else{
+	return -2;
+    }
     return 1; 
 }
 
@@ -172,14 +183,13 @@ function UsersDatabase() {
      */
     this.findUsers = function(key, value){
 	var file_list = fs.readdirSync(db_path);
-	console.info( file_list );
 	var matching = {};
 	var user;
 	file_list.forEach( function(id){
 	    if( isNaN( id ) )
 		return;
 	    user = this.read_user_data( id );
-	    if( user["_"+key] == value ){ // found matching user
+	    if( user["_"+key].toLowerCase() == value.toLowerCase() ){ // found matching user
 		matching[id] = user;
 	    }
 	}, this );
@@ -254,10 +264,8 @@ io.sockets.on("connection", function(socket) {
     // handle user login
     socket.on("login", function(data) {
 
-	testUDB();
-
 	console.log("Got login data from client");
-	var ret = user_login( data );
+	var ret = user_login( strip_data_object( data ) );
 	if( ret >= 0 ){ // login OK
 	    var user_id = ret;
 	    socket.emit("loginOK", {} );
