@@ -22,18 +22,24 @@
  */
 
 
-function FriendListGUI(){
+/**
+ * Constructor of the GUI representation of the friendList
+ * @param parent_name name of the HTML element iside which the list will be drawn
+*/
+function FriendListGUI(parent_name){
 
+    var parent = document.getElementById( parent_name );
     var ul;
     this.fl = new friendList(FriendListGUI);
-    this.fl.populateList();
+
 }
 
 FriendListGUI.prototype.createTable = function(){
 
 
     ul=document.createElement('ul');
-    document.body.appendChild(ul);
+//    document.body.appendChild(ul);
+    parent.appendChild(ul);
     ul.setAttribute('id','friend_list'); 
     
     console.log(this.fl.n_friends);
@@ -93,11 +99,11 @@ FriendListGUI.prototype.update = function(){
 }
 
 
-function init(){
-    flg = new FriendListGUI();
-    window.flg = flg;
+// function init(){
+//     flg = new FriendListGUI();
+//     window.flg = flg;
     
     
-    flg.createTable();
+//     flg.createTable();
     
-}
+// }
