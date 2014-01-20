@@ -72,7 +72,7 @@ var user_login = function(data){
     var user_id = Object.keys( user )[0];
     if( data.passwd ==  user[ user_id ]._password && typeof data.passwd != 'undefined' ){
 	console.info("User " + user[ user_id ]._login + " successfully logged in" );
-	return 1;
+	return user_id;
     }else{
 	return -2;
     }
@@ -268,7 +268,10 @@ io.sockets.on("connection", function(socket) {
 	var ret = user_login( strip_data_object( data ) );
 	if( ret >= 0 ){ // login OK
 	    var user_id = ret;
-	    socket.emit("loginOK", {} );
+	    var user_obj = udb.read_user_data( user_id );
+	    delete user_obj["_password"]; // remove password field
+	    user_obj["id"] = user_id;
+	    socket.emit("loginOK", user_obj );
 	    clients_authenticate(socket.id, user_id);
 	}else if( ret == -1 ){ // no such user
 	    socket.emit("loginBAD", {"what":"No such user"});
@@ -281,3 +284,26 @@ io.sockets.on("connection", function(socket) {
 });
 
 http_server.listen(9393);
+
+
+// handler function for client requests
+var friendsDataHandler = function( packet ){
+    
+    var session_id = packet.sessionID;
+    var data = strip_data_object( packet );
+
+    var response = {};
+    response["user_data_list"] = [];
+
+    data.list.forEach( function(id){
+	var user = udb.read_user_data( id );
+	// TODO: control if user exists in database
+	user["_id"] = id;
+	delete user["_password"]; // remove password field
+	delete user["_requests_list"];
+	// TODO: append status information to the useer object
+	response["user_data_list"].push( user );
+    } );
+    
+    socket.emit("friendsData", response);
+}
