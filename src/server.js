@@ -112,7 +112,7 @@ function User() {
 	this._last_name = null;
 	this._password = null;
 	this._email = null;
-	this._friends_list = [];
+	this._friendslist = [];
 	this._requests_list = [];
 	this._avatar = null;
 	this.availability = null;
@@ -246,13 +246,9 @@ var http_server = http.createServer(function(request, response) {
 var io = require("socket.io").listen(http_server);
 
 io.sockets.on("connection", function(socket) {
-    // start a new session
-    var session_id = start_session( socket.id );
+
     console.info("Got new WebSocket connection (" + socket.id + ")...");
-    console.info("Assigning session ID: " + session_id );
-    // send welcome message and session ID
-    socket.emit("welcome", {"sessionID" : session_id});
-    clients_register(socket.id);
+    // do not do anything special on base connection
 
     // ping for testing
     socket.on('ping', function(data) {
@@ -268,10 +264,17 @@ io.sockets.on("connection", function(socket) {
 	var ret = user_login( strip_data_object( data ) );
 	if( ret >= 0 ){ // login OK
 	    var user_id = ret;
-	    var user_obj = udb.read_user_data( user_id );
-	    delete user_obj["_password"]; // remove password field
-	    user_obj["id"] = user_id;
-	    socket.emit("loginOK", user_obj );
+	    // start a new session after successful login
+	    var session_id = start_session( socket.id );
+	    console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
+	    clients_register(socket.id);
+
+	    // var user_id = ret;
+	    // var user_obj = udb.read_user_data( user_id );
+	    // delete user_obj["_password"]; // remove password field
+	    // user_obj["id"] = user_id;
+
+	    socket.emit("loginOK", {"userID":ret, "sessionID":session_id} );
 	    clients_authenticate(socket.id, user_id);
 	}else if( ret == -1 ){ // no such user
 	    socket.emit("loginBAD", {"what":"No such user"});
@@ -306,4 +309,12 @@ var friendsDataHandler = function( packet ){
     } );
     
     socket.emit("friendsData", response);
+}
+
+var whoAmIHandler = function( data ){
+
+    var session_id = packet.sessionID;
+    var data = strip_data_object( packet );
+    
+    
 }

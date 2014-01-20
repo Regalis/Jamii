@@ -26,6 +26,8 @@
  *
 */
 function initMainScreen(){
+
+    window.connection = new ConnectionManager("http://localhost","9393");
     
     // inside FriendListGUI constructor, friendList is created as flg.fl
     flg = new FriendListGUI("fList");

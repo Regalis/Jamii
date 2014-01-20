@@ -33,17 +33,37 @@ function ConnectionManager( serverAddr, serverPort ){
     // TODO: error control
     this.socket = io.connect( serverAddr + ":" + serverPort );   
 
-    this.sessionID = "";
+    // read cookie to check if session ID already assigned
+    var cookie = document.cookie;
+    this.sessionID = this.getSession( cookie );
+    if( this.sessionID == "" ){ // fresh connection before login
+	// message counter
+	this.counter = 0;
+	this.socket.on("loginOK", function(data){
+	    this.sessionID = data["sessionID"];
+	    console.log("Got session ID: " + this.sessionID );
+	    // store a cookie representing the session
+	    document.cookie="sessionID="+this.sessionID;
+	});
+    }else{
+	console.log( "Restored session: " + this.sessionID );
+    }
     
-    this.socket.on("welcome", function(data){
-	this.sessionID = data["sessionID"];
-	console.log("Got session ID: " + this.sessionID );
-    });
-    
-    // message counter
-    this.counter = 0;
     
 }
+
+
+ConnectionManager.prototype.getSession = function( cookie ){
+    var name = "sessionID=";
+    var ca = cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+	var c = ca[i].trim();
+	if ( c.indexOf(name)==0 ) 
+	    return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
 
 /**
  * Sends a request along with a 'data' JSON object to the server
