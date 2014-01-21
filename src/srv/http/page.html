@@ -1,8 +1,9 @@
 <html>
 <head>
+<script src="http://simplewebrtc.com/latest.js"></script>
 </head>
 <body>
-<div id="wrapper" style="height:600px;width:600px;">
+<div id="wrapper">
 	<div class="upperBar" id="uBar" style="height:100px; width:100%; position: relative;">
 		<div id="user1" style="width:100px; height: 100px; border: 1px solid; position: absolute; top:0px; left:0px;"></div>
 		<div id="user2" style="width:100px; height: 100px; border: 1px solid; position: absolute; top:0px; left:100px;"></div>
@@ -13,12 +14,40 @@
 	</div>
 	<div id="content" style="position:relative; border:1px solid; height: 460px; width:100%;">
 		<div class="leftWindow" id="lWindow" style="position:absolute;top:0px; left:0px; width:400px; height: 460px;">
+
+
+		
+<div id="localVideo"></div>
+<div id="remoteVideo"></div>
+
+
+<script>
+var webrtc = new SimpleWebRTC({
+	localVideoEl: 'localVideo',
+	remoteVideosEl: 'remoteVideo',
+	autoRequestMedia: true
+});
+
+webrtc.on('readyToCall', function () {
+	webrtc.joinRoom('My room name');
+});
+</script>
+
+
 			<button type="submit" formmethod="get" value="" form="" >Create conference</button>	
 		</div>
-		<div class="friendList" id="fList" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;"></div>
+		<!--<div class="friendList" id="fList" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;"></div>-->
+				<div class="chat" id="chat" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;">
+<input type="text" name="firstname"><br>
+
+					<input class="send_button" type="button" value="Send" />
+
+
+				</div>
+
 	</div>	
 	<div class="downBar" id="dBar" style="width: 100%; height:40px; position:relative;">
-		<div id="chat" style="width: 120px; height:100%; position: absolute; top:0px; left:0px; border:1px solid;">Chat</div>
+		<div id="chatButton" style="width: 120px; height:100%; position: absolute; top:0px; left:0px; border:1px solid;">Chat</div>
 		<div id="board" style="width: 120px; height:100%; position: absolute; top:0px; left:120px; border:1px solid;">Board</div>
 		<div id="fileShare" style="width: 120px; height:100%; position: absolute; top:0px; left:240px; border:1px solid;">File Share</div>
 		<div id="desktopShare" style="width: 120px; height:100%; position: absolute; top:0px; left:360px; border:1px solid;">Desktop Share</div>
