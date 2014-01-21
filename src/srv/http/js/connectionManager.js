@@ -35,26 +35,38 @@ function ConnectionManager( serverAddr, serverPort ){
 
     // read cookie to check if session ID already assigned
     var cookie = document.cookie;
-    this.sessionID = this.getSession( cookie );
+    this.sessionID = this.getValue( cookie, "sessionID" );
     if( this.sessionID == "" ){ // fresh connection before login
 	// message counter
 	this.counter = 0;
 	this.socket.on("loginOK", function(data){
 	    this.sessionID = data["sessionID"];
+	    this.userID = data["userID"];
 	    console.log("Got session ID: " + this.sessionID );
 	    // store a cookie representing the session
 	    document.cookie="sessionID="+this.sessionID;
+	    document.cookie="userID=" + this.userID;
 	});
     }else{
-	console.log( "Restored session: " + this.sessionID );
+	this.userID = this.getValue( cookie, "userID" );
+	console.log( "Restored session: " + this.sessionID + " for user: " + this.userID );
+	window.my_user_id = this.userID;
+	// ask server for main user data
+	this.send( "whoAmI", {} );
+	// retrieve main user data
+	this.registerHandler("yourData", function(data){
+	    window.my_user_object = data;
+	    console.log("Got user data: " + JSON.stringify( window.my_user_object ));
+	});
+	
     }
     
     
 }
 
 
-ConnectionManager.prototype.getSession = function( cookie ){
-    var name = "sessionID=";
+ConnectionManager.prototype.getValue = function( cookie, key ){
+    var name = key+"=";
     var ca = cookie.split(';');
     for(var i=0; i<ca.length; i++) {
 	var c = ca[i].trim();

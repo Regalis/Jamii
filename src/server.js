@@ -268,53 +268,60 @@ io.sockets.on("connection", function(socket) {
 	    var session_id = start_session( socket.id );
 	    console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
 	    clients_register(socket.id);
-
-	    // var user_id = ret;
-	    // var user_obj = udb.read_user_data( user_id );
-	    // delete user_obj["_password"]; // remove password field
-	    // user_obj["id"] = user_id;
-
-	    socket.emit("loginOK", {"userID":ret, "sessionID":session_id} );
+	    socket.emit("loginOK", {"userID":user_id, "sessionID":session_id} );
 	    clients_authenticate(socket.id, user_id);
+	    console.log("cliients"  + clients);
+	    console.log("cliients"  + sessions);
 	}else if( ret == -1 ){ // no such user
 	    socket.emit("loginBAD", {"what":"No such user"});
 	}else if(ret == -2){ // login OK
 	    socket.emit("loginBAD", {"what":"Wrong password"});	    
 	}
     });
+
+    // handler functions for client requests
+
+    // handle client asking for his data
+    socket.on( "whoAmI", function( packet ){
+	
+	var session_id = packet.sessionID;
+	var data = strip_data_object( packet );
+	
+	var user_id = get_user_by_session( session_id );
+	var user_obj = udb.read_user_data( user_id );
+	delete user_obj["_password"]; // remove password field
+	user_obj["id"] = user_id;
+	
+	socket.emit("yourData", user_obj);
+        
+    } );
+ 
     
+    socket.on( "getFriendsData", function( packet ){
+	var session_id = packet.sessionID;
+	var data = strip_data_object( packet );
+	
+	var response = {};
+	response["user_data_list"] = [];
+	
+	data["list"].forEach( function(id){
+	    var user = udb.read_user_data( id );
+	    // TODO: control if user exists in database
+	    user["_id"] = id;
+	    delete user["_password"]; // remove password field
+	    delete user["_requests_list"];
+	    // TODO: append status information to the useer object
+	    response["user_data_list"].push( user );
+	} );
+	
+	socket.emit("friendsData", response);
+	
+    });
     
 });
 
 http_server.listen(9393);
 
 
-// handler function for client requests
-var friendsDataHandler = function( packet ){
-    
-    var session_id = packet.sessionID;
-    var data = strip_data_object( packet );
 
-    var response = {};
-    response["user_data_list"] = [];
 
-    data.list.forEach( function(id){
-	var user = udb.read_user_data( id );
-	// TODO: control if user exists in database
-	user["_id"] = id;
-	delete user["_password"]; // remove password field
-	delete user["_requests_list"];
-	// TODO: append status information to the useer object
-	response["user_data_list"].push( user );
-    } );
-    
-    socket.emit("friendsData", response);
-}
-
-var whoAmIHandler = function( data ){
-
-    var session_id = packet.sessionID;
-    var data = strip_data_object( packet );
-    
-    
-}
