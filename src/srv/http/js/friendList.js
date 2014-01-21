@@ -33,24 +33,19 @@ function friendList(friend_list_gui){
     // TODO: repace with querying the server
     // for data of user user_login
     // temporarily use example object
-    this.user_object = {
-        "first_name": "John",
-        "last_name": "Runner",
-        "avatar": "base64",
-        "passwd": "9c2312312312312312asdasd123",
-        "login": "johnnyRunner",
-        "requests_list": [43, 55, 32],
-        "email": "john92@gmail.com",
-        "friends_list": [3, 5, 7, 13, 43, 123],
-        "block_list": [4,6]
-    };
+    
+    this.user_object = window.my_user_object;
     
     this.friend_list_gui = friend_list_gui;
     this.friend_id_list = this.user_object.friends_list;
     this.n_friends = this.friend_id_list.length;    
     this.friend_list = new Array();
     this.candidates = new Array(); // for friend searching
+    
+
 }
+
+
 
 /**
  * Send request for the data of friends specified
@@ -151,6 +146,7 @@ friendList.prototype.gotFriendsDataHandler = function(data){
     }
     // update GUI component to the new friend list
     this.friend_list_gui.update();
+    console.log("\n\n Got friends data: " + this.friend_list);
 }
 
 /**

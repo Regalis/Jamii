@@ -17,7 +17,7 @@
  *
  * Contributors:
  *  -> Patryk Jaworski <regalis@regalis.com.pl>
- *
+ *  -> Aleksander Gajos <alek.gajos@gmail.com>
  */
 
 var sys = require("sys");
@@ -29,8 +29,9 @@ var fs = require("fs");
 /*** Clients block ***/
 
 var clients = {};
-// dict: sessionID : socketID
+
 var sessionCounter = 0;
+// dict: sessionID : socketID
 var sessions = {};
 
 var  start_session = function(sock_id){
@@ -42,6 +43,7 @@ var  start_session = function(sock_id){
 var get_user_by_session = function( session_id ){
     return clients[ sessions[ session_id ] ]; 
 }
+
 
 /** 
     Function to retreieve data object from object received by a socket
@@ -62,7 +64,18 @@ var  strip_data_object = function(cargo){
     @return userID if user exists and login OK, -1=no user with login, -2=wrong passwd
 */
 var user_login = function(data){
-    
+
+    var user = udb.findUsers( "login",  data.login );
+    if( Object.keys( user ).length != 1 ){
+	return -1;
+    }
+    var user_id = Object.keys( user )[0];
+    if( data.passwd ==  user[ user_id ]._password && typeof data.passwd != 'undefined' ){
+	console.info("User " + user[ user_id ]._login + " successfully logged in" );
+	return user_id;
+    }else{
+	return -2;
+    }
     return 1; 
 }
 
@@ -99,7 +112,7 @@ function User() {
 	this._last_name = null;
 	this._password = null;
 	this._email = null;
-	this._friends_list = [];
+	this._friendslist = [];
 	this._requests_list = [];
 	this._avatar = null;
 	this.availability = null;
@@ -141,25 +154,65 @@ function UsersDatabase() {
 			throw "Bad user id";
 	}
 
-	this.save_user_data = function(user) {
-		validate_user(user);
-		fs.writeFileSync(path.join(db_path, user.id.toString()), user.export_to_json(), 'utf8', function(err) {
-			if (err)
-				throw err;
-		});
-		return true;
-	}
+    this.save_user_data = function(user) {
+	validate_user(user);
+	fs.writeFileSync(path.join(db_path, user.id.toString()), user.export_to_json(), 'utf8', function(err) {
+	    if (err)
+		throw err;
+	});
+	return true;
+    }
+    
+    this.read_user_data = function(user_id) {
+	var json = fs.readFileSync(path.join(db_path, user_id.toString()), 'utf8');
+	if (!json)
+	    throw "Unable to read user data...";
+	if (Buffer.isBuffer(json))
+	    json = json.toString('utf8');
+	return new_user_from_json(json);
+    }
+    
+
+    /**
+       Return an array of objects representing users whose value of 'key' is 'value'
+
+       @param key name of a user object field to be checked
+       @param value value to which the value of user.key must be equal fro user to be selected
+
+       @return dictionary of matching user objects, form: {id:object} 
+     */
+    this.findUsers = function(key, value){
+	var file_list = fs.readdirSync(db_path);
+	var matching = {};
+	var user;
+	file_list.forEach( function(id){
+	    if( isNaN( id ) )
+		return;
+	    user = this.read_user_data( id );
+	    if( user["_"+key].toLowerCase() == value.toLowerCase() ){ // found matching user
+		matching[id] = user;
+	    }
+	}, this );
 	
-	this.read_user_data = function(user_id) {
-		var json = fs.readFileSync(path.join(db_path, user_id.toString()), 'utf8');
-		if (!json)
-			throw "Unable to read user data...";
-		if (Buffer.isBuffer(json))
-			json = json.toString('utf8');
-		return new_user_from_json(json);
-	}
+	return matching;
+    }
 
 }
+
+var udb = new UsersDatabase();
+
+var testUDB = function(){
+//     var u = new User();
+//     u.id = 43;
+//     u._login = "alek";
+//     u._first_name = "Aleksander";
+//     u._last_name = "Gajos";
+//     u._password = "dupa";
+//     udb.save_user_data( u );
+
+console.log( "found  " + Object.keys(udb.findUsers( "first_name", "Sarah" ) ) );
+}
+
 
 var http_server = http.createServer(function(request, response) {
 	var requested_path = url.parse(request.url).pathname;
@@ -193,13 +246,9 @@ var http_server = http.createServer(function(request, response) {
 var io = require("socket.io").listen(http_server);
 
 io.sockets.on("connection", function(socket) {
-    // start a new session
-    var session_id = start_session( socket.id );
+
     console.info("Got new WebSocket connection (" + socket.id + ")...");
-    console.info("Assigning session ID: " + session_id );
-    // send welcome message and session ID
-    socket.emit("welcome", {"sessionID" : session_id});
-    clients_register(socket.id);
+    // do not do anything special on base connection
 
     // ping for testing
     socket.on('ping', function(data) {
@@ -210,20 +259,69 @@ io.sockets.on("connection", function(socket) {
     
     // handle user login
     socket.on("login", function(data) {
+
 	console.log("Got login data from client");
-	var ret = user_login( data );
+	var ret = user_login( strip_data_object( data ) );
 	if( ret >= 0 ){ // login OK
 	    var user_id = ret;
-	    socket.emit("loginOK", {} );
+	    // start a new session after successful login
+	    var session_id = start_session( socket.id );
+	    console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
+	    clients_register(socket.id);
+	    socket.emit("loginOK", {"userID":user_id, "sessionID":session_id} );
 	    clients_authenticate(socket.id, user_id);
+	    console.log("cliients"  + clients);
+	    console.log("cliients"  + sessions);
 	}else if( ret == -1 ){ // no such user
 	    socket.emit("loginBAD", {"what":"No such user"});
 	}else if(ret == -2){ // login OK
 	    socket.emit("loginBAD", {"what":"Wrong password"});	    
 	}
     });
+
+    // handler functions for client requests
+
+    // handle client asking for his data
+    socket.on( "whoAmI", function( packet ){
+	
+	var session_id = packet.sessionID;
+	var data = strip_data_object( packet );
+	
+	var user_id = get_user_by_session( session_id );
+	var user_obj = udb.read_user_data( user_id );
+	delete user_obj["_password"]; // remove password field
+	user_obj["id"] = user_id;
+	
+	socket.emit("yourData", user_obj);
+        
+    } );
+ 
     
+    socket.on( "getFriendsData", function( packet ){
+	var session_id = packet.sessionID;
+	var data = strip_data_object( packet );
+	
+	var response = {};
+	response["user_data_list"] = [];
+	
+	data["list"].forEach( function(id){
+	    var user = udb.read_user_data( id );
+	    // TODO: control if user exists in database
+	    user["_id"] = id;
+	    delete user["_password"]; // remove password field
+	    delete user["_requests_list"];
+	    // TODO: append status information to the useer object
+	    response["user_data_list"].push( user );
+	} );
+	
+	socket.emit("friendsData", response);
+	
+    });
     
 });
 
 http_server.listen(9393);
+
+
+
+
