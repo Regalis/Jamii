@@ -1,0 +1,33 @@
+#chat { 
+  position: relative; 
+}
+
+#chat-content { 
+  position:absolute;       
+  bottom:0;                           
+  left:0;    
+}
+
+#textbox{
+  background-color:#FF00FF;
+  height: 200px;
+  overflow: auto;
+}
+
+
+#remoteVideos video {
+  height: 100px;
+}
+#localVideo {
+  height: 100px;
+}
+
+.videoBox{
+  float:left;
+  width:133px;
+  height: 100px; 
+  border: 1px solid; 
+  position: relative; 
+  top:0px; 
+  left:0px;
+}
