@@ -542,7 +542,7 @@ io.sockets.on("connection", function(socket) {
             sessions[ sid ].emit("chatOK", data );
         }
         
-    }    
+    });    
 	
 });
 
