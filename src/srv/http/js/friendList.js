@@ -30,22 +30,46 @@
  * @param friend_list_gui reference to the mother friendListGUI object
  */
 function friendList(friend_list_gui){
-    // TODO: repace with querying the server
-    // for data of user user_login
-    // temporarily use example object
-    
-    this.user_object = window.my_user_object;
-    
+
+    // dont do antyhing more here!
     this.friend_list_gui = friend_list_gui;
-    this.friend_id_list = this.user_object.friends_list;
-    this.n_friends = this.friend_id_list.length;    
-    this.friend_list = new Array();
-    this.candidates = new Array(); // for friend searching
-    
+    this.getMyData();
 
 }
 
+/**
+ * Actual function to construct internals of the friendList.
+ * Should be called on obtaining the "yourData" packet
+ *
+*/
+friendList.prototype.init = function(){
+    
+    this.user_object = window.my_user_object;
+    this.friend_id_list = this.user_object["friends_list"];
+    this.n_friends = 0;
+    this.friend_list = new Array();
+    this.candidates = new Array(); // for friend searching
+    
+    // finally, populate the friend list
+    window.connection.registerHandler("friendsData", flg.fl.gotFriendsDataHandler);
+    flg.fl.populateList();
+    
+}
 
+/**
+ * Query for user data
+*/
+friendList.prototype.getMyData = function(){
+    // ask server for main user data
+    window.connection.send( "whoAmI", {} );
+    // retrieve main user data
+    window.connection.registerHandler("yourData", function(data){
+	window.my_user_object = data;
+	console.log("Got user data: " + JSON.stringify( window.my_user_object ));
+	// only init after the user data is present
+	window.flg.fl.init();
+    });
+}
 
 /**
  * Send request for the data of friends specified
@@ -63,8 +87,18 @@ friendList.prototype.populateList = function(){
  * @return return login of friend
  */
 friendList.prototype.getFriendLogin = function(i){
-    return this.friend_list[i].login;
+    return this.friend_list[i]["login"];
 }
+
+/**
+ * Get user avatar as text in Base64 encoding by number on FriendList.
+ * @param i refers to number of index in internal friend_list
+ * @return return avatar as image/gif in base64 encoding
+ */
+friendList.prototype.getFriendAvatar = function(i){
+    return this.friend_list[i]["avatar"];
+}
+
 
 /**
  * Send request with user data to server.
@@ -113,7 +147,7 @@ friendList.prototype.confirmation = function(isAccepted){
 friendList.prototype.addFriend = function(userInfo){
     
     this.n_friends++;
-    this.friend_id_list.push(userInfo.id);
+    //this.friend_id_list.push(userInfo.id);
     this.friend_list.push(userInfo);
     // update GUI
     this.friend_list_gui.update();
@@ -139,14 +173,16 @@ friendList.prototype.gotFriendsDataHandler = function(data){
     var list = data["user_data_list"];
     for( var i=0; i<list.length; i++ ){
 	var user_info = {};
+	user_info["id"] = list[i]["id"];	
 	user_info["first_name"] = list[i]["first_name"];
 	user_info["last_name"] = list[i]["last_name"];
 	user_info["login"] = list[i]["login"];
-	this.addFriend( user_info );
+	user_info["avatar"] = list[i]["avatar"];
+	console.log("userinfo: " + JSON.stringify(user_info) )
+	window.flg.fl.addFriend( user_info );
     }
     // update GUI component to the new friend list
-    this.friend_list_gui.update();
-    console.log("\n\n Got friends data: " + this.friend_list);
+    window.flg.update();
 }
 
 /**
@@ -159,7 +195,7 @@ friendList.prototype.gotCandidatesDataHandler = function(data){
     var list = data["user_data_list"];
 
     // clear the list
-    this.candidates = [];
+    window.flg.fl.candidates = [];
 
     for( var i=0; i<list.length; i++ ){
 	var user_info = {};
@@ -212,6 +248,6 @@ friendList.prototype.respondInvitation = function( invitation, decision ){
 friendList.prototype.gotNewFriendHandler = function(data){
 
     // TODO: convert user data format if necessary
-    this.addFriend( data );
+    window.flg.fl.addFriend( data );
 
 }

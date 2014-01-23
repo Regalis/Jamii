@@ -1,6 +1,7 @@
 <html>
 <head>
-  <script src="http://simplewebrtc.com/latest.js"></script>
+  <!-- <script src="http://simplewebrtc.com/latest.js"></script> -->
+  <script src="js/latest.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="js/friendList.js"></script>
   <script type="text/javascript" src="js/friendListGUI.js"></script>
@@ -38,7 +39,7 @@ function clickDiv(){
                        
 
  window.onload = function() {
-//    initMainScreen();
+        initMainScreen();
 	clickDiv();
 
     document.getElementById("send").onclick = function() {
@@ -54,7 +55,7 @@ var webrtc = new SimpleWebRTC({
 });
 
 webrtc.on('readyToCall', function () {
-	webrtc.joinRoom('My room name');
+	webrtc.joinRoom('jamii');
 });
   </script>
 
@@ -81,9 +82,9 @@ webrtc.on('readyToCall', function () {
 		<div class="leftWindow" id="lWindow" style="position:absolute;top:0px; left:0px; width:400px; height: 460px;">
 
 		</div>
-		<!--<div class="friendList" id="fList" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;"></div>-->
+		<div class="friendList" id="fList" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;"></div>
 
-		<div class="chat" id="chat" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;">
+		<!-- <div class="chat" id="chat" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;"> -->
 
 			<div style="height:410px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
 				<ul id="textList">

@@ -51,14 +51,6 @@ function ConnectionManager( serverAddr, serverPort ){
 	this.userID = this.getValue( cookie, "userID" );
 	console.log( "Restored session: " + this.sessionID + " for user: " + this.userID );
 	window.my_user_id = this.userID;
-	// ask server for main user data
-	this.send( "whoAmI", {} );
-	// retrieve main user data
-	this.registerHandler("yourData", function(data){
-	    window.my_user_object = data;
-	    console.log("Got user data: " + JSON.stringify( window.my_user_object ));
-	});
-	
     }
     
     
