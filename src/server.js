@@ -341,6 +341,29 @@ function UsersDatabase() {
 	return matching;
 	}
 
+	this.findUsersMultiKey = function(dict) {
+		var file_list = fs.readdirSync(db_path);
+		var matching = {};
+		var user;
+		file_list.forEach(function(id) {
+			if (isNaN(id))
+				return;
+			user = this.read_user_data(id);
+			var user_ok = true;
+			var keys = Object.keys(dict);
+			for (key in keys) {
+				if (user['_' + key].toLoweCase() != dict[key].toLoweCase()) {
+					user_ok = false;
+					break;
+				}
+			}
+			if (user_ok)
+				matching[id] = user;
+		}, this );
+		
+		return matching;
+	}
+
 }
 
 var udb = new UsersDatabase();
@@ -468,6 +491,26 @@ io.sockets.on("connection", function(socket) {
 			console.log("Unable to register new user: " + e);
 		}
 		
+	});
+	
+	/** Send user data from user id */
+	socket.on("getUserDataFromId", function(packet) {
+		var data = packet["data"];
+		if (!isNaN(data["id"])) {
+			var user_data;
+			try {
+				user_data = udb.read_user_data(data["id"]);
+				// TODO: strip object
+				socket.emit("userDataFromId", user_data.export_to_json());
+			} catch (e) {} 
+		}
+	});
+
+	socket.on("searchFriends", function(packet) {
+		var data = packet["data"];
+		var results = udb.findUsersMultiKey(data);
+		
+
 	});
 
 	socket.on( "getFriendsData", function( packet ){
