@@ -30,41 +30,19 @@ var fs = require("fs");
 
 var clients = {};
 
+
 var sessionCounter = 0;
 // dict: sessionID : socketID
 var sessions = {};
 
-/**
- * Conference class
-*/
-function conference(conf_id){
-
-    this.id = conf_id;
-    this.participants = [];
-    this.is_active = false;
-    
-    this.add_participant = function(id){
-        this.participants.push( id );
-        // TODO: abort if user already in a conference
-//        conferences[];
-    }
-    
-}
-
-
-var conf_counter = 0;
-// userID : conferenceID
-var conferences = {};
-
-
-var  start_session = function(sock_id){
+var  start_session = function(socket_object){
 	sessionCounter++;
-	sessions[ sessionCounter ] =  sock_id;
+	sessions[ sessionCounter ] =  socket_object;
 	return sessionCounter;
 }
 
 var get_user_by_session = function( session_id ){
-	return clients[ sessions[ session_id ] ]; 
+	return clients[sessions[session_id].id]; 
 }
 
 
@@ -436,7 +414,7 @@ io.sockets.on("connection", function(socket) {
 
 		console.log("Got WhoAmi from user: " + user_id );
 
-		var user_obj = udb.read_user_data( user_id ).strip_object() ;
+		var user_obj = udb.read_user_data( user_id ).export_to_json() ;
 		delete user_obj["password"]; // remove password field
 		user_obj["id"] = user_id;
 		
@@ -479,7 +457,7 @@ io.sockets.on("connection", function(socket) {
         console.info( "asked for friends data: " + data["list"] );
 	    
 	    data["list"].forEach( function(id){
-		    var user = udb.read_user_data( id ).strip_object();
+		    var user = udb.read_user_data( id ).export_to_json();
 		    // TODO: control if user exists in database
 		    user["id"] = id;
 		    delete user["password"]; // remove password field
