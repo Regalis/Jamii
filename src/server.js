@@ -479,11 +479,8 @@ io.sockets.on("connection", function(socket) {
         console.info( "asked for friends data: " + data["list"] );
 	    
 	    data["list"].forEach( function(id){
-		    var user = udb.read_user_data( id ).export_to_json();
+		    var user = udb.read_user_data( id ).strip_object();
 		    // TODO: control if user exists in database
-		    user["id"] = id;
-		    delete user["password"]; // remove password field
-		    delete user["requests_list"];
 		    // TODO: append status information to the useer object
 		    response["user_data_list"].push( user );
 	    } );
