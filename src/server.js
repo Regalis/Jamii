@@ -34,14 +34,38 @@ var sessionCounter = 0;
 // dict: sessionID : socketID
 var sessions = {};
 
-var  start_session = function(sock_id){
+/**
+ * Conference class
+*/
+function conference(conf_id){
+
+    this.id = conf_id;
+    this.participants = [];
+    this.is_active = false;
+    
+    this.add_participant = function(id){
+        this.participants.push( id );
+        // TODO: abort if user already in a conference
+//        conferences[];
+    }
+    
+}
+
+
+var conf_counter = 0;
+// userID : conferenceID
+var conferences = {};
+
+
+
+var  start_session = function(socket_object){
 	sessionCounter++;
-	sessions[ sessionCounter ] =  sock_id;
+	sessions[ sessionCounter ] =  socket_object;
 	return sessionCounter;
 }
 
 var get_user_by_session = function( session_id ){
-	return clients[ sessions[ session_id ] ]; 
+	return clients[sessions[session_id].id]; 
 }
 
 
@@ -112,22 +136,59 @@ function User() {
 	this._last_name = null;
 	this._password = null;
 	this._email = null;
-	this._friendslist = [];
+	this._friends_list = [];
 	this._requests_list = [];
 	this._avatar = null;
+	this._registration_date = null;
 	this.availability = null;
 
+	/** Export User data to JSON string
+	 * This function will export only params which
+	 * start with '_';
+	 *
+	 * Object could be restored by using new_user_from_json()
+	 *
+	 * @return JSON string representing current object
+	 */
 	this.export_to_json = function() {
 		var json = {};
 		for (x in this)  {
-			if (x.startsWith('_'))
+			if (x.startsWith('_')) {
 				json[x.substring(1)] = this[x];
+			}
 		}
-		// return JSON.stringify(json);
-        return json;
+		return JSON.stringify(json);
+	}
+
+	/** Export copy of stripped current User data
+	 * New object has all fields except of:
+	 * 	* password, requests_list, registration_date
+	 *
+	 * All fields ale present without the '_' prefix.
+	 *
+	 * @return stripped User data
+	 */
+	this.strip_object = function() {
+		var tmp = new Object();
+		tmp['id'] = this.id;
+
+		for (x in this) {
+			if (x.startsWith('_')) {
+				if (!(x in ['_password', '_registration_date', '_requests_list'])) {
+					tmp[x.substring(1)] = this[x];
+				}
+			}
+		}
+		return tmp;
 	}
 }
 
+/** Create instance of class User from JSON string
+ * **Warning** no JSON validation!
+ *
+ * @param json JSON string to parse
+ * @return User instajce
+ */
 var new_user_from_json = function(json) {
 	var obj = JSON.parse(json);
 	var user = new User();
@@ -149,10 +210,14 @@ var new_user_from_json = function(json) {
  */
 function UsersDatabase() {
 	var db_path = path.join(process.cwd(), "/var/users");
+	var lastid_file = path.join(db_path, '.lastid');
+	var last_user_id = undefined;
 	
 	var init = function() {
-		var lastid_file = path.join(db_path, '.lastid');
-		if (!fs.exists(lastid_file)) {
+		if (!fs.existsSync(lastid_file)) {
+			fs.writeFileSync(lastid_file, '0', 'utf8', function(err) {
+
+			});
 		}
 	}
 
@@ -164,7 +229,51 @@ function UsersDatabase() {
 			throw "Bad user id";
 	}
 
+	/** Get next available user id
+	 * This function does *not* modify .lastid file
+	 * @see update_next_user_id();
+	 * 
+	 * @return next available user id
+	 */
+	this.get_next_user_id = function() {
+		var last_id = fs.readFileSync(lastid_file, 'utf8');
+		last_id = parseInt(last_id);
+		if (isNaN(last_id))
+			throw "Unable to get last user id...";
+		console.log("get_next_user_id = " + (last_id + 1).toString());
+		return (last_id + 1);
+	}
+
+	/** Update next available user id
+	 * Increase and write next available user id into .lastid file
+	 *
+	 * @return true
+	 * @throw string after read or write error
+	 */
+	this.update_next_user_id = function() {
+		var last_id = undefined;
+		try {
+			last_id = this.get_next_user_id();
+			console.log("Writing new lastid: " + last_id.toString());
+			fs.writeFileSync(lastid_file, last_id.toString(), 'utf8', function(err) {
+				if (err)
+					throw err;
+			});
+			return true;
+		} catch (e) {
+			throw "Unable to update next user id: " + e;
+		}
+	}
+
+	/** Save user data to database
+	 * 
+	 * @param user  filled instance of User class
+	 * @return true
+	 * @throw string after write error
+	 */
 	this.save_user_data = function(user) {
+		if (!user instanceof User)
+			throw "UsersDatabase::save_user_data: user must be an instance of User class";
 		validate_user(user);
 		fs.writeFileSync(path.join(db_path, user.id.toString()), user.export_to_json(), 'utf8', function(err) {
 			if (err)
@@ -173,17 +282,41 @@ function UsersDatabase() {
 		return true;
 	}
 	
+	/** Read user data from file and return User object
+	 *
+	 * @param user_id existed ser id
+	 * @return filled instance of User class
+	 * @throw string after read error
+	 */
 	this.read_user_data = function(user_id) {
 		var json = fs.readFileSync(path.join(db_path, user_id.toString()), 'utf8');
 		if (!json)
 			throw "Unable to read user data...";
 		if (Buffer.isBuffer(json))
 			json = json.toString('utf8');
-		return new_user_from_json(json);
+		var user = new_user_from_json(json);
+		user["id"] = user_id;
+		return user;
 	}
 	
+	/** Register new user in database
+	 * Note: no validation at this point
+	 *
+	 * @param user: instance of filled User class, must be a valid user
+	 * @return new user id
+	 * @throw string after read or write error
+	 */
 	this.register_new_user =  function(user) {
-		
+		if (!user instanceof User)
+			throw "UsersDatabase::register_new_user: user parameter must be an instance of User class";
+		try {
+			user.id = udb.get_next_user_id();
+			this.save_user_data(user);
+			this.update_next_user_id();
+			return user.id;
+		} catch (e) {
+			throw "UserDatabase::register_new_user: unable to write new user data (" + e + ")";
+		}
 	}
 
 	/**
@@ -208,6 +341,28 @@ function UsersDatabase() {
 	}, this );
 	
 	return matching;
+	}
+
+	this.findUsersMultiKey = function(dict) {
+		var file_list = fs.readdirSync(db_path);
+		var matching = {};
+		var user;
+		file_list.forEach(function(id) {
+			if (isNaN(id))
+				return;
+			user = this.read_user_data(id);
+			var user_ok = true;
+			for (key in dict) {
+				if (user['_' + key].toLowerCase() != dict[key].toLowerCase()) {
+					user_ok = false;
+					break;
+				}
+			}
+			if (user_ok)
+				matching[id] = user;
+		}, this );
+		
+		return matching;
 	}
 
 }
@@ -278,13 +433,14 @@ io.sockets.on("connection", function(socket) {
 	if( ret >= 0 ){ // login OK
 		var user_id = ret;
 		// start a new session after successful login
-		var session_id = start_session( socket.id );
+		var session_id = start_session( socket );
 		console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
 		clients_register(socket.id);
 		socket.emit("loginOK", {"userID":user_id, "sessionID":session_id} );
 		clients_authenticate(socket.id, user_id);
 		console.log("cliients"	+ clients);
 		console.log("cliients"	+ sessions);
+	// TODO: remove 'no such user' warning (brute force attack is now much easier)
 	}else if( ret == -1 ){ // no such user
 		socket.emit("loginBAD", {"what":"No such user"});
 	}else if(ret == -2){ // login OK
@@ -296,40 +452,78 @@ io.sockets.on("connection", function(socket) {
 
 	// handle client asking for his data
 	socket.on( "whoAmI", function( packet ){
-	
-	var session_id = packet.sessionID;
-	var data = strip_data_object( packet );
-	
-    console.log("Got WhoAmi from session: " + session_id );
-
-	var user_id = get_user_by_session( session_id );
-
-    console.log("Got WhoAmi from user: " + user_id );
-
-	var user_obj = udb.read_user_data( user_id ).export_to_json() ;
-	delete user_obj["password"]; // remove password field
-	user_obj["id"] = user_id;
-	
-	socket.emit("yourData", user_obj);
+		var session_id = packet.sessionID;
+		var data = strip_data_object( packet );
 		
-	} );
+		console.log("Got WhoAmi from session: " + session_id );
+
+		var user_id = get_user_by_session( session_id );
+
+		console.log("Got WhoAmi from user: " + user_id );
+
+		var user_obj = udb.read_user_data( user_id ).strip_object() ;
+		socket.emit("yourData", user_obj);
+		
+	});
  
+	socket.on("register", function (data) {
+		console.info("Got register packet: " + data);
+		console.log(data);	
+
+		data = data['data'];
+		var new_user = new User();
+		new_user["_email"] = data["email"];
+		new_user["_login"] = data["login"];
+		new_user["_first_name"] = data["first_name"];
+		new_user["_last_name"] = data["last_name"];
+		new_user["_password"] = data["passwd"];
+		new_user["_registration_date"] = Date.now();
+		
+		// TODO: validate user data...
+
+		try {
+			var id = udb.register_new_user(new_user);
+			console.log("New user successfully registerd with id: " + id.toString());
+			socket.emit("registerOK", {'login': new_user['_login']});
+		} catch (e) {
+			console.log("Unable to register new user: " + e);
+		}
+		
+	});
 	
+	/** Send user data from user id */
+	socket.on("getUserDataFromId", function(packet) {
+		var data = packet["data"];
+		if (!isNaN(data["id"])) {
+			var user_data;
+			try {
+				user_data = udb.read_user_data(data["id"]);
+				// TODO: strip object
+				socket.emit("userDataFromId", user_data.export_to_json());
+			} catch (e) {} 
+		}
+	});
+
+	socket.on("searchFriends", function(packet) {
+		var data = packet["data"];
+		var results = udb.findUsersMultiKey(data);
+		socket.emit("matchingUsers", {'list': Object.keys(results)});	
+	});
+
 	socket.on( "getFriendsData", function( packet ){
 	    var session_id = packet.sessionID;
 	    var data = strip_data_object( packet );
-	    
+	   
+        console.log(data);
+ 
 	    var response = {};
 	    response["user_data_list"] = [];
 
         console.info( "asked for friends data: " + data["list"] );
 	    
 	    data["list"].forEach( function(id){
-		    var user = udb.read_user_data( id ).export_to_json();
+		    var user = udb.read_user_data( id ).strip_object();
 		    // TODO: control if user exists in database
-		    user["id"] = id;
-		    delete user["password"]; // remove password field
-		    delete user["requests_list"];
 		    // TODO: append status information to the useer object
 		    response["user_data_list"].push( user );
 	    } );
@@ -337,6 +531,18 @@ io.sockets.on("connection", function(socket) {
 	    socket.emit("friendsData", response);
 	    
 	});
+
+    socket.on( "chat", function( packet ){
+        
+	    var session_id = packet.sessionID;
+	    var data = strip_data_object( packet );
+        
+        // broadcast
+        for(sid in sessions){
+            sessions[ sid ].emit("chatOK", data );
+        }
+        
+    });    
 	
 });
 
