@@ -50,7 +50,11 @@ FriendListGUI.prototype.createTable = function(){
  	li.setAttribute('draggable','true');	
 	li.setAttribute('ondragstart','drag(event)'); 
 	this.ul.appendChild(li);
-	li.innerHTML=this.fl.getFriendLogin(i);;
+	// create html enry to display the user's avatar
+	var image_entry = "<img src=\"data:image/gif;base64,"+
+	    this.fl.getFriendAvatar(i) + "\" />";
+	console.log(image_entry);
+	li.innerHTML=this.fl.getFriendLogin(i) + image_entry;
 
     }
     var li=document.createElement('li');

@@ -91,6 +91,16 @@ friendList.prototype.getFriendLogin = function(i){
 }
 
 /**
+ * Get user avatar as text in Base64 encoding by number on FriendList.
+ * @param i refers to number of index in internal friend_list
+ * @return return avatar as image/gif in base64 encoding
+ */
+friendList.prototype.getFriendAvatar = function(i){
+    return this.friend_list[i]["avatar"];
+}
+
+
+/**
  * Send request with user data to server.
  * Server will find list of users matching the given data and
  * respond with a "matchingUsers" packet containing a list of IDs.
@@ -167,6 +177,7 @@ friendList.prototype.gotFriendsDataHandler = function(data){
 	user_info["first_name"] = list[i]["first_name"];
 	user_info["last_name"] = list[i]["last_name"];
 	user_info["login"] = list[i]["login"];
+	user_info["avatar"] = list[i]["avatar"];
 	console.log("userinfo: " + JSON.stringify(user_info) )
 	window.flg.fl.addFriend( user_info );
     }
