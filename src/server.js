@@ -43,6 +43,11 @@ function conference(conf_id){
     this.participants = [];
     this.is_active = false;
     
+    this.add_participant = function(id){
+        this.participants.push( id );
+        // TODO: abort if user already in a conference
+//        conferences[];
+    }
     
 }
 
@@ -431,7 +436,7 @@ io.sockets.on("connection", function(socket) {
 
 		console.log("Got WhoAmi from user: " + user_id );
 
-		var user_obj = udb.read_user_data( user_id ).export_to_json() ;
+		var user_obj = udb.read_user_data( user_id ).strip_object() ;
 		delete user_obj["password"]; // remove password field
 		user_obj["id"] = user_id;
 		
@@ -474,7 +479,7 @@ io.sockets.on("connection", function(socket) {
         console.info( "asked for friends data: " + data["list"] );
 	    
 	    data["list"].forEach( function(id){
-		    var user = udb.read_user_data( id ).export_to_json();
+		    var user = udb.read_user_data( id ).strip_object();
 		    // TODO: control if user exists in database
 		    user["id"] = id;
 		    delete user["password"]; // remove password field
