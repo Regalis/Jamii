@@ -135,6 +135,28 @@ function User() {
 		}
 		return JSON.stringify(json);
 	}
+
+	/** Export copy of stripped current User data
+	 * New object has all fields except of:
+	 * 	* password, requests_list, registration_date
+	 *
+	 * All fields ale present without the '_' prefix.
+	 *
+	 * @return stripped User data
+	 */
+	this.strip_object = function() {
+		var tmp = new Object();
+		tmp['id'] = this.id;
+
+		for (x in this) {
+			if (x.startsWith('_')) {
+				if (!(x in ['_password', '_registration_date', '_requests_list'])) {
+					tmp[x.substring(1)] = this[x];
+				}
+			}
+		}
+		return tmp;
+	}
 }
 
 /** Create instance of class User from JSON string
@@ -417,7 +439,7 @@ io.sockets.on("connection", function(socket) {
 		try {
 			var id = udb.register_new_user(new_user);
 			console.log("New user successfully registerd with id: " + id.toString());
-			socket.emit("registerOK", {'id': id});
+			socket.emit("registerOK", {'login': new_user['_login']});
 		} catch (e) {
 			console.log("Unable to register new user: " + e);
 		}
