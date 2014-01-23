@@ -9,12 +9,34 @@
 	<script type="text/javascript" src="js/initFunctions.js"></script>
 	<script type="text/javascript">
 
+function onResize()
+{
+var w=window.outerWidth;
+var h=document.getElementById('lWindow').offsetHeight;
+console.log("h: "+h);
+document.getElementById("localVideo").style.height=h;
+}
+
+
 function send(){
 	var list = document.getElementById("textList");
 	var entry = document.createElement('li');
-	var temp = document.getElementById("chat_input").value;
-	entry.appendChild(document.createTextNode(temp));
-	list.appendChild(entry);
+	var temp = document.getElementById("chat_input").value;	
+	var data  = {};
+
+    data ["login"] = "LoginSample";
+    data ["message"] = temp;
+
+    window.connection.send("chat", data);
+    window.connection.registerHandler("chatOK", function(data){
+
+		entry.appendChild(document.createTextNode(data.message));
+		list.appendChild(entry);
+
+    });
+
+
+
 	document.getElementById("chat_input").value="";  
 
 	var textList = document.getElementById("textList");
@@ -55,6 +77,13 @@ function clickView() {
 
  window.onload = function() {
 //    initMainScreen();
+                        window.connection = new ConnectionManager("http://localhost","9393");
+
+                                                        window.connection.send("chat", data);
+
+
+var innerHeight = document.getElementById('lWindow').offsetHeight;
+alert(innerHeight);
 	clickDiv();
 	clickView();
 
@@ -76,7 +105,7 @@ webrtc.on('readyToCall', function () {
 });
   </script>
 </head>
-<body>
+<body onresize="onResize()">
 
 	<!-- UPPER BAR -->
 	<div id="uBar">
@@ -92,7 +121,6 @@ webrtc.on('readyToCall', function () {
 		<div id="user5">
 		</div>
 		<div id="me">		
-			<video id="localVideo"></video>
 		</div>
 		<h2>Jamii</h2>
 	</div>
@@ -100,6 +128,8 @@ webrtc.on('readyToCall', function () {
 	<div id="content">
 	<!-- MAIN VIEW -->
 		<div id="lWindow">
+			<center><video id="localVideo"></video></center>
+
 		</div>
 
 		<div id="friendList" class="rWindow">

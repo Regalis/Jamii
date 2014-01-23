@@ -25,6 +25,7 @@ body {
 	margin: 0;
 	height: 90%;
 	border: 1px solid red;
+	word-wrap:break-word;
 }
 
 #chat-content { 
@@ -44,7 +45,7 @@ body {
 }
 
 #localVideo {
-	height: 100px;
+	height: 400px;
 }
 
 #uBar {

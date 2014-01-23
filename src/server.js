@@ -409,7 +409,7 @@ io.sockets.on("connection", function(socket) {
 	if( ret >= 0 ){ // login OK
 		var user_id = ret;
 		// start a new session after successful login
-		var session_id = start_session( socket.id );
+		var session_id = start_session( socket );
 		console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
 		clients_register(socket.id);
 		socket.emit("loginOK", {"userID":user_id, "sessionID":session_id} );
