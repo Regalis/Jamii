@@ -30,18 +30,19 @@ var fs = require("fs");
 
 var clients = {};
 
+
 var sessionCounter = 0;
 // dict: sessionID : socketID
 var sessions = {};
 
-var  start_session = function(sock_id){
+var  start_session = function(socket_object){
 	sessionCounter++;
-	sessions[ sessionCounter ] =  sock_id;
+	sessions[ sessionCounter ] =  socket_object;
 	return sessionCounter;
 }
 
 var get_user_by_session = function( session_id ){
-	return clients[ sessions[ session_id ] ]; 
+	return clients[sessions[session_id].id]; 
 }
 
 
