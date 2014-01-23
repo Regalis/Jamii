@@ -455,7 +455,7 @@ io.sockets.on("connection", function(socket) {
 		new_user["_login"] = data["login"];
 		new_user["_first_name"] = data["first_name"];
 		new_user["_last_name"] = data["last_name"];
-		new_user["_password"] = data["password"];
+		new_user["_password"] = data["passwd"];
 		new_user["_registration_date"] = Date.now();
 		
 		// TODO: validate user data...
