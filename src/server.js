@@ -136,7 +136,7 @@ function User() {
 	this._last_name = null;
 	this._password = null;
 	this._email = null;
-	this._friendslist = [];
+	this._friends_list = [];
 	this._requests_list = [];
 	this._avatar = null;
 	this._registration_date = null;
@@ -294,7 +294,9 @@ function UsersDatabase() {
 			throw "Unable to read user data...";
 		if (Buffer.isBuffer(json))
 			json = json.toString('utf8');
-		return new_user_from_json(json);
+		var user = new_user_from_json(json);
+		user["id"] = user_id;
+		return user;
 	}
 	
 	/** Register new user in database
@@ -339,6 +341,28 @@ function UsersDatabase() {
 	}, this );
 	
 	return matching;
+	}
+
+	this.findUsersMultiKey = function(dict) {
+		var file_list = fs.readdirSync(db_path);
+		var matching = {};
+		var user;
+		file_list.forEach(function(id) {
+			if (isNaN(id))
+				return;
+			user = this.read_user_data(id);
+			var user_ok = true;
+			for (key in dict) {
+				if (user['_' + key].toLowerCase() != dict[key].toLowerCase()) {
+					user_ok = false;
+					break;
+				}
+			}
+			if (user_ok)
+				matching[id] = user;
+		}, this );
+		
+		return matching;
 	}
 
 }
@@ -437,10 +461,7 @@ io.sockets.on("connection", function(socket) {
 
 		console.log("Got WhoAmi from user: " + user_id );
 
-		var user_obj = udb.read_user_data( user_id ).export_to_json() ;
-		delete user_obj["password"]; // remove password field
-		user_obj["id"] = user_id;
-		
+		var user_obj = udb.read_user_data( user_id ).strip_object() ;
 		socket.emit("yourData", user_obj);
 		
 	});
@@ -469,22 +490,40 @@ io.sockets.on("connection", function(socket) {
 		}
 		
 	});
+	
+	/** Send user data from user id */
+	socket.on("getUserDataFromId", function(packet) {
+		var data = packet["data"];
+		if (!isNaN(data["id"])) {
+			var user_data;
+			try {
+				user_data = udb.read_user_data(data["id"]);
+				// TODO: strip object
+				socket.emit("userDataFromId", user_data.export_to_json());
+			} catch (e) {} 
+		}
+	});
+
+	socket.on("searchFriends", function(packet) {
+		var data = packet["data"];
+		var results = udb.findUsersMultiKey(data);
+		socket.emit("matchingUsers", {'list': Object.keys(results)});	
+	});
 
 	socket.on( "getFriendsData", function( packet ){
 	    var session_id = packet.sessionID;
 	    var data = strip_data_object( packet );
-	    
+	   
+        console.log(data);
+ 
 	    var response = {};
 	    response["user_data_list"] = [];
 
         console.info( "asked for friends data: " + data["list"] );
 	    
 	    data["list"].forEach( function(id){
-		    var user = udb.read_user_data( id ).export_to_json();
+		    var user = udb.read_user_data( id ).strip_object();
 		    // TODO: control if user exists in database
-		    user["id"] = id;
-		    delete user["password"]; // remove password field
-		    delete user["requests_list"];
 		    // TODO: append status information to the useer object
 		    response["user_data_list"].push( user );
 	    } );
@@ -492,6 +531,18 @@ io.sockets.on("connection", function(socket) {
 	    socket.emit("friendsData", response);
 	    
 	});
+
+    socket.on( "chat", function( packet ){
+        
+	    var session_id = packet.sessionID;
+	    var data = strip_data_object( packet );
+        
+        // broadcast
+        for(sid in sessions){
+            sessions[ sid ].emit("chatOK", data );
+        }
+        
+    });    
 	
 });
 
