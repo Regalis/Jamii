@@ -455,6 +455,9 @@ io.sockets.on("connection", function(socket) {
 		var session_id = packet.sessionID;
 		var data = strip_data_object( packet );
 		
+// fix the change of socket for client
+sessions[ session_id ] = socket;
+
 		console.log("Got WhoAmi from session: " + session_id );
 
 		var user_id = get_user_by_session( session_id );
@@ -536,9 +539,14 @@ io.sockets.on("connection", function(socket) {
         
 	    var session_id = packet.sessionID;
 	    var data = strip_data_object( packet );
+	    console.log(data);
         
+console.log( sessions );
+
         // broadcast
         for(sid in sessions){
+        		    console.log(sid);
+
             sessions[ sid ].emit("chatOK", data );
         }
         

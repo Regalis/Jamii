@@ -13,9 +13,9 @@ function onResize()
 {
 var w=window.outerWidth;
 var h=document.getElementById('lWindow').offsetHeight;
-console.log("h: "+h);
 document.getElementById("localVideo").style.height=h;
 }
+
 
 
 function send(){
@@ -28,12 +28,8 @@ function send(){
     data ["message"] = temp;
 
     window.connection.send("chat", data);
-    window.connection.registerHandler("chatOK", function(data){
-
-		entry.appendChild(document.createTextNode(data.message));
-		list.appendChild(entry);
-
-    });
+    console.log("aAAAA");
+    
 
 
 
@@ -76,14 +72,18 @@ function clickView() {
 }
 
  window.onload = function() {
-//    initMainScreen();
-                        window.connection = new ConnectionManager("http://localhost","9393");
+    initMainScreen();
+    window.connection = new ConnectionManager("http://localhost","9393");
 
-                                                        window.connection.send("chat", data);
+    window.connection.registerHandler("chatOK", function(data){
+   		console.log("BBB");
+		entry.appendChild(document.createTextNode(data.message));
+		list.appendChild(entry);
+
+    });
 
 
-var innerHeight = document.getElementById('lWindow').offsetHeight;
-alert(innerHeight);
+
 	clickDiv();
 	clickView();
 
@@ -133,7 +133,6 @@ webrtc.on('readyToCall', function () {
 		</div>
 
 		<div id="friendList" class="rWindow">
-		friend list would he here!!!
 		</div>
 		<div id="options" class="rWindow">
 		options would be here!!!
