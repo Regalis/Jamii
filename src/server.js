@@ -488,6 +488,18 @@ io.sockets.on("connection", function(socket) {
 	    socket.emit("friendsData", response);
 	    
 	});
+
+    socket.on( "chat", function( packet ){
+        
+	    var session_id = packet.sessionID;
+	    var data = strip_data_object( packet );
+        
+        // broadcast
+        for(sid in sessions){
+            sessions[ sid ].emit("chatOK", data );
+        }
+        
+    }    
 	
 });
 
