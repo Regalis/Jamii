@@ -294,7 +294,9 @@ function UsersDatabase() {
 			throw "Unable to read user data...";
 		if (Buffer.isBuffer(json))
 			json = json.toString('utf8');
-		return new_user_from_json(json);
+		var user = new_user_from_json(json);
+		user["id"] = user_id;
+		return user;
 	}
 	
 	/** Register new user in database
@@ -339,6 +341,28 @@ function UsersDatabase() {
 	}, this );
 	
 	return matching;
+	}
+
+	this.findUsersMultiKey = function(dict) {
+		var file_list = fs.readdirSync(db_path);
+		var matching = {};
+		var user;
+		file_list.forEach(function(id) {
+			if (isNaN(id))
+				return;
+			user = this.read_user_data(id);
+			var user_ok = true;
+			for (key in dict) {
+				if (user['_' + key].toLowerCase() != dict[key].toLowerCase()) {
+					user_ok = false;
+					break;
+				}
+			}
+			if (user_ok)
+				matching[id] = user;
+		}, this );
+		
+		return matching;
 	}
 
 }
@@ -465,6 +489,25 @@ io.sockets.on("connection", function(socket) {
 			console.log("Unable to register new user: " + e);
 		}
 		
+	});
+	
+	/** Send user data from user id */
+	socket.on("getUserDataFromId", function(packet) {
+		var data = packet["data"];
+		if (!isNaN(data["id"])) {
+			var user_data;
+			try {
+				user_data = udb.read_user_data(data["id"]);
+				// TODO: strip object
+				socket.emit("userDataFromId", user_data.export_to_json());
+			} catch (e) {} 
+		}
+	});
+
+	socket.on("searchFriends", function(packet) {
+		var data = packet["data"];
+		var results = udb.findUsersMultiKey(data);
+		socket.emit("matchingUsers", {'list': Object.keys(results)});	
 	});
 
 	socket.on( "getFriendsData", function( packet ){
