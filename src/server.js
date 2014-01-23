@@ -294,7 +294,9 @@ function UsersDatabase() {
 			throw "Unable to read user data...";
 		if (Buffer.isBuffer(json))
 			json = json.toString('utf8');
-		return new_user_from_json(json);
+		var user = new_user_from_json(json);
+		user["id"] = user_id;
+		return user;
 	}
 	
 	/** Register new user in database
@@ -350,9 +352,8 @@ function UsersDatabase() {
 				return;
 			user = this.read_user_data(id);
 			var user_ok = true;
-			var keys = Object.keys(dict);
-			for (key in keys) {
-				if (user['_' + key].toLoweCase() != dict[key].toLoweCase()) {
+			for (key in dict) {
+				if (user['_' + key].toLowerCase() != dict[key].toLowerCase()) {
 					user_ok = false;
 					break;
 				}
@@ -506,8 +507,7 @@ io.sockets.on("connection", function(socket) {
 	socket.on("searchFriends", function(packet) {
 		var data = packet["data"];
 		var results = udb.findUsersMultiKey(data);
-		
-
+		socket.emit("matchingUsers", {'list': Object.keys(results)});	
 	});
 
 	socket.on( "getFriendsData", function( packet ){
