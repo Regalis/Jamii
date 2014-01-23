@@ -1,0 +1,131 @@
+<html>
+<head>
+	<link rel="stylesheet" href="css/style-app.css" type="text/css" />
+	<script src="http://simplewebrtc.com/latest.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="js/friendList.js"></script>
+	<script type="text/javascript" src="js/friendListGUI.js"></script>
+	<script type="text/javascript" src="js/connectionManager.js"></script>
+	<script type="text/javascript" src="js/initFunctions.js"></script>
+	<script type="text/javascript">
+
+function send(){
+	var list = document.getElementById("textList");
+	var entry = document.createElement('li');
+	var temp = document.getElementById("chat_input").value;
+	entry.appendChild(document.createTextNode(temp));
+	list.appendChild(entry);
+	document.getElementById("chat_input").value="";  
+
+	var textList = document.getElementById("textList");
+	textList.scrollTop = textList.scrollHeight;
+	     
+	return false;
+}
+
+   function runScript(e) {
+    if (e.keyCode == 13) {
+		send();					
+    }
+}
+
+
+function clickDiv(){
+	var something = document.getElementById('me');
+
+	something.style.cursor = 'pointer';
+	something.onclick = function() {
+		document.getElementById("lWindow").innerHTML = document.getElementById('me');
+	};
+}
+
+function clickView() {
+	var views = document.getElementById("dBar").getElementsByTagName("div");
+
+	for (i in views) {
+		views[i].style.cursor = 'pointer';
+		views[i].onclick = function() {
+			document.getElementById("chat").style.visibility = "hidden";
+			document.getElementById("friendList").style.visibility = "hidden";
+			document.getElementById("options").style.visibility = "hidden";
+			document.getElementById(this.className).style.visibility = "visible";
+		};
+	}
+}
+
+ window.onload = function() {
+//    initMainScreen();
+	clickDiv();
+	clickView();
+
+
+    document.getElementById("send").onclick = function() {
+    	send();
+    }
+}
+
+/*SimpleWebRTC*/
+var webrtc = new SimpleWebRTC({
+	localVideoEl: 'localVideo',
+	remoteVideosEl: 'remoteVideos',
+	autoRequestMedia: true
+});
+
+webrtc.on('readyToCall', function () {
+	webrtc.joinRoom('My room name');
+});
+  </script>
+</head>
+<body>
+
+	<!-- UPPER BAR -->
+	<div id="uBar">
+		<div id="user1">		
+			<div id="remoteVideos"></div>
+		</div>
+		<div id="user2">
+		</div>
+		<div id="user3">
+		</div>
+		<div id="user4">
+		</div>
+		<div id="user5">
+		</div>
+		<div id="me">		
+			<video id="localVideo"></video>
+		</div>
+		<h2>Jamii</h2>
+	</div>
+
+	<div id="content">
+	<!-- MAIN VIEW -->
+		<div id="lWindow">
+		</div>
+
+		<div id="friendList" class="rWindow">
+		friend list would he here!!!
+		</div>
+		<div id="options" class="rWindow">
+		options would be here!!!
+		</div>
+	<!-- CHAT -->
+		<div id="chat" class="rWindow">
+			<ul id="textList">
+			</ul>
+			<input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
+			<input id="send" class="send_button" type="button" value="Send" />
+		</div>
+
+	</div>
+
+	<!-- DOWN BAR -->
+	<div id="dBar">
+		<div class="chat">Chat
+		</div><div class="friendList">Friends List
+		</div><div class="board">Board
+		</div><div class="fileShare">File Share
+		</div><div class="desktopShare">Desktop Share
+		</div><div class="options">Options</div>
+	</div>
+</body>
+</html>
