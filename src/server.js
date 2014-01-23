@@ -64,17 +64,17 @@ var  strip_data_object = function(cargo){
 	@return userID if user exists and login OK, -1=no user with login, -2=wrong passwd
 */
 var user_login = function(data){
-
+    
 	var user = udb.findUsers( "login",	data.login );
 	if( Object.keys( user ).length != 1 ){
-	return -1;
+	    return -1;
 	}
 	var user_id = Object.keys( user )[0];
 	if( data.passwd ==	user[ user_id ]._password && typeof data.passwd != 'undefined' ){
-	console.info("User " + user[ user_id ]._login + " successfully logged in" );
-	return user_id;
+	    console.info("User " + user[ user_id ]._login + " successfully logged in" );
+	    return user_id;
 	}else{
-	return -2;
+	    return -2;
 	}
 	return 1; 
 }
@@ -123,7 +123,8 @@ function User() {
 			if (x.startsWith('_'))
 				json[x.substring(1)] = this[x];
 		}
-		return JSON.stringify(json);
+		// return JSON.stringify(json);
+        return json;
 	}
 }
 
@@ -299,9 +300,14 @@ io.sockets.on("connection", function(socket) {
 	var session_id = packet.sessionID;
 	var data = strip_data_object( packet );
 	
+    console.log("Got WhoAmi from session: " + session_id );
+
 	var user_id = get_user_by_session( session_id );
-	var user_obj = udb.read_user_data( user_id );
-	delete user_obj["_password"]; // remove password field
+
+    console.log("Got WhoAmi from user: " + user_id );
+
+	var user_obj = udb.read_user_data( user_id ).export_to_json() ;
+	delete user_obj["password"]; // remove password field
 	user_obj["id"] = user_id;
 	
 	socket.emit("yourData", user_obj);
@@ -310,24 +316,26 @@ io.sockets.on("connection", function(socket) {
  
 	
 	socket.on( "getFriendsData", function( packet ){
-	var session_id = packet.sessionID;
-	var data = strip_data_object( packet );
-	
-	var response = {};
-	response["user_data_list"] = [];
-	
-	data["list"].forEach( function(id){
-		var user = udb.read_user_data( id );
-		// TODO: control if user exists in database
-		user["_id"] = id;
-		delete user["_password"]; // remove password field
-		delete user["_requests_list"];
-		// TODO: append status information to the useer object
-		response["user_data_list"].push( user );
-	} );
-	
-	socket.emit("friendsData", response);
-	
+	    var session_id = packet.sessionID;
+	    var data = strip_data_object( packet );
+	    
+	    var response = {};
+	    response["user_data_list"] = [];
+
+        console.info( "asked for friends data: " + data["list"] );
+	    
+	    data["list"].forEach( function(id){
+		    var user = udb.read_user_data( id ).export_to_json();
+		    // TODO: control if user exists in database
+		    user["id"] = id;
+		    delete user["password"]; // remove password field
+		    delete user["requests_list"];
+		    // TODO: append status information to the useer object
+		    response["user_data_list"].push( user );
+	    } );
+	    
+	    socket.emit("friendsData", response);
+	    
 	});
 	
 });

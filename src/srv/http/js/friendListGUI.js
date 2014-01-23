@@ -18,7 +18,7 @@
  * Contributors:
  * -> Mateusz Zajac <matteo.zajac@gmail.com>  
  * -> Mateusz Folwarski <mateusz.folwarski@uj.edu.pl>
- *
+ * -> Aleksander Gajos <alek.gajos@gmail.com>
  */
 
 
@@ -28,46 +28,45 @@
 */
 function FriendListGUI(parent_name){
 
-    var parent = document.getElementById( parent_name );
-    var ul;
-    this.fl = new friendList(FriendListGUI);
+    this.parent = document.getElementById( parent_name );
+    this.ul = {};
+    this.fl = new friendList( this );
 
 }
 
 FriendListGUI.prototype.createTable = function(){
 
 
-    ul=document.createElement('ul');
-//    document.body.appendChild(ul);
-    parent.appendChild(ul);
-    ul.setAttribute('id','friend_list'); 
+    this.ul=document.createElement('ul');
+    this.parent.appendChild(this.ul);
+    this.ul.setAttribute('id','friend_list'); 
     
     console.log(this.fl.n_friends);
 
     for (var i=0; i<this.fl.n_friends; i++){
 
 	var li=document.createElement('li');
-	li.setAttribute('id',this.fl.getFriendLogin(i)); 
+	li.setAttribute('id', this.fl.getFriendLogin(i)); 
  	li.setAttribute('draggable','true');	
-    li.setAttribute('ondragstart','drag(event)'); 
-	ul.appendChild(li);
-	li.innerHTML="test"+i;
+	li.setAttribute('ondragstart','drag(event)'); 
+	this.ul.appendChild(li);
+	li.innerHTML=this.fl.getFriendLogin(i);;
 
     }
     var li=document.createElement('li');
     li.setAttribute('id','add_friend'); 
     
-    ul.appendChild(li);
+    this.ul.appendChild(li);
     li.innerHTML="Add Friend";
 }
 
 
-FriendListGUI.prototype.createFounUsers = function(data){
+FriendListGUI.prototype.createFoundUsers = function(data){
 
 
-    ul=document.createElement('ul');
-    document.body.appendChild(ul);
-    ul.setAttribute('id','found_users'); 
+    this.ul=document.createElement('ul');
+    document.body.appendChild(this.ul);
+    this.ul.setAttribute('id','found_users'); 
     
 
 
@@ -76,14 +75,14 @@ FriendListGUI.prototype.createFounUsers = function(data){
     var li=document.createElement('li');
     li.setAttribute('id',data[i].login); 
    
-    ul.appendChild(li);
+    this.ul.appendChild(li);
     li.innerHTML=data[i].login
 
     }
     var li=document.createElement('li');
     li.setAttribute('id','add_friend'); 
     
-    ul.appendChild(li);
+    this.ul.appendChild(li);
     li.innerHTML="Add Friend";
 }
 
@@ -91,19 +90,11 @@ FriendListGUI.prototype.createFounUsers = function(data){
 
 
 FriendListGUI.prototype.update = function(){
-    document.body.removeChild(ul);
+    if( typeof this.ul != undefined && this.ul.parentNode == this.parent ){
+	this.parent.removeChild(this.ul);
+    }
     //delete this.fl.friend_list[--this.fl.n_friends];
-    this.fl.n_friends=this.fl.n_friends-1;
     flg.createTable();
-    console.log("AAA");
+    console.log("Users list drawn.");
 }
 
-
-// function init(){
-//     flg = new FriendListGUI();
-//     window.flg = flg;
-    
-    
-//     flg.createTable();
-    
-// }

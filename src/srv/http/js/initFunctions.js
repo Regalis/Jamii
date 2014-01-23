@@ -33,11 +33,4 @@ function initMainScreen(){
     flg = new FriendListGUI("fList");
     window.flg = flg;
 
-    // register handlers
-    window.connection.registerHandler("friendsData", flg.fl.gotFriendsDataHandler);
-
-    // request friend contacts from server
-    flg.fl.populateList();
-    
-    
 }
