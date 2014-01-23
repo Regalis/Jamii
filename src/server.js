@@ -34,6 +34,24 @@ var sessionCounter = 0;
 // dict: sessionID : socketID
 var sessions = {};
 
+/**
+ * Conference class
+*/
+function conference(conf_id){
+
+    this.id = conf_id;
+    this.participants = [];
+    this.is_active = false;
+    
+    
+}
+
+
+var conf_counter = 0;
+// userID : conferenceID
+var conferences = {};
+
+
 var  start_session = function(sock_id){
 	sessionCounter++;
 	sessions[ sessionCounter ] =  sock_id;
