@@ -136,7 +136,7 @@ function User() {
 	this._last_name = null;
 	this._password = null;
 	this._email = null;
-	this._friendslist = [];
+	this._friends_list = [];
 	this._requests_list = [];
 	this._avatar = null;
 	this._registration_date = null;
@@ -409,7 +409,7 @@ io.sockets.on("connection", function(socket) {
 	if( ret >= 0 ){ // login OK
 		var user_id = ret;
 		// start a new session after successful login
-		var session_id = start_session( socket.id );
+		var session_id = start_session( socket );
 		console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
 		clients_register(socket.id);
 		socket.emit("loginOK", {"userID":user_id, "sessionID":session_id} );
@@ -437,10 +437,7 @@ io.sockets.on("connection", function(socket) {
 
 		console.log("Got WhoAmi from user: " + user_id );
 
-		var user_obj = udb.read_user_data( user_id ).export_to_json() ;
-		delete user_obj["password"]; // remove password field
-		user_obj["id"] = user_id;
-		
+		var user_obj = udb.read_user_data( user_id ).strip_object() ;
 		socket.emit("yourData", user_obj);
 		
 	});
@@ -473,7 +470,9 @@ io.sockets.on("connection", function(socket) {
 	socket.on( "getFriendsData", function( packet ){
 	    var session_id = packet.sessionID;
 	    var data = strip_data_object( packet );
-	    
+	   
+        console.log(data);
+ 
 	    var response = {};
 	    response["user_data_list"] = [];
 
