@@ -37,14 +37,14 @@ var sessions = {};
 /**
  * Conference class
 */
-function conference(conf_id){
+function conference(conf_id) {
 
     this.id = conf_id;
     this.participants = [];
     this.is_active = false;
     
-    this.add_participant = function(id){
-        this.participants.push( id );
+    this.add_participant = function(id) {
+        this.participants.push(id);
         // TODO: abort if user already in a conference
 //        conferences[];
     }
@@ -58,13 +58,13 @@ var conferences = {};
 
 
 
-var  start_session = function(socket_object){
+var  start_session = function(socket_object) {
 	sessionCounter++;
 	sessions[ sessionCounter ] =  socket_object;
 	return sessionCounter;
 }
 
-var get_user_by_session = function( session_id ){
+var get_user_by_session = function(session_id) {
 	return clients[sessions[session_id].id]; 
 }
 
@@ -76,7 +76,7 @@ var get_user_by_session = function( session_id ){
 	@param cargo object received directly by a socket
 	@return data object taken from cargo object
 */
-var  strip_data_object = function(cargo){
+var  strip_data_object = function(cargo) {
 	var data = cargo["data"];
 	return data;
 }
@@ -87,17 +87,16 @@ var  strip_data_object = function(cargo){
 	@param data data object received with the "login" packet
 	@return userID if user exists and login OK, -1=no user with login, -2=wrong passwd
 */
-var user_login = function(data){
-    
-	var user = udb.findUsers( "login",	data.login );
-	if( Object.keys( user ).length != 1 ){
+var user_login = function(data) {
+	var user = udb.findUsers("login",	data.login);
+	if (Object.keys(user).length != 1) {
 	    return -1;
 	}
-	var user_id = Object.keys( user )[0];
-	if( data.passwd ==	user[ user_id ]._password && typeof data.passwd != 'undefined' ){
-	    console.info("User " + user[ user_id ]._login + " successfully logged in" );
+	var user_id = Object.keys(user)[0];
+	if (data.passwd ==	user[ user_id ]._password && typeof data.passwd != 'undefined') {
+	    console.info("User " + user[ user_id ]._login + " successfully logged in");
 	    return user_id;
-	}else{
+	} else {
 	    return -2;
 	}
 	return 1; 
@@ -109,8 +108,8 @@ var clients_register = function(client_id) {
 
 var clients_authenticate = function(client_id, user_id) {
     // if user already had a socket, update it
-    for( client in clients ){
-        if( clients[client] == user_id ){
+    for (client in clients) {
+        if (clients[client] == user_id) {
             delete clients[client];
         }
     }
@@ -221,7 +220,8 @@ function UsersDatabase() {
 	var init = function() {
 		if (!fs.existsSync(lastid_file)) {
 			fs.writeFileSync(lastid_file, '0', 'utf8', function(err) {
-
+				if (err)
+					throw err;
 			});
 		}
 	}
@@ -332,20 +332,21 @@ function UsersDatabase() {
 
 	   @return dictionary of matching user objects, form: {id:object} 
 	 */
-	this.findUsers = function(key, value){
-	var file_list = fs.readdirSync(db_path);
-	var matching = {};
-	var user;
-	file_list.forEach( function(id){
-		if( isNaN( id ) )
-		return;
-		user = this.read_user_data( id );
-		if( user["_"+key].toLowerCase() == value.toLowerCase() ){ // found matching user
-			matching[id] = user;
-		}
-	}, this );
-	
-	return matching;
+	this.findUsers = function(key, value) {
+		var file_list = fs.readdirSync(db_path);
+		var matching = {};
+		var user;
+
+		file_list.forEach(function(id) {
+			if(isNaN(id))
+				return;
+			user = this.read_user_data(id);
+			if(user["_"+key].toLowerCase() == value.toLowerCase()) { // found matching user
+				matching[id] = user;
+			}
+		}, this);
+		
+		return matching;
 	}
 
 	this.findUsersMultiKey = function(dict) {
@@ -417,52 +418,50 @@ io.sockets.on("connection", function(socket) {
 
 	// ping for testing
 	socket.on('ping', function(data) {
-	console.log("Got ping command from client...");
-	socket.emit("pong", data);
-	console.log("Sending pong...");
+		console.log("Got ping command from client...");
+		socket.emit("pong", data);
+		console.log("Sending pong...");
 	});
 	
 	// handle user login
 	socket.on("login", function(data) {
-
-	console.log("Got login data from client");
-	var ret = user_login( strip_data_object( data ) );
-	if( ret >= 0 ){ // login OK
-		var user_id = ret;
-		// start a new session after successful login
-		var session_id = start_session( socket );
-		console.info("Assigning session ID: " + session_id + "to user ID: " + user_id );
-		clients_register(socket.id);
-		socket.emit("loginOK", {"userID":user_id, "sessionID":session_id} );
-		clients_authenticate(socket.id, user_id);
-		console.log("cliients"	+ clients);
-		console.log("cliients"	+ sessions);
-	// TODO: remove 'no such user' warning (brute force attack is now much easier)
-	}else if( ret == -1 ){ // no such user
-		socket.emit("loginBAD", {"what":"No such user"});
-	}else if(ret == -2){ // login OK
-		socket.emit("loginBAD", {"what":"Wrong password"});		
-	}
+		console.log("Got login data from client");
+		var ret = user_login(strip_data_object(data));
+		if (ret >= 0) { // login OK
+			var user_id = ret;
+			// start a new session after successful login
+			var session_id = start_session(socket);
+			console.info("Assigning session ID: " + session_id + "to user ID: " + user_id);
+			clients_register(socket.id);
+			socket.emit("loginOK", {"userID":user_id, "sessionID":session_id});
+			clients_authenticate(socket.id, user_id);
+			console.log("cliients"	+ clients);
+			console.log("cliients"	+ sessions);
+		// TODO: remove 'no such user' warning (brute force attack is now much easier)
+		} else if(ret == -1) { // no such user
+			socket.emit("loginBAD", {"what":"No such user"});
+		} else if(ret == -2) { // login OK
+			socket.emit("loginBAD", {"what":"Wrong password"});		
+		}
 	});
 
 	// handler functions for client requests
 
 	// handle client asking for his data
-	socket.on( "whoAmI", function( packet ){
+	socket.on("whoAmI", function(packet) {
 		var session_id = packet.sessionID;
-		var data = strip_data_object( packet );
-		var user_id = get_user_by_session( session_id );
+		var data = strip_data_object(packet);
+		var user_id = get_user_by_session(session_id);
 		
         // fix the change of socket for client
-        sessions[ session_id ] = socket;
-        clients_authenticate( socket.id, user_id );
-        console.log( "Present sessions: " + Object.keys( sessions ) );
+        sessions[session_id] = socket;
+        clients_authenticate(socket.id, user_id);
 
-		console.log("Got WhoAmi from session: " + session_id );
-                
-		console.log("Got WhoAmi from user: " + user_id );
+        console.log("Present sessions: " + Object.keys(sessions));
+		console.log("Got WhoAmi from session: " + session_id);
+		console.log("Got WhoAmi from user: " + user_id);
         
-		var user_obj = udb.read_user_data( user_id ).strip_object() ;
+		var user_obj = udb.read_user_data(user_id).strip_object() ;
 		socket.emit("yourData", user_obj);
 		
 	});
@@ -513,43 +512,40 @@ io.sockets.on("connection", function(socket) {
 		socket.emit("matchingUsers", {'list': Object.keys(results)});	
 	});
 
-	socket.on( "getFriendsData", function( packet ){
+	socket.on("getFriendsData", function(packet) {
 	    var session_id = packet.sessionID;
-	    var data = strip_data_object( packet );
+	    var data = strip_data_object(packet);
 	   
         console.log(data);
  
 	    var response = {};
 	    response["user_data_list"] = [];
 
-        console.info( "asked for friends data: " + data["list"] );
+        console.info("asked for friends data: " + data["list"]);
 	    
-	    data["list"].forEach( function(id){
-		    var user = udb.read_user_data( id ).strip_object();
+	    data["list"].forEach(function(id) {
+		    var user = udb.read_user_data(id).strip_object();
 		    // TODO: control if user exists in database
 		    // TODO: append status information to the useer object
-		    response["user_data_list"].push( user );
-	    } );
+		    response["user_data_list"].push(user);
+	    });
 	    
 	    socket.emit("friendsData", response);
 	    
 	});
 
-    socket.on( "chat", function( packet ){
-        
+    socket.on("chat", function(packet) {
 	    var session_id = packet.sessionID;
-	    var data = strip_data_object( packet );
+	    var data = strip_data_object(packet);
+
 	    console.log(data);
-        
-console.log( sessions );
+		console.log(sessions);
 
         // broadcast
-        for(sid in sessions){
-        		    console.log(sid);
-
-            sessions[ sid ].emit("chatOK", data );
+        for(sid in sessions) {
+			console.log(sid);
+            sessions[ sid ].emit("chatOK", data);
         }
-        
     });    
 	
 });
