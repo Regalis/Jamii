@@ -108,6 +108,12 @@ var clients_register = function(client_id) {
 }
 
 var clients_authenticate = function(client_id, user_id) {
+    // if user already had a socket, update it
+    for( client in clients ){
+        if( clients[client] == user_id ){
+            delete clients[client];
+        }
+    }
 	clients[client_id] = user_id;
 }
 
@@ -128,7 +134,6 @@ String.prototype.endsWith = function(suffix) {
 };
 
 /*** Users block ***/
-
 function User() {
 	this.id = null;
 	this._login = null;
@@ -454,16 +459,17 @@ io.sockets.on("connection", function(socket) {
 	socket.on( "whoAmI", function( packet ){
 		var session_id = packet.sessionID;
 		var data = strip_data_object( packet );
+		var user_id = get_user_by_session( session_id );
 		
-// fix the change of socket for client
-sessions[ session_id ] = socket;
+        // fix the change of socket for client
+        sessions[ session_id ] = socket;
+        clients_authenticate( socket.id, user_id );
+        console.log( "Present sessions: " + Object.keys( sessions ) );
 
 		console.log("Got WhoAmi from session: " + session_id );
-
-		var user_id = get_user_by_session( session_id );
-
+                
 		console.log("Got WhoAmi from user: " + user_id );
-
+        
 		var user_obj = udb.read_user_data( user_id ).strip_object() ;
 		socket.emit("yourData", user_obj);
 		
