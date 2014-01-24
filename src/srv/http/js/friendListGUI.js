@@ -57,14 +57,14 @@ FriendListGUI.prototype.createTable = function(){
 	li.innerHTML=this.fl.getFriendLogin(i) + image_entry;
 
     }
-    var input = document.createElement('input');
-    input.setAttribute('type', 'button');
-    input.setAttribute('id','add_friend'); 
-    input.setAttribute('value', 'search' );
-	input.onclick = function(){ document.getElementById("searchForm").style.visibility = "visible"; }    
-    //input.setAttribute('onclick',"" );
-    this.ul.appendChild(input);
-    //input.innerHTML = "Add Friend";
+    // var input = document.createElement('input');
+    // input.setAttribute('type', 'button');
+    // input.setAttribute('id','add_friend'); 
+    // input.setAttribute('value', 'search' );
+    // 	input.onclick = function(){ document.getElementById("searchForm").style.visibility = "visible"; }    
+    // //input.setAttribute('onclick',"" );
+    // this.ul.appendChild(input);
+    // //input.innerHTML = "Add Friend";
 }
 
 
