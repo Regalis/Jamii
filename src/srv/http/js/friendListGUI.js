@@ -104,14 +104,17 @@ FriendListGUI.prototype.update = function(){
 }
 
 FriendListGUI.prototype.drawCandidates = function( parent_name ){
+	//alert("dlugosc tablicy candidates:"+window.flg.fl.candidates.length);	
 	var rodzic = getElementById( parent_name );
 	var ul = document.createElement('ul');
+	rodzic.appendChild(ul);
 	ul.setAttribute('id', 'candidatesForFriend' );
 		
-	for ( var i = 0; i < this.fl.candidates; i++ ) {
+	for ( var i = 0; i < window.flg.fl.candidates.length; i++ ) {
 		var li = document.createElement('li');
-		
+		li.innerHTML = window.flg.fl.candidates[i]["login"];
 		ul.appendChild(li);	
 	}
+
 }
 

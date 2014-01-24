@@ -53,7 +53,8 @@ friendList.prototype.init = function(){
     // finally, populate the friend list
     window.connection.registerHandler("friendsData", flg.fl.gotFriendsDataHandler);
     window.connection.registerHandler("matchingUsers", flg.fl.gotMathchingUsersHandler );
-    window.connection.registerHandler("candidatesData", flg.fl.gotCandidatesDataHandler );
+    //window.connection.registerHandler("candidatesData", flg.fl.gotCandidatesDataHandler );
+	window.connection.registerHandler("userDataFromId", flg.fl.collectCandidates );    
     flg.fl.populateList();
     
 }
@@ -112,11 +113,12 @@ friendList.prototype.getFriendAvatar = function(i){
  *  will not be empty.
  */
 friendList.prototype.searchFriends = function(data){
-	var window.counterSend = 0;
-	for ( var i = 0; i < data.length; i++ ) {
+	console.log(JSON.stringify(data));
+	//var window.counterSend = 0;
+	//for ( var i = 0; i < data.length; i++ ) {
 		
-	}    
-    //connection.send("searchFriends", data);
+	//}    
+    connection.send("searchFriends", data);
 }
 
 /**
@@ -128,13 +130,40 @@ friendList.prototype.searchFriends = function(data){
  *  {'list':[id1,id2,id3,...]} 
  */
 friendList.prototype.gotMathchingUsersHandler = function(data){
-	var list = data;
-	for ( var i = 0; i < data.length; i++ ) {
-		window.connection.send( "getUserFromId", data[i] )
+	console.log("friendList.gotMathchingUsersHandler: received everybody ID's, I'll ask for each ID's info");
+	window.flg.fl.candidates = [];	
+	//var list = data;
+	//var id = {"id":1}
+	window.counterSend = 10;
+	for ( var i = 1; i < 11; i++ ) {
+		var id = { "id" : i };
+		console.log("friendList.gotMathchingUsersHandler: calling getUserDataFromId for id number "+i);
+		window.connection.send( "getUserDataFromId", id );
 	}    
     //connection.send("getCandidatesData", data);
-}
 
+}
+friendList.prototype.collectCandidates = function( user ){	
+		
+	//window.flg.fl.candidates = [];	
+	//console.log(user);
+	
+	var user_info = {};
+	console.log("friendList.collectCandidates: user first name: " + user);//["login"]);
+	user_info["first_name"] = user["first_name"];
+	user_info["last_name"] = user["last_name"];
+	user_info["login"] = user["login"];
+	user_info["email"] = user["email"];
+	//user_info["id"] = list[i]["id"];
+	window.flg.fl.candidates.push(user_info);
+	
+
+	window.counterSend--;	
+	if ( counterSend == 0 ){
+		console.log("friendList.collectCandidates: received everybody, call friendListGUI.drawCandidates ");
+		window.flg.drawCandidates("lWindow");
+	}
+}
 
 /**
  * User invites friend
@@ -218,7 +247,8 @@ friendList.prototype.gotCandidatesDataHandler = function(data){
 		user_info["id"] = list[i]["id"];
 		candidates[i] = user_info;
     }
-    this.friend_list_gui.drawCandidates("lWindow");
+    //this.friend_list_gui.drawCandidates("lWindow");
+    
 }
 
 /**
