@@ -70,7 +70,6 @@ document.getElementById("localVideo").style.height=h;
 }
 
 
-
 function send(){
 
 	var temp = document.getElementById("chat_input").value;	
@@ -140,7 +139,27 @@ function clickView() {
 
     });
 
-
+	document.getElementById("searchForm").style.display = "none";
+	document.getElementById("add_friend").onclick = function() {
+		document.getElementById("localVideo").style.display = "none";
+		document.getElementById("searchForm").style.display = "block";
+	}
+	document.getElementById("search_button").onclick = function() {
+		
+		if ( validate() ) {
+			 var data = {};
+			 data ["login"] = document.getElementById("login").value;
+			 data ["first_name"] = document.getElementById("first_name").value;
+			 data ["last_name"] = document.getElementById("last_name").value;
+			 data ["email"] = document.getElementById("email").value;
+	
+			document.getElementById("searchForm").style.visibility = "hidden";        
+		 window.flg.fl.searchFriends( data );
+		}
+		else {
+			alert("Uzupelnij chociaz jedno pole");
+		}
+	}
 
 	clickDiv();
 	clickView();
@@ -190,26 +209,20 @@ webrtc.on('readyToCall', function () {
 	<!-- MAIN VIEW -->
 		<div id="lWindow">
 			<video id="localVideo"></video>
-			<div id="searchForm">
-                <label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
-                <label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
-                <label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
-                <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
-                <input id="search_button" class="search_button" type="button" value="Search" />
-            </div>
+
+				<label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
+				<label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
+				<label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
+				<label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
+				<input id="search_button" class="search_button" type="button" value="Search" />
+			</div>
 
 		</div>
 
-		<div id="friendList" class="rWindow">
-		</div>
 		<div id="options" class="rWindow">
 			<input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
 			<input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
 			<input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br></div>
-
-
-
-
 
 	<!-- CHAT -->
 		<div id="chat" class="rWindow">
@@ -217,6 +230,9 @@ webrtc.on('readyToCall', function () {
 			</ul>
 			<input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
 			<input id="send" class="send_button" type="button" value="Send" />
+		</div>
+		<div id="friendList" class="rWindow">
+			<button id="add_friend" type="submit">+ Add Friend</button>
 		</div>
 
 	</div>
