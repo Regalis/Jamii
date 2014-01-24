@@ -57,6 +57,7 @@ body {
 	height: 100%; 
 	display: inline-block;
 	border-right: 1px solid black;
+	list-style-type: none;
 }
 #uBar > div img {
 	width: 133px;
@@ -104,6 +105,11 @@ body {
 	text-align: center;
 }
 
+#searchForm {
+	margin-top: 100px;
+	color: #FFFFFF;
+}
+
 .rWindow {
 	height: 100%;
 	width: 300px;
@@ -136,12 +142,19 @@ body {
 }
 
 #friend_list li:last-child {
+	display: none;
+}
+
+#add_friend {
 	background-color: #14BA79;
 	color: #FFFFFF;
 	font-weight: bold;
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+	border: none;
+	z-index: 1;
+	height: 40px;
 }
 
 #friend_list li img {
