@@ -23,9 +23,9 @@
                                 data ["login"] = document.getElementById("login").value;
                                 data ["passwd"] = document.getElementById("passwd").value;
                                 window.connection.send("login", data);
-                                window.connection.registerHandler("loginOK", function(data){
-                                        window.location.href = "/page.html";
-                                });
+                                <!-- window.connection.registerHandler("loginOK", function(data){ -->
+                                <!--         window.location.href = "/page.html"; -->
+                                <!-- }); -->
                                 window.connection.registerHandler("loginBAD", function(data){
                                         alert( data.what );
                                 });
