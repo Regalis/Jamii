@@ -1,6 +1,6 @@
 <html>
 <head>
-  <!-- <script src="http://simplewebrtc.com/latest.js"></script> -->
+  <script src="http://simplewebrtc.com/latest.js"></script>
   <script src="js/latest.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="js/friendList.js"></script>
@@ -20,12 +20,20 @@ function send(){
 	return false;
 }
 
-   function runScript(e) {
+function runScript(e) {
     if (e.keyCode == 13) {
 		send();					
     }
 }
 
+function validate(){
+	var inputs = document.getElementsByClassName("valid");
+	for ( var i = 0; i < inputs.length; ++i ) {
+		if ( inputs[i].value != "")
+			return true;
+	}
+	return false;
+}
 
 function clickDiv(){
 	var something = document.getElementById('me');
@@ -37,14 +45,33 @@ function clickDiv(){
 }
 
                        
-
- window.onload = function() {
-        initMainScreen();
+window.onload = function() {
+    initMainScreen();
 	clickDiv();
 
     document.getElementById("send").onclick = function() {
     	send();
     }
+    document.getElementById("searchForm").style.visibility = "hidden";
+    
+    
+	document.getElementById("search_button").onclick = function() {
+		
+		if ( validate() ) {
+		 	var data  = {};
+		 	data ["login"] = document.getElementById("login").value;
+		 	data ["first_name"] = document.getElementById("first_name").value;
+		 	data ["last_name"] = document.getElementById("last_name").value;
+		 	data ["email"] = document.getElementById("email").value;
+		
+			document.getElementById("searchForm").style.visibility = "hidden";	    
+		    window.flg.fl.searchFriends( data );
+		 }
+		 else {
+			alert("Uzupelnij chociaz jedno pole");
+		}
+	
+	}
 }
 
 /*SimpleWebRTC*/
@@ -80,7 +107,13 @@ webrtc.on('readyToCall', function () {
 
 	<div id="content" style="position:relative; border:1px solid; height: 490px;">
 		<div class="leftWindow" id="lWindow" style="position:absolute;top:0px; left:0px; width:400px; height: 460px;">
-
+			<div id="searchForm">
+				<label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
+                <label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
+                <label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
+                <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
+                <input id="search_button" class="search_button" type="button" value="Search" />
+            </div>
 		</div>
 		<div class="friendList" id="fList" style="position:absolute; top:0px; right:0px; width:200px; height: 460px; border:1px solid;"></div>
 
