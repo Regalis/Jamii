@@ -11,20 +11,69 @@
 	<script type="text/javascript" src="js/initFunctions.js"></script>
 	<script type="text/javascript">
 
-function onResize()
-{
-var w=window.outerWidth;
-var h=document.getElementById('lWindow').offsetHeight;
-document.getElementById("localVideo").style.height=h;
+function micro(){
+	var x = document.getElementById("microphone").checked;
+	if(x){
+		alert("MIC ON");
+	}
+	else{
+		alert("MIC OFF");
+
+	}
+
+
 }
 
+function camera(){
+	var x = document.getElementById("camera").checked;
+	if(x){
+		alert("CAMERA ON");
+	}
+	else{
+		alert("CAMERA OFF");
+	}
+}
+
+function screen(){
+	var x = document.getElementById("screen").checked;
+	if(x){
+		alert("SCREEN ON");
+	}
+	else{
+		alert("SCREEN OFF");
+
+	}
+
+}
+function allowDrop(ev)
+{
+ev.preventDefault();
+}
+
+function drop(ev)
+{
+ev.preventDefault();
+var data=ev.dataTransfer.getData("Text");
+ev.target.appendChild(document.getElementById(data));
+}
+
+
+
+
+function onResize()
+{
+var w=document.getElementById('lWindow').offsetWidth;
+var h=document.getElementById('lWindow').offsetHeight;
+
+
+document.getElementById("localVideo").style.height=h;
+}
 
 
 function send(){
 
 	var temp = document.getElementById("chat_input").value;	
 	var data  = {};
-
     data ["login"] = window.my_user_object.login;
     data ["message"] = temp;
 
@@ -81,15 +130,41 @@ function clickView() {
 	var entry = document.createElement('li');
    		console.log("BBB");
      console.log( "got messae from: " + data.login + " : " + data.message );
+     	var loginText = data.login+": ";
+     	entry.appendChild(document.createTextNode(loginText));
+
 		entry.appendChild(document.createTextNode(data.message));
 		list.appendChild(entry);
 
     });
 
-
+	document.getElementById("searchForm").style.display = "none";
+	document.getElementById("add_friend").onclick = function() {
+		document.getElementById("localVideo").style.display = "none";
+		document.getElementById("searchForm").style.display = "block";
+	}
+	document.getElementById("search_button").onclick = function() {
+		
+		if ( validate() ) {
+			 var data = {};
+			 data ["login"] = document.getElementById("login").value;
+			 data ["first_name"] = document.getElementById("first_name").value;
+			 data ["last_name"] = document.getElementById("last_name").value;
+			 data ["email"] = document.getElementById("email").value;
+	
+			document.getElementById("searchForm").style.visibility = "hidden";        
+		 window.flg.fl.searchFriends( data );
+		}
+		else {
+			alert("Uzupelnij chociaz jedno pole");
+		}
+	}
 
 	clickDiv();
 	clickView();
+
+
+	var micro = document.getElementById("microphone");	
 
 
     document.getElementById("send").onclick = function() {
@@ -113,16 +188,16 @@ webrtc.on('readyToCall', function () {
 
 	<!-- UPPER BAR -->
 	<div id="uBar">
-		<div id="user1">		
+		<div id="user1"  ondrop="drop(event)" ondragover="allowDrop(event)">		
 			<div id="remoteVideos"></div>
 		</div>
-		<div id="user2">
+		<div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id="user3">
+		<div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id="user4">
+		<div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id="user5">
+		<div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
 		<div id="me">		
 		</div>
@@ -132,21 +207,30 @@ webrtc.on('readyToCall', function () {
 	<div id="content">
 	<!-- MAIN VIEW -->
 		<div id="lWindow">
-			<center><video id="localVideo"></video></center>
-
+			<video id="localVideo"></video>
+			<div id="searchForm">
+				<label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
+				<label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
+				<label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
+				<label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
+				<input id="search_button" class="search_button" type="button" value="Search" />
+			</div>
 		</div>
 
-		<div id="friendList" class="rWindow">
-		</div>
 		<div id="options" class="rWindow">
-		options would be here!!!
-		</div>
+			<input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
+			<input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
+			<input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br></div>
+
 	<!-- CHAT -->
 		<div id="chat" class="rWindow">
 			<ul id="textList">
 			</ul>
 			<input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
 			<input id="send" class="send_button" type="button" value="Send" />
+		</div>
+		<div id="friendList" class="rWindow">
+			<button id="add_friend" type="submit">+ Add Friend</button>
 		</div>
 
 	</div>

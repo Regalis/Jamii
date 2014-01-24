@@ -34,6 +34,12 @@ function FriendListGUI(parent_name){
 
 }
 
+function drag(ev)
+{
+ev.dataTransfer.setData("Text",ev.target.id);
+}
+
+
 FriendListGUI.prototype.createTable = function(){
 
 
@@ -54,9 +60,10 @@ FriendListGUI.prototype.createTable = function(){
 	var image_entry = "<img src=\"data:image/gif;base64,"+
 	    this.fl.getFriendAvatar(i) + "\" />";
 	console.log(image_entry);
-	li.innerHTML=this.fl.getFriendLogin(i) + image_entry;
+	li.innerHTML= image_entry + this.fl.getFriendLogin(i);
 
     }
+
     // var input = document.createElement('input');
     // input.setAttribute('type', 'button');
     // input.setAttribute('id','add_friend'); 
@@ -65,6 +72,7 @@ FriendListGUI.prototype.createTable = function(){
     // //input.setAttribute('onclick',"" );
     // this.ul.appendChild(input);
     // //input.innerHTML = "Add Friend";
+
 }
 
 
