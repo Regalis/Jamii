@@ -2,6 +2,8 @@ body {
 	margin: 0;
 	min-width: 800px;
 	font-family: sans-serif;
+		list-style-type: none;
+
 }
 
 #chat > input { 
@@ -60,6 +62,11 @@ body {
 	display: inline-block;
 	border-right: 1px solid black;
 }
+#uBar > div img {
+	width: 133px;
+	height: 100%; 
+
+}
 
 #dBar {
 	height: 40px;
@@ -111,4 +118,28 @@ body {
 #uBar > h2 {
 	position: absolute;
 	right: 20px;
+}
+
+#friend_list{
+
+	list-style-type: none;
+
+}
+
+#friend_list li{
+	background-color: #FF0000;
+	margin: 0 0 3px 0;
+	margin-top: 15px;
+
+
+}
+#friend_list li img{
+	width: 30px;
+	height: 30px;
+
+}
+
+
+#friend_list li text{
+
 }

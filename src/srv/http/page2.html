@@ -11,10 +11,38 @@
 	<script type="text/javascript" src="js/initFunctions.js"></script>
 	<script type="text/javascript">
 
+function micro(){
+	var x = document.getElementById("microphone").checked;
+	if(x){
+		alert("OK");
+	}
+	else{
+		alert("BAD");
+
+	}
+
+}
+function allowDrop(ev)
+{
+ev.preventDefault();
+}
+
+function drop(ev)
+{
+ev.preventDefault();
+var data=ev.dataTransfer.getData("Text");
+ev.target.appendChild(document.getElementById(data));
+}
+
+
+
+
 function onResize()
 {
-var w=window.outerWidth;
+var w=document.getElementById('lWindow').offsetWidth;
 var h=document.getElementById('lWindow').offsetHeight;
+
+
 document.getElementById("localVideo").style.height=h;
 }
 
@@ -92,6 +120,9 @@ function clickView() {
 	clickView();
 
 
+	var micro = document.getElementById("microphone");	
+
+
     document.getElementById("send").onclick = function() {
     	send();
     }
@@ -113,16 +144,16 @@ webrtc.on('readyToCall', function () {
 
 	<!-- UPPER BAR -->
 	<div id="uBar">
-		<div id="user1">		
+		<div id="user1"  ondrop="drop(event)" ondragover="allowDrop(event)">		
 			<div id="remoteVideos"></div>
 		</div>
-		<div id="user2">
+		<div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id="user3">
+		<div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id="user4">
+		<div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id="user5">
+		<div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)">
 		</div>
 		<div id="me">		
 		</div>
@@ -132,15 +163,14 @@ webrtc.on('readyToCall', function () {
 	<div id="content">
 	<!-- MAIN VIEW -->
 		<div id="lWindow">
-			<center><video id="localVideo"></video></center>
+			<video id="localVideo"></video>
 
 		</div>
 
 		<div id="friendList" class="rWindow">
 		</div>
 		<div id="options" class="rWindow">
-		options would be here!!!
-		</div>
+	<input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone</div>
 	<!-- CHAT -->
 		<div id="chat" class="rWindow">
 			<ul id="textList">
