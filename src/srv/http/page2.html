@@ -1,7 +1,9 @@
 <html>
 <head>
 	<link rel="stylesheet" href="css/style-app.css" type="text/css" />
-	<script src="http://simplewebrtc.com/latest.js"></script>
+<!--	<script src="http://simplewebrtc.com/latest.js"></script>-->
+	<!-- for derver on localhost -->
+	 <script src="js/latest.js"></script> 
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="js/friendList.js"></script>
 	<script type="text/javascript" src="js/friendListGUI.js"></script>
@@ -9,12 +11,29 @@
 	<script type="text/javascript" src="js/initFunctions.js"></script>
 	<script type="text/javascript">
 
+function onResize()
+{
+var w=window.outerWidth;
+var h=document.getElementById('lWindow').offsetHeight;
+document.getElementById("localVideo").style.height=h;
+}
+
+
+
 function send(){
-	var list = document.getElementById("textList");
-	var entry = document.createElement('li');
-	var temp = document.getElementById("chat_input").value;
-	entry.appendChild(document.createTextNode(temp));
-	list.appendChild(entry);
+
+	var temp = document.getElementById("chat_input").value;	
+	var data  = {};
+
+    data ["login"] = window.my_user_object.login;
+    data ["message"] = temp;
+
+    window.connection.send("chat", data);
+    console.log("aAAAA");
+    
+
+
+
 	document.getElementById("chat_input").value="";  
 
 	var textList = document.getElementById("textList");
@@ -54,7 +73,21 @@ function clickView() {
 }
 
  window.onload = function() {
-//    initMainScreen();
+    initMainScreen();
+    window.connection = new ConnectionManager("http://localhost","9393");
+
+    window.connection.registerHandler("chatOK", function(data){
+    		var list = document.getElementById("textList");
+	var entry = document.createElement('li');
+   		console.log("BBB");
+     console.log( "got messae from: " + data.login + " : " + data.message );
+		entry.appendChild(document.createTextNode(data.message));
+		list.appendChild(entry);
+
+    });
+
+
+
 	clickDiv();
 	clickView();
 
@@ -76,7 +109,7 @@ webrtc.on('readyToCall', function () {
 });
   </script>
 </head>
-<body>
+<body onresize="onResize()">
 
 	<!-- UPPER BAR -->
 	<div id="uBar">
@@ -92,7 +125,6 @@ webrtc.on('readyToCall', function () {
 		<div id="user5">
 		</div>
 		<div id="me">		
-			<video id="localVideo"></video>
 		</div>
 		<h2>Jamii</h2>
 	</div>
@@ -100,10 +132,11 @@ webrtc.on('readyToCall', function () {
 	<div id="content">
 	<!-- MAIN VIEW -->
 		<div id="lWindow">
+			<center><video id="localVideo"></video></center>
+
 		</div>
 
 		<div id="friendList" class="rWindow">
-		friend list would he here!!!
 		</div>
 		<div id="options" class="rWindow">
 		options would be here!!!
