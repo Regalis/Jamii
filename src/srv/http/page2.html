@@ -21,8 +21,7 @@ document.getElementById("localVideo").style.height=h;
 
 
 function send(){
-	var list = document.getElementById("textList");
-	var entry = document.createElement('li');
+
 	var temp = document.getElementById("chat_input").value;	
 	var data  = {};
 
@@ -78,6 +77,8 @@ function clickView() {
     window.connection = new ConnectionManager("http://localhost","9393");
 
     window.connection.registerHandler("chatOK", function(data){
+    		var list = document.getElementById("textList");
+	var entry = document.createElement('li');
    		console.log("BBB");
      console.log( "got messae from: " + data.login + " : " + data.message );
 		entry.appendChild(document.createTextNode(data.message));
