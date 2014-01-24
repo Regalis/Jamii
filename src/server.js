@@ -352,40 +352,32 @@ function UsersDatabase() {
 		var file_list = fs.readdirSync(db_path);
 		var matching = {};
 		var user;
-		file_list.forEach(function(id) {
-			if (isNaN(id))
-				return;
-			user = this.read_user_data(id);
+		var file;
+		for (i in file_list) {
+			file = file_list[i];
+			if (isNaN(file))
+				continue;
+			user = udb.read_user_data(file); // file will be user id
 			var user_ok = true;
+			var all_blank = true;
 			for (key in dict) {
+				if (!(dict[key]))
+					continue;
+				all_blank = false;
 				if (user['_' + key].toLowerCase() != dict[key].toLowerCase()) {
 					user_ok = false;
-					break;
 				}
 			}
-			if (user_ok)
-				matching[id] = user;
-		}, this );
-		
+			if (user_ok && !all_blank) {
+				matching[user.id] = user;
+			}
+		}
 		return matching;
 	}
 
 }
 
 var udb = new UsersDatabase();
-
-var testUDB = function(){
-//	   var u = new User();
-//	   u.id = 43;
-//	   u._login = "alek";
-//	   u._first_name = "Aleksander";
-//	   u._last_name = "Gajos";
-//	   u._password = "dupa";
-//	   udb.save_user_data( u );
-
-console.log( "found  " + Object.keys(udb.findUsers( "first_name", "Sarah" ) ) );
-}
-
 
 var http_server = http.createServer(function(request, response) {
 	var requested_path = url.parse(request.url).pathname;
@@ -508,7 +500,9 @@ io.sockets.on("connection", function(socket) {
 			try {
 				user_data = udb.read_user_data(data["id"]);
 				// TODO: strip object
-				socket.emit("userDataFromId", user_data.export_to_json());
+				var response = user_data.export_to_json();
+				response["id"] = data["id"];
+				socket.emit("userDataFromId", response);
 			} catch (e) {} 
 		}
 	});
