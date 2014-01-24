@@ -46,11 +46,17 @@ function ConnectionManager( serverAddr, serverPort ){
 	    // store a cookie representing the session
 	    document.cookie="sessionID="+this.sessionID;
 	    document.cookie="userID=" + this.userID;
+	    // finally, reload page
+	    window.location.href = "/page2.html"
 	});
     }else{
 	this.userID = this.getValue( cookie, "userID" );
 	console.log( "Restored session: " + this.sessionID + " for user: " + this.userID );
 	window.my_user_id = this.userID;
+	// if sessionID in a cookie is already present, load main screen directly
+	if(  window.location.href.slice(-10) != "page2.html" ){
+	    window.location.href = "/page2.html";
+	}
     }
     
     
