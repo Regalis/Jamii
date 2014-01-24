@@ -128,6 +128,7 @@ function clickView() {
 
     window.connection.registerHandler("chatOK", function(data){
     		var list = document.getElementById("textList");
+    		
 	var entry = document.createElement('li');
    		console.log("BBB");
      console.log( "got messae from: " + data.login + " : " + data.message );
@@ -189,6 +190,13 @@ webrtc.on('readyToCall', function () {
 	<!-- MAIN VIEW -->
 		<div id="lWindow">
 			<video id="localVideo"></video>
+			<div id="searchForm">
+                <label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
+                <label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
+                <label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
+                <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
+                <input id="search_button" class="search_button" type="button" value="Search" />
+            </div>
 
 		</div>
 
