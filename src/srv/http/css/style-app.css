@@ -2,22 +2,31 @@ body {
 	margin: 0;
 	min-width: 800px;
 	font-family: sans-serif;
-		list-style-type: none;
-
 }
 
 #chat > input { 
 	display: inline-block;
 	position: absolute;
-	bottom: 0;
+	bottom: 2px;
 }
 
 #send {
-	right: 0;
+	right: 2px;
+	background-color: #14BA79;
+	border-radius: 3px;
+	color: #FFFFFF;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 3px;
+	border: none;
 }
 
 #chat_input { 
-	width: 240px;
+	width: 236px;
+	border: 1px solid #14BA79;
+	background-color: #FFFFFF;
+	left: 2px;
 }
 
 #textList {
@@ -26,20 +35,8 @@ body {
 	padding: 10px;
 	margin: 0;
 	height: 90%;
-	border: 1px solid red;
-	word-wrap:break-word;
-}
-
-#chat-content { 
-	position:absolute;       
-	bottom:0;                           
-	left:0;    
-}
-
-#textbox {
-	background-color:#FF00FF;
-	height: 200px;
-	overflow: auto;
+	word-wrap: break-word;
+	background-color: #D9EFEE;
 }
 
 #remoteVideos video {
@@ -47,7 +44,6 @@ body {
 }
 
 #localVideo {
-	height: 400px;
 }
 
 #uBar {
@@ -85,7 +81,7 @@ body {
 	line-height: 40px;
 	border-right: 1px solid #000000;
 	color: #FFFFFF;
-	font-size: 20px;
+	font-size: 17px;
 }
 
 #content {
@@ -105,6 +101,7 @@ body {
 	position: absolute;
 	left: 0;
 	right: 300px;
+	text-align: center;
 }
 
 .rWindow {
@@ -120,26 +117,42 @@ body {
 	right: 20px;
 }
 
-#friend_list{
-
+#friend_list {
 	list-style-type: none;
-
+	margin-left: -40px;
+	margin-top: 0px;
+	font-size: 15px;
 }
 
-#friend_list li{
-	background-color: #FF0000;
-	margin: 0 0 3px 0;
-	margin-top: 15px;
-
-
-}
-#friend_list li img{
-	width: 30px;
-	height: 30px;
-
+#friend_list li {
+	background-color: #BDDBD8;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
 }
 
+#friend_list li:nth-child(2n) {
+	background-color: #D9EFEE;
+}
 
-#friend_list li text{
+#friend_list li:last-child {
+	background-color: #14BA79;
+	color: #FFFFFF;
+	font-weight: bold;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+#friend_list li img {
+	width: 36px;
+	height: 36px;
+	margin-top: 2px;
+	margin-left: 2px;
+	float: left;
+	display: block;
+}
+
+#friend_list li text {
 
 }
