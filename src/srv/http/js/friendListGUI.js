@@ -57,7 +57,7 @@ FriendListGUI.prototype.createTable = function(){
 	li.setAttribute('ondragstart','drag(event)'); 
 	this.ul.appendChild(li);
 	// create html enry to display the user's avatar
-	var image_entry = "<img src=\"data:image/gif;base64,"+
+	var image_entry = "<img draggable=\"false\" src=\"data:image/gif;base64,"+
 	    this.fl.getFriendAvatar(i) + "\" />";
 	console.log(image_entry);
 	li.innerHTML= image_entry + this.fl.getFriendLogin(i);

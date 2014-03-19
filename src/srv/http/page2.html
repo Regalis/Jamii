@@ -79,10 +79,6 @@ function send(){
 
     window.connection.send("chat", data);
     console.log("aAAAA");
-    
-
-
-
         document.getElementById("chat_input").value="";  
 
         var textList = document.getElementById("textList");
@@ -143,6 +139,18 @@ function clickView() {
                 document.getElementById("localVideo").style.display = "none";
                 document.getElementById("searchForm").style.display = "block";
         }
+
+        document.getElementById("change_pass_button").onclick = function() {
+            var new_password = document.getElementById("new_password").value;        
+            var confirm_pasword = document.getElementById("confirm_password").value; 
+            if(confirm_pasword==new_password){
+                console.log("Password OK");
+                var current_password = document.getElementById("current_password").valu   
+                var data = {"current":current_password, "new":new_password}; 
+                window.connection.send("password_change", data);
+            }
+        }
+
         document.getElementById("search_button").onclick = function() {
                 
                 if ( validate() ) {
@@ -182,6 +190,7 @@ var webrtc = new SimpleWebRTC({
 webrtc.on('readyToCall', function () {
         webrtc.joinRoom('My room name');
 });
+
   </script>
 </head>
 <body onresize="onResize()">
@@ -220,7 +229,15 @@ webrtc.on('readyToCall', function () {
                 <div id="options" class="rWindow">
                         <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
                         <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
-                        <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br></div>
+                        <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+                       <div id = "change_password_title">Change password<br>
+                       </div>
+                       <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
+                       <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
+                       <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
+                       <button id="change_pass_button" type="submit">Save</button>
+
+                </div>
 
         <!-- CHAT -->
                 <div id="chat" class="rWindow">
