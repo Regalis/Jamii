@@ -1,265 +1,92 @@
 <html>
 <head>
-        <link rel="stylesheet" href="css/style-app.css" type="text/css" />
+    <link rel="stylesheet" href="css/style-app.css" type="text/css" />
 <!--        <script src="http://simplewebrtc.com/latest.js"></script>-->
-        <!-- for derver on localhost -->
-         <script src="js/latest.js"></script> 
-        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="js/friendList.js"></script>
-        <script type="text/javascript" src="js/friendListGUI.js"></script>
-        <script type="text/javascript" src="js/connectionManager.js"></script>
-        <script type="text/javascript" src="js/initFunctions.js"></script>
-        <script type="text/javascript">
+    <!-- for server on localhost -->
+<script src="js/latest.js"></script> 
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="js/friendList.js"></script>
+<script type="text/javascript" src="js/friendListGUI.js"></script>
+<script type="text/javascript" src="js/connectionManager.js"></script>
+<script type="text/javascript" src="js/initFunctions.js"></script>
+<script type="text/javascript" src="js/options.js"></script>
+<script type="text/javascript" src="js/video.js"></script>
+<script type="text/javascript" src="js/rest.js"></script>
 
-function micro(){
-        var x = document.getElementById("microphone").checked;
-        if(x){
-                alert("MIC ON");
-        }
-        else{
-                alert("MIC OFF");
-
-        }
-
-
-}
-
-function camera(){
-        var x = document.getElementById("camera").checked;
-        if(x){
-                alert("CAMERA ON");
-        }
-        else{
-                alert("CAMERA OFF");
-        }
-}
-
-function screen(){
-        var x = document.getElementById("screen").checked;
-        if(x){
-                alert("SCREEN ON");
-        }
-        else{
-                alert("SCREEN OFF");
-
-        }
-
-}
-function allowDrop(ev)
-{
-ev.preventDefault();
-}
-
-function drop(ev)
-{
-ev.preventDefault();
-var data=ev.dataTransfer.getData("Text");
-ev.target.appendChild(document.getElementById(data));
-}
-
-
-
-
-function onResize()
-{
-var w=document.getElementById('lWindow').offsetWidth;
-var h=document.getElementById('lWindow').offsetHeight;
-
-
-document.getElementById("localVideo").style.height=h;
-}
-
-
-function send(){
-
-        var temp = document.getElementById("chat_input").value;        
-        var data  = {};
-    data ["login"] = window.my_user_object.login;
-    data ["message"] = temp;
-
-    window.connection.send("chat", data);
-    console.log("aAAAA");
-        document.getElementById("chat_input").value="";  
-
-        var textList = document.getElementById("textList");
-        textList.scrollTop = textList.scrollHeight;
-             
-        return false;
-}
-
-   function runScript(e) {
-    if (e.keyCode == 13) {
-                send();                                        
-    }
-}
-
-
-function clickDiv(){
-        var something = document.getElementById('me');
-
-        something.style.cursor = 'pointer';
-        something.onclick = function() {
-                document.getElementById("lWindow").innerHTML = document.getElementById('me');
-        };
-}
-
-function clickView() {
-        var views = document.getElementById("dBar").getElementsByTagName("div");
-
-        for (i in views) {
-                views[i].style.cursor = 'pointer';
-                views[i].onclick = function() {
-                        document.getElementById("chat").style.visibility = "hidden";
-                        document.getElementById("friendList").style.visibility = "hidden";
-                        document.getElementById("options").style.visibility = "hidden";
-                        document.getElementById(this.className).style.visibility = "visible";
-                };
-        }
-}
-
- window.onload = function() {
-    initMainScreen();
-    window.connection = new ConnectionManager("http://localhost","9393");
-
-    window.connection.registerHandler("chatOK", function(data){
-                    var list = document.getElementById("textList");
-        var entry = document.createElement('li');
-                   console.log("BBB");
-     console.log( "got messae from: " + data.login + " : " + data.message );
-             var loginText = data.login+": ";
-             entry.appendChild(document.createTextNode(loginText));
-
-                entry.appendChild(document.createTextNode(data.message));
-                list.appendChild(entry);
-
-    });
-
-        document.getElementById("searchForm").style.display = "none";
-        document.getElementById("add_friend").onclick = function() {
-                document.getElementById("localVideo").style.display = "none";
-                document.getElementById("searchForm").style.display = "block";
-        }
-
-        document.getElementById("change_pass_button").onclick = function() {
-            var new_password = document.getElementById("new_password").value;        
-            var confirm_pasword = document.getElementById("confirm_password").value; 
-            if(confirm_pasword==new_password){
-                console.log("Password OK");
-                var current_password = document.getElementById("current_password").valu   
-                var data = {"current":current_password, "new":new_password}; 
-                window.connection.send("password_change", data);
-            }
-        }
-
-        document.getElementById("search_button").onclick = function() {
-                
-                if ( validate() ) {
-                         var data = {};
-                         data ["login"] = document.getElementById("login").value;
-                         data ["first_name"] = document.getElementById("first_name").value;
-                         data ["last_name"] = document.getElementById("last_name").value;
-                         data ["email"] = document.getElementById("email").value;
-        
-                        document.getElementById("searchForm").style.visibility = "hidden";        
-                 window.flg.fl.searchFriends( data );
-                }
-                else {
-                        alert("Uzupelnij chociaz jedno pole");
-                }
-        }
-
-        clickDiv();
-        clickView();
-
-
-        var micro = document.getElementById("microphone");        
-
-
-    document.getElementById("send").onclick = function() {
-            send();
-    }
-}
-
-/*SimpleWebRTC*/
-var webrtc = new SimpleWebRTC({
-        localVideoEl: 'localVideo',
-        remoteVideosEl: 'remoteVideos',
-        autoRequestMedia: true
-});
-
-webrtc.on('readyToCall', function () {
-        webrtc.joinRoom('My room name');
-});
-
-  </script>
 </head>
+
 <body onresize="onResize()">
 
-        <!-- UPPER BAR -->
-        <div id="uBar">
-                <div id="user1"  ondrop="drop(event)" ondragover="allowDrop(event)">                
-                        <div id="remoteVideos"></div>
-                </div>
-                <div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)">
-                </div>
-                <div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)">
-                </div>
-                <div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)">
-                </div>
-                <div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)">
-                </div>
-                <div id="me">                
-                </div>
-                <h2>Jamii</h2>
+    <!-- UPPER BAR -->
+    <div id="uBar">
+        <div id="user1"  ondrop="drop(event)" ondragover="allowDrop(event)">        
+            <div id="remoteVideos"></div>
+        </div>
+        <div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)">
+        </div>
+        <div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)">
+        </div>
+        <div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)">
+        </div>
+        <div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)">
+        </div>
+        <div id="me">       
+        </div>
+        <h2>Jamii</h2>
+    </div>
+
+    <div id="content">
+    <!-- MAIN VIEW -->
+        <div id="lWindow">
+            <video id="localVideo"></video>
+            <div id="searchForm">
+                <label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
+                <label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
+                <label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
+                <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
+                <input id="search_button" class="search_button" type="button" value="Search" />
+            </div>
         </div>
 
-        <div id="content">
-        <!-- MAIN VIEW -->
-                <div id="lWindow">
-                        <video id="localVideo"></video>
-                        <div id="searchForm">
-                                <label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
-                                <label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
-                                <label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
-                                <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
-                                <input id="search_button" class="search_button" type="button" value="Search" />
-                        </div>
-                </div>
-
-                <div id="options" class="rWindow">
-                        <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
-                        <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
-                        <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
-                       <div id = "change_password_title">Change password<br>
-                       </div>
-                       <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
-                       <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
-                       <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
-                       <button id="change_pass_button" type="submit">Save</button>
-
-                </div>
-
-        <!-- CHAT -->
-                <div id="chat" class="rWindow">
-                        <ul id="textList">
-                        </ul>
-                        <input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
-                        <input id="send" class="send_button" type="button" value="Send" />
-                </div>
-                <div id="friendList" class="rWindow">
-                        <button id="add_friend" type="submit">+ Add Friend</button>
-                </div>
-
+        <!-- OPTIONS -->
+        <div id="options" class="rWindow">
+            <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
+            <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
+            <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+            <div id = "change_password_title">
+                Change password<br>
+            </div>
+            <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
+            <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
+            <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
+            <button id="change_pass_button" type="submit">Save</button>
         </div>
 
-        <!-- DOWN BAR -->
-        <div id="dBar">
-                <div class="chat">Chat
-                </div><div class="friendList">Friends List
-                </div><div class="board">Board
-                </div><div class="fileShare">File Share
-                </div><div class="desktopShare">Desktop Share
-                </div><div class="options">Options</div>
+
+    <!-- CHAT -->
+        <div id="chat" class="rWindow">
+            <ul id="textList">
+            </ul>
+            <input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
+            <input id="send" class="send_button" type="button" value="Send" />
         </div>
+        <div id="friendList" class="rWindow">
+            <button id="add_friend" type="submit">+ Add Friend</button>
+        </div>
+
+    </div>
+
+    <!-- DOWN BAR -->
+    <div id="dBar">
+        <div class="chat">Chat
+        </div><div class="friendList">Friends List
+        </div><div class="board">Board
+        </div><div class="fileShare">File Share
+        </div><div class="desktopShare">Desktop Share
+        </div><div class="options">Options</div>
+    </div>
 </body>
 </html>
+
+
+

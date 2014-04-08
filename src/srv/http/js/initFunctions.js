@@ -17,7 +17,8 @@
  *
  * Contributors:
  *  -> Alek Gajos <alek.gajos@gmail.com>
- *
+ *  -> Mateusz Zajac<matteo.zajac@gmail.com>
+ * 
  */
 
 /** 
@@ -36,4 +37,42 @@ function initMainScreen(){
 	var h=document.getElementById('lWindow').offsetHeight;
 	document.getElementById("localVideo").style.height=h;
 
+}
+/*
+* Initialize
+*/
+window.onload = function() {
+    initMainScreen();
+	clickDiv();
+
+    document.getElementById("send").onclick = function() {
+    	send();
+    }
+    document.getElementById("searchForm").style.visibility = "hidden";
+    
+    
+	document.getElementById("search_button").onclick = function() {
+		
+		if ( validate() ) {
+		 	var data  = {};
+		 	data ["login"] = document.getElementById("login").value;
+		 	data ["first_name"] = document.getElementById("first_name").value;
+		 	data ["last_name"] = document.getElementById("last_name").value;
+		 	data ["email"] = document.getElementById("email").value;
+		
+			document.getElementById("searchForm").style.visibility = "hidden";	    
+		    window.flg.fl.searchFriends( data );
+		 }
+		 else {
+			alert("Uzupelnij chociaz jedno pole");
+		}
+	
+	}
+}
+
+function onResize(){
+    var w=document.getElementById('lWindow').offsetWidth;
+    var h=document.getElementById('lWindow').offsetHeight;
+
+    document.getElementById("localVideo").style.height=h;
 }

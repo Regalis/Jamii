@@ -126,3 +126,5 @@ FriendListGUI.prototype.drawCandidates = function( parent_name ){
 
 }
 
+
+
