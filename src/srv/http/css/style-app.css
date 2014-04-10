@@ -74,7 +74,7 @@ body {
 }
 
 #dBar > div {
-	width: 16.5%;
+	width: 14.1%;
 	display: inline-block;
 	height: 100%;
 	margin: 0;
@@ -83,6 +83,10 @@ body {
 	border-right: 1px solid #000000;
 	color: #FFFFFF;
 	font-size: 17px;
+}
+
+#dBar > div:last-child {
+	border-right: none;
 }
 
 #content {
@@ -217,4 +221,13 @@ body {
 
 #fileshare {
 	background-color: #D9EFEE;
+}
+
+#fileshare input {
+	width: 100px;
+}
+
+#file_share_button {
+	float: right;
+	margin-right: 10px;
 }
