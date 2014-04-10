@@ -132,7 +132,7 @@ function UsersDatabase() {
 		if (!user instanceof User)
 			throw "UsersDatabase::register_new_user: user parameter must be an instance of User class";
 		try {
-			user.id = udb.get_next_user_id();
+			user.id = this.get_next_user_id();
 			this.save_user_data(user);
 			this.update_next_user_id();
 			return user.id;
@@ -175,7 +175,7 @@ function UsersDatabase() {
 			file = file_list[i];
 			if (isNaN(file))
 				continue;
-			user = udb.read_user_data(file); // file will be user id
+			user = this.read_user_data(file); // file will be user id
 			var user_ok = true;
 			var all_blank = true;
 			for (key in dict) {
