@@ -77,7 +77,7 @@ clientManager.prototype.user_login = function( data ){
 */
 clientManager.prototype.update_session_socket = function( session_id, socket_object ){
     
-    sessions[ session_id ] = socket_object;
+    this.sessions[ session_id ] = socket_object;
     
 }
 
