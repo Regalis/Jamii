@@ -169,3 +169,29 @@ body {
 #friend_list li text {
 
 }
+
+#options {
+	background-color: #D9EFEE;
+}
+
+#options form fieldset {
+	background-color: #14BA79;
+	border: none;
+	background-color: #64A101;
+}
+
+#options form fieldset legend {
+	border-radius: 10px;
+	background-color: #14BA79;
+}
+
+#options form input {
+	border: none;
+	margin: 5px;
+	margin-left: 10px;
+}
+
+#options form button {
+	float: right;
+	margin-right: 20px;
+}
