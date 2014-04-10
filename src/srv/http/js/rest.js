@@ -19,12 +19,26 @@ function clickDiv(){
 
 function clickView() {
     var views = document.getElementById("dBar").getElementsByTagName("div");
+
     for (i in views) {
         views[i].style.cursor = 'pointer';
         views[i].onclick = function() {
+                           document.getElementById("localVideo").style.visibility = "visible";
+
             document.getElementById("chat").style.visibility = "hidden";
             document.getElementById("friendList").style.visibility = "hidden";
             document.getElementById("options").style.visibility = "hidden";
+            document.getElementById("fileshare").style.visibility = "hidden";
+            if(document.getElementById(this.className)==document.getElementById("whiteboard")){
+               document.getElementById("localVideo").style.visibility = "hidden";
+
+            }
+            document.getElementById("file_share_button").style.visibility = "hidden";
+
+            document.getElementById("whiteboard").style.visibility = "hidden";
+
+
+
             document.getElementById(this.className).style.visibility = "visible";
         };
     }
@@ -43,7 +57,7 @@ window.onload = function() {
         entry.appendChild(document.createTextNode(data.message));
         list.appendChild(entry);
     });
-
+    document.getElementById("file_share_button").style.visibility = "hidden";
     document.getElementById("searchForm").style.display = "none";
 
     document.getElementById("add_friend").onclick = function() {
