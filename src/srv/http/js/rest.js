@@ -1,3 +1,13 @@
+
+function fitToContainer(canvas){
+  // Make it visually fill the positioned parent
+  canvas.style.width ='100%';
+  canvas.style.height='100%';
+  // ...then set the internal size to match
+  canvas.width  = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+
 function allowDrop(ev){
     ev.preventDefault();
 }
@@ -64,6 +74,10 @@ window.onload = function() {
             document.getElementById("localVideo").style.display = "none";
             document.getElementById("searchForm").style.display = "block";
     }
+
+    fitToContainer(document.getElementById("layer1"));
+        fitToContainer(document.getElementById("layer2"));
+
 
 	
    
