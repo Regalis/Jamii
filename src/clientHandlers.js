@@ -169,5 +169,29 @@ clientHandlers.prototype.drawHandler = function(packet, socket){
     
 }
 
+clientHandlers.prototype.password_changeHandler = function(packet, socket){
+
+    var session_id = packet.sessionID;
+    var data = strip_data_object(packet);
+    var user_id = this.cm.get_user_by_session(session_id);
+
+    var user_obj = this.udb.read_user_data(user_id);
+    // check if old password matches                                                                                       
+    if( data["old"] == user_obj["_password"] && data["old"] != "undefined" ){
+	
+        // @todo: validate new password                                                                                    
+	
+        // to be moved to separate function                                                                                
+	user_obj["_password"] = data["new"];
+	
+        this.udb.save_user_data( user_obj );
+	// end of separate function                                                                                        
+	
+    }else{
+        // @todo: handle incorrect old password                                                                            
+    }
+    
+    
+}
 
 module.exports.clientHandlers = clientHandlers;
