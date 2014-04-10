@@ -141,15 +141,46 @@ io.sockets.on("connection", function(socket) {
     // set handlers for communication with clients
     
     // automatically find all handlers in the clientHandlers object, reject the "Handler" suffix and set them to handle respective packet names
-    for( var method in ch ){
-	var index = method.search(/Handler/);
-	if( index > 0 ){
-	    var packetName = method.substr(0, index);
-	    socket.on( packetName, function(data){
-		ch[ method]( data, socket );
-	    });
-	}
-    }
+    // for( var method in ch ){
+    // 	var index = method.search(/Handler/);
+    // 	if( index > 0 ){
+    // 	    var packetName = method.substr(0, index);
+    // 	    console.log("assigning " + method + " to : " + packetName);
+    // 	    socket.on( packetName, function(data){
+    // 		console.log("handling "+packetName + "with: " + JSON.stringify( data ) );
+    // 		ch[ method ]( data, socket );
+    // 	    });
+    // 	}
+    // }
+
+    socket.on("login", function(data){
+	ch.loginHandler( data, socket );
+    } );
+
+    socket.on("whoAmI", function(data){
+	ch.whoAmIHandler( data, socket );
+    } );
+
+    socket.on("register", function(data){
+	ch.registerHandler( data, socket );
+    } );
+
+    socket.on("getUserDataFromId", function(data){
+	ch.getUserDataFromIdHandler( data, socket );
+    } );
+
+    socket.on("searchFriends", function(data){
+	ch.searchFriendsHandler( data, socket );
+    } );
+
+    socket.on("getFriendsData", function(data){
+	ch.getFriendsDataHandler( data, socket );
+    } );
+
+    socket.on("chat", function(data){
+	ch.chatHandler( data, socket );
+    } );
+
     
 });
 
