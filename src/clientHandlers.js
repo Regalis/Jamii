@@ -43,11 +43,10 @@ clientHandlers.prototype.loginHandler =  function(data, socket){
 //	clients_authenticate(socket.id, user_id);
 //	console.log("cliients"	+ clients);
 //	console.log("cliients"	+ sessions);
-	// TODO: remove 'no such user' warning (brute force attack is now much easier)
     } else if(ret == -1) { // no such user
-	socket.emit("loginBAD", {"what":"No such user"});
+	socket.emit("loginBAD", {"what": "Wrong user or password"});
     } else if(ret == -2) { // login OK
-	socket.emit("loginBAD", {"what":"Wrong password"});		
+	socket.emit("loginBAD", {"what": "Wrong user or password"});	
     }
     
 }
