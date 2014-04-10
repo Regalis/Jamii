@@ -79,9 +79,6 @@ window.onload = function() {
     }
 
     fitToContainer(document.getElementById("layer1"));
-        fitToContainer(document.getElementById("layer2"));
-
-
 	
    
 
