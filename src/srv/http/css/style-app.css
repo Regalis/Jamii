@@ -74,7 +74,7 @@ body {
 }
 
 #dBar > div {
-	width: 16.59%;
+	width: 14.26%;
 	display: inline-block;
 	height: 100%;
 	margin: 0;
@@ -174,24 +174,47 @@ body {
 	background-color: #D9EFEE;
 }
 
-#options form fieldset {
-	background-color: #14BA79;
-	border: none;
-	background-color: #64A101;
+#options form,
+#fileshare form
+{
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
-#options form fieldset legend {
+#options form fieldset,
+#fileshare form fieldset
+{
+	background-color: #FFFFFF;
+	border: none;
 	border-radius: 10px;
+}
+
+#options form fieldset legend,
+#fileshare form fieldset legend
+{
 	background-color: #14BA79;
+	padding: 10px;
+	margin-left: 20px;
+	color: #FFFFFF;
+	font-weight: bold;
 }
 
 #options form input {
 	border: none;
 	margin: 5px;
 	margin-left: 10px;
+	background-color: #FFFFFF;
+	border: 1px solid #14BA79;
+	padding: 3px;
+	border-radius: 2px;
 }
 
 #options form button {
 	float: right;
 	margin-right: 20px;
+}
+
+#fileshare {
+	background-color: #D9EFEE;
 }

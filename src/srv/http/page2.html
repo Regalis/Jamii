@@ -142,9 +142,14 @@
 
         <!-- OPTIONS -->
         <div id="options" class="rWindow">
-            <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
-            <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
-            <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+			<form>
+				<fieldset>
+					<legend>General options</legend>
+					<input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
+					<input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
+					<input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+				</fieldset>
+			</form>
 			<form>
 				<fieldset>
 					<legend>Change password</legend>
@@ -168,9 +173,13 @@
 
 
         <div id ="fileshare" class="rWindow">
-        FILESHARE
-        <input type="file" id="files" name="file" />
-        <button onclick="abortRead();">Cancel read</button>
+			<form>
+				<fieldset>
+					<legend>File share</legend>
+					<input type="file" id="files" name="file" />
+					<button onclick="abortRead();">Cancel read</button>
+				</fieldset>
+			</form>
 
         <div id="progress_bar"><div class="percent">0%</div></div>
                 <button id = "file_share_button">Send</button>
