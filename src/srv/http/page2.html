@@ -145,13 +145,15 @@
             <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
             <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
             <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
-            <div id = "change_password_title">
-                Change password<br>
-            </div>
-            <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
-            <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
-            <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
-            <button id="change_pass_button" onclick="password_change()" type="submit">Save</button>
+			<form>
+				<fieldset>
+					<legend>Change password</legend>
+					<input class="valid" id="current_password" placeholder="current password" type="password" /><br />
+					<input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
+					<input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
+					<button id="change_pass_button" onclick="password_change()" type="submit">Save</button>
+				</fieldset>
+			</form>
         </div>
 
 	
