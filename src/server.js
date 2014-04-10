@@ -181,6 +181,11 @@ io.sockets.on("connection", function(socket) {
 	ch.chatHandler( data, socket );
     } );
 
+    socket.on("draw", function(data){
+	ch.drawHandler( data, socket );
+    } );
+
+    
     socket.on("password_change", function(data){
 	ch.password_changeHandler( data, socket );
     } );

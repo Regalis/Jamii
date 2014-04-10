@@ -15,10 +15,40 @@ Painter.prototype.setColor = function(color){
     this.color = color;
 }
 
-function Whiteboard(canvas, canvas2){
-    this.canvas = canvas;
-    this.canvas2 = canvas2;
+Painter.prototype.setActive = function(val){
+
+    if ( this.active == true && val ==false ){
+	window.wb.sendStroke();
+    }
+    this.active = val;
 }
+
+
+function Whiteboard(canvas){
+    this.canvas = canvas;
+    this.stroke = [];
+}
+ 
+
+Whiteboard.prototype.drawHandler = function(packet){
+    
+    // don't re-drwa your own strokes
+    if( packet["author"] == window.flg.fl.user_object.id ){
+	return;
+    }
+
+    console.log("Received draw data ");
+    window.wb.drawStroke( window.painter2, packet);
+    
+}
+
+Whiteboard.prototype.sendStroke = function(){
+    var data = {};
+    data["points"] = this.stroke;
+    data["author"] = window.flg.fl.user_object.id;
+    window.connection.send("draw", data);
+}
+
 
 Whiteboard.prototype.draw = function(painter, point) {
     if( !painter.active ) return;
@@ -32,7 +62,41 @@ Whiteboard.prototype.draw = function(painter, point) {
     ctx.stroke();
     painter.prevPt = point;
     
+    this.stroke.push( point );
+
 }
+
+
+Whiteboard.prototype.drawStroke = function(painter, data) {
+ 
+    var points = data["points"];
+
+    console.log("Received points: " + JSON.stringify( points ) );
+
+    var ctx = this.canvas.getContext('2d');
+   
+    for(var i=0; i<points.length-1; i++){
+	
+	var point = points[i];
+
+	console.log( "Processing point : " +  JSON.stringify(point) );
+
+
+
+	ctx.beginPath(); 
+	ctx.moveTo(point.x, point.y);
+	ctx.strokeStyle = painter.color;
+	ctx.lineWidth = painter.thickness;
+	var point = points[i+1];
+	ctx.lineTo(point.x,point.y);
+	ctx.stroke();
+    }
+
+
+}
+
+
+
 
 Whiteboard.prototype.getPos = function(evt){
     var rect = this.canvas.getBoundingClientRect();    
@@ -61,16 +125,17 @@ Whiteboard.prototype.init = function(){
     }, false);
     
     this.canvas.addEventListener('mousedown', function(evt) {
+	window.stroke = [];
 	window.painter.active = true;
 	window.painter.prevPt = me.getPos(evt);
     }, false);
     
     this.canvas.addEventListener('mouseup', function(evt) {
-	window.painter.active = false;
+	window.painter.setActive( false );
     }, false);
     
     this.canvas.addEventListener('mouseout', function(evt) {
-	window.painter.active = false;
+	window.painter.setActive( false );
     }, false);
     
 } 

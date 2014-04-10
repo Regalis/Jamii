@@ -57,6 +57,9 @@ window.onload = function() {
         entry.appendChild(document.createTextNode(data.message));
         list.appendChild(entry);
     });
+
+    window.connection.registerHandler("drawOK", window.wb.drawHandler );
+
     document.getElementById("file_share_button").style.visibility = "hidden";
     document.getElementById("searchForm").style.display = "none";
 

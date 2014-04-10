@@ -31,6 +31,7 @@
 
 
 }
+
   #progress_bar {
     margin: 10px 0;
     padding: 3px;
@@ -93,20 +94,21 @@
                " height="400px" width="800px">
       This text is displayed if your browser does not support HTML5 Canvas.
     </canvas>
-    <canvas id="layer2"
-        style="z-index: 2;
-               position:absolute;
-               left:0px;
-               top:0px;
-               " height="400px" width="800px">
-      This text is displayed if your browser does not support HTML5 Canvas.
-    </canvas>
+    <!-- <canvas id="layer2" -->
+    <!--     style="z-index: 2; -->
+    <!--            position:absolute; -->
+    <!--            left:0px; -->
+    <!--            top:0px; -->
+    <!--            " height="400px" width="800px"> -->
+    <!--   This text is displayed if your browser does not support HTML5 Canvas. -->
+    <!-- </canvas> -->
       </div>
       <!-- <canvas id="cv" width=600px, height=400px></canvas> -->
       <script>
-    window.wb = new Whiteboard( document.getElementById("layer2"), document.getElementById("layer1") );
+    window.wb = new Whiteboard( document.getElementById("layer1") );
     window.painter  = new Painter(1);
     window.painter2  = new Painter(2);
+    window.painter2.color = "red";
     window.wb.init();
     document.getElementById("layer1");
       </script>
