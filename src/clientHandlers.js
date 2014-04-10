@@ -59,8 +59,7 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket){
     var user_id = this.cm.get_user_by_session(session_id);
     
     // fix the change of socket for client
-    // sessions[session_id] = socket;
-    // clients_authenticate(socket.id, user_id);
+    this.cm.update_session_socket( session_id, socket );
     
     var user_obj = this.udb.read_user_data(user_id).strip_object() ;
     socket.emit("yourData", user_obj);
@@ -151,8 +150,47 @@ clientHandlers.prototype.chatHandler = function(packet, socket){
     // broadcast
     for(sid in this.cm.sessions) {
 	console.log(sid);
+	console.log("Handling chat for: " +  this.cm.sessions[ sid ]  );
         this.cm.sessions[ sid ].emit("chatOK", data);
     }
+    
+}
+
+clientHandlers.prototype.drawHandler = function(packet, socket){
+    var session_id = packet.sessionID;
+    var data = strip_data_object(packet);
+    
+    // broadcast
+    for(sid in this.cm.sessions) {
+	console.log(sid);
+	console.log("Handling draw for: " +  this.cm.sessions[ sid ]  );
+        this.cm.sessions[ sid ].emit("drawOK", data);
+    }
+    
+}
+
+clientHandlers.prototype.password_changeHandler = function(packet, socket){
+
+    var session_id = packet.sessionID;
+    var data = strip_data_object(packet);
+    var user_id = this.cm.get_user_by_session(session_id);
+
+    var user_obj = this.udb.read_user_data(user_id);
+    // check if current password matches                                                                                       
+    if( data["current"] == user_obj["_password"] && data["current"] != "undefined" ){
+	
+        // @todo: validate new password                                                                                    
+	
+        // to be moved to separate function                                                                                
+	user_obj["_password"] = data["new"];
+	
+        this.udb.save_user_data( user_obj );
+	// end of separate function                                                                                        
+	
+    }else{
+        // @todo: handle incorrect current password                                                                            
+    }
+    
     
 }
 
