@@ -69,8 +69,8 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket){
 
 clientHandlers.prototype.registerHandler = function(packet, socket){
 
-    console.info("Got register packet: " + data);
-    console.log(data);	
+    console.info("Got register packet: " + packet);
+    console.log(packet);	
     
     data = strip_data_object( packet );
     

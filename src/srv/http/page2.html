@@ -84,8 +84,8 @@
 
 
 
-    <div class="wrapper" style="border-style: solid; border-width: 2px; width: 98%;">
-      <div id="canvasesdiv" style="position:relative; width:98%; height:400px">
+    <div class="wrapper" style="border-style: solid; border-width: 2px; width: 99%;">
+      <div id="canvasesdiv" style="position:relative; width:99%; height:400px">
     <canvas id="layer1"
         style="z-index: 1;
                position:absolute;
@@ -144,16 +144,23 @@
 
         <!-- OPTIONS -->
         <div id="options" class="rWindow">
-            <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
-            <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
-            <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
-            <div id = "change_password_title">
-                Change password<br>
-            </div>
-            <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
-            <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
-            <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
-            <button id="change_pass_button" onclick="password_change()" type="submit">Save</button>
+			<form>
+				<fieldset>
+					<legend>General options</legend>
+					<input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
+					<input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
+					<input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+				</fieldset>
+			</form>
+			<form>
+				<fieldset>
+					<legend>Change password</legend>
+					<input class="valid" id="current_password" placeholder="current password" type="password" /><br />
+					<input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
+					<input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
+					<button id="change_pass_button" onclick="password_change()" type="submit">Save</button>
+				</fieldset>
+			</form>
         </div>
 
 	
@@ -168,9 +175,13 @@
 
 
         <div id ="fileshare" class="rWindow">
-        FILESHARE
-        <input type="file" id="files" name="file" />
-        <button onclick="abortRead();">Cancel read</button>
+			<form>
+				<fieldset>
+					<legend>File share</legend>
+					<input type="file" id="files" name="file" />
+					<button onclick="abortRead();">Cancel read</button>
+				</fieldset>
+			</form>
 
         <div id="progress_bar"><div class="percent">0%</div></div>
                 <button id = "file_share_button">Send</button>
@@ -261,7 +272,8 @@
         </div><div class="whiteboard">Board
         </div><div class="fileshare">File Share
         </div><div class="desktopShare">Desktop Share
-        </div><div class="options">Options</div>
+        </div><div class="options">Options
+        </div><div class="options">Log out</div>
     </div>
 </body>
 </html>
