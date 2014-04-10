@@ -1,4 +1,3 @@
-
 function allowDrop(ev){
     ev.preventDefault();
 }
@@ -7,34 +6,6 @@ function drop(ev){
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
     ev.target.appendChild(document.getElementById(data));
-}
-
-function onResize(){
-    var w=document.getElementById('lWindow').offsetWidth;
-    var h=document.getElementById('lWindow').offsetHeight;
-
-    document.getElementById("localVideo").style.height=h;
-}
-
-
-function send(){
-    var temp = document.getElementById("chat_input").value;        
-    var data  = {};
-    data ["login"] = window.my_user_object.login;
-    data ["message"] = temp;
-
-    window.connection.send("chat", data);
-    document.getElementById("chat_input").value="";  
-    var textList = document.getElementById("textList");
-    textList.scrollTop = textList.scrollHeight;
-
-    return false;
-}
-
-function runScript(e) {
-    if (e.keyCode == 13) {
-                send();                                        
-    }
 }
 
 function clickDiv(){
@@ -80,19 +51,8 @@ window.onload = function() {
             document.getElementById("searchForm").style.display = "block";
     }
 
-    document.getElementById("change_pass_button").onclick = function() {
-        var new_password = document.getElementById("new_password").value;        
-        var confirm_pasword = document.getElementById("confirm_password").value; 
-        if(confirm_pasword==new_password){
-
-            var current_password = document.getElementById("current_password").value;
-            var data = {"current":current_password, "new":new_password}; 
-            window.connection.send("password_change", data);
-        }
-        else{
-            alert("Your new passwords don't match");
-        }
-    }
+	
+   
 
 document.getElementById("search_button").onclick = function() {
                 

@@ -19,6 +19,19 @@
  * -> Mateusz Zajac <matteo.zajac@gmail.com>  
  */
 
+function password_change(){
+	var new_password = document.getElementById("new_password").value;        
+	var confirm_pasword = document.getElementById("confirm_password").value; 
+	if(confirm_pasword==new_password){
+		var current_password = document.getElementById("current_password").value;
+		var data = {"current":current_password, "new":new_password}; 
+		window.connection.send("password_change", data);
+	}
+	else{
+		alert("Your new passwords don't match");
+	}
+}
+
 
 function micro(){
     var x = document.getElementById("microphone").checked;

@@ -1,5 +1,7 @@
 <html>
 <head>
+		  <link rel="icon" href="images/favicon.png" type="image/png">
+        <title>Jamii - community</title>
     <link rel="stylesheet" href="css/style-app.css" type="text/css" />
 <!--        <script src="http://simplewebrtc.com/latest.js"></script>-->
     <!-- for server on localhost -->
@@ -8,6 +10,7 @@
 <script type="text/javascript" src="js/friendList.js"></script>
 <script type="text/javascript" src="js/friendListGUI.js"></script>
 <script type="text/javascript" src="js/connectionManager.js"></script>
+<script type="text/javascript" src="js/chat.js"></script>
 <script type="text/javascript" src="js/initFunctions.js"></script>
 <script type="text/javascript" src="js/options.js"></script>
 <script type="text/javascript" src="js/video.js"></script>
@@ -59,7 +62,7 @@
             <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
             <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
             <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
-            <button id="change_pass_button" type="submit">Save</button>
+            <button id="change_pass_button" onclick="password_change()" type="submit">Save</button>
         </div>
 
 
@@ -68,7 +71,7 @@
             <ul id="textList">
             </ul>
             <input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
-            <input id="send" class="send_button" type="button" value="Send" />
+            <input id="send" class="send_button" onclick="chat_send()" type="button" value="Send" />
         </div>
         <div id="friendList" class="rWindow">
             <button id="add_friend" type="submit">+ Add Friend</button>
