@@ -176,8 +176,8 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
     var user_id = this.cm.get_user_by_session(session_id);
 
     var user_obj = this.udb.read_user_data(user_id);
-    // check if old password matches                                                                                       
-    if( data["old"] == user_obj["_password"] && data["old"] != "undefined" ){
+    // check if current password matches                                                                                       
+    if( data["current"] == user_obj["_password"] && data["current"] != "undefined" ){
 	
         // @todo: validate new password                                                                                    
 	
@@ -188,7 +188,7 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
 	// end of separate function                                                                                        
 	
     }else{
-        // @todo: handle incorrect old password                                                                            
+        // @todo: handle incorrect current password                                                                            
     }
     
     
