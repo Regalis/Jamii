@@ -1,269 +1,285 @@
-body {
-	margin: 0;
-	min-width: 800px;
-	font-family: sans-serif;
-}
-#createConference{
-	background-color:#FF00FF;
-      width:100%;
-         height:100%;
-         position: absolute;
-         visibility: hidden;
-}
-#chat > input { 
-	display: inline-block;
-	position: absolute;
-	bottom: 2px;
-}
-
-#send {
-	right: 2px;
-	background-color: #14BA79;
-	border-radius: 3px;
-	color: #FFFFFF;
-	display: inline-block;
-	font-size: 16px;
-	font-weight: bold;
-	padding: 3px;
-	border: none;
-}
-
-#chat_input { 
-	width: 236px;
-	border: 1px solid #14BA79;
-	background-color: #FFFFFF;
-	left: 2px;
-}
-
-#textList {
-	list-style-type: none;
-	overflow: auto;
-	padding: 10px;
-	margin: 0;
-	height: 90%;
-	word-wrap: break-word;
-	background-color: #D9EFEE;
-}
-
-#remoteVideos video {
-	height: 100px;
-}
-
-#localVideo {
-	height: 100px;
-}
-
-#uBar {
-	height: 100px;
-	position: relative;
-}
-
-#uBar > div {
-	float: left;
-	width: 133px;
-	height: 100%; 
-	display: inline-block;
-	border-right: 1px solid black;
-	list-style-type: none;
-}
-#uBar > div img {
-	width: 133px;
-	height: 100%; 
-
-}
-
-#dBar {
-	height: 40px;
-	width: 100%;
-	position: fixed;
-	bottom: 0;
-	background-color: #64A101;
-}
-
-#dBar > div {
-	width: 14.1%;
-	display: inline-block;
-	height: 100%;
-	margin: 0;
-	text-align: center;
-	line-height: 40px;
-	border-right: 1px solid #000000;
-	color: #FFFFFF;
-	font-size: 17px;
-}
-
-#dBar > div:last-child {
-	border-right: none;
-}
-
-#content {
-	width: 100%;
-	display: block;
-	background-color: pink;
-	position: absolute;
-	top: 100px;
-	bottom: 40px;
-}
-
-#lWindow {
-	background-color: #000000;
-	display: inline-block;
-	height: 100%;
-	width: 100%;
-	position: absolute;
-	left: 0;
-	right: 300px;
-	text-align: center;
-}
-
-#searchForm {
-	margin-top: 100px;
-	color: #FFFFFF;
-}
-
-.rWindow {
-	height: 100%;
-	width: 300px;
-	background-color: #FFFFFF;
-	position: absolute;
-	right: 0;
-}
-
-#uBar > h2 {
-	position: absolute;
-	right: 20px;
-}
-
-#friend_list {
-	list-style-type: none;
-	margin-left: -40px;
-	margin-top: 0px;
-	font-size: 15px;
-}
-
-#friend_list li {
-	background-color: #BDDBD8;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-}
-
-#friend_list li:nth-child(2n) {
-	background-color: #D9EFEE;
-}
-
-#friend_list li:last-child {
-	display: none;
-}
-
-#add_friend {
-	background-color: #14BA79;
-	color: #FFFFFF;
-	font-weight: bold;
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	border: none;
-	z-index: 1;
-	height: 40px;
-}
-
-#friend_list li img {
-	width: 36px;
-	height: 36px;
-	margin-top: 2px;
-	margin-left: 2px;
-	float: left;
-	display: block;
-}
-
-#friend_list li text {
-
-}
-
-#options {
-	background-color: #D9EFEE;
-}
-
-#options form,
-#fileshare form
+body
 {
-	margin-right: 10px;
-	margin-left: 10px;
-	margin-top: 10px;
+  font-family:sans-serif;
+  margin:0;
+  min-width:800px;
 }
 
-#options form fieldset,
-#fileshare form fieldset
+#createConference
 {
-	background-color: #FFFFFF;
-	border: none;
-	border-radius: 10px;
+  background-color:#F0F;
+  height:100%;
+  position:absolute;
+  visibility:hidden;
+  width:100%;
 }
 
-#options form fieldset legend,
-#fileshare form fieldset legend
+#chat > input
 {
-	background-color: #14BA79;
-	padding: 10px;
-	margin-left: 20px;
-	color: #FFFFFF;
-	font-weight: bold;
+  bottom:2px;
+  display:inline-block;
+  position:absolute;
 }
 
-#options form input {
-	border: none;
-	margin: 5px;
-	margin-left: 10px;
-	background-color: #FFFFFF;
-	border: 1px solid #14BA79;
-	padding: 3px;
-	border-radius: 2px;
+#send
+{
+  background-color:#14BA79;
+  border:none;
+  border-radius:3px;
+  color:#FFF;
+  display:inline-block;
+  font-size:16px;
+  font-weight:700;
+  padding:3px;
+  right:2px;
 }
 
-#options form button {
-	float: right;
-	margin-right: 20px;
+#chat_input
+{
+  background-color:#FFF;
+  border:1px solid #14BA79;
+  left:2px;
+  width:236px;
 }
 
-#fileshare {
-	background-color: #D9EFEE;
+#textList
+{
+  background-color:#D9EFEE;
+  height:90%;
+  list-style-type:none;
+  margin:0;
+  overflow:auto;
+  padding:10px;
+  word-wrap:break-word;
 }
 
-#fileshare input {
-	width: 100px;
+#uBar
+{
+  height:100px;
+  position:relative;
 }
 
-#file_share_button {
-	float: right;
-	margin-right: 10px;
+#uBar > div
+{
+  border-right:1px solid #000;
+  display:inline-block;
+  float:left;
+  height:100%;
+  list-style-type:none;
+  width:133px;
+}
+
+#uBar > div img
+{
+  height:100%;
+  width:133px;
+}
+
+#dBar
+{
+  background-color:#64A101;
+  bottom:0;
+  height:40px;
+  position:fixed;
+  width:100%;
+}
+
+#dBar > div
+{
+  border-right:1px solid #000;
+  color:#FFF;
+  display:inline-block;
+  font-size:17px;
+  height:100%;
+  line-height:40px;
+  margin:0;
+  text-align:center;
+  width:14.1%;
+}
+
+#dBar > div:last-child
+{
+  border-right:none;
+}
+
+#content
+{
+  background-color:#FFC0CB;
+  bottom:40px;
+  display:block;
+  position:absolute;
+  top:100px;
+  width:100%;
+}
+
+#lWindow
+{
+  background-color:#000;
+  display:inline-block;
+  height:100%;
+  left:0;
+  position:absolute;
+  right:300px;
+  text-align:center;
+  width:100%;
+}
+
+#searchForm
+{
+  color:#FFF;
+  margin-top:100px;
+}
+
+.rWindow
+{
+  background-color:#FFF;
+  height:100%;
+  position:absolute;
+  right:0;
+  width:300px;
+}
+
+#uBar > h2
+{
+  position:absolute;
+  right:20px;
+}
+
+#friend_list
+{
+  font-size:15px;
+  list-style-type:none;
+  margin-left:-40px;
+  margin-top:0;
+}
+
+#friend_list li
+{
+  background-color:#BDDBD8;
+  height:40px;
+  line-height:40px;
+  text-align:center;
+}
+
+#friend_list li:last-child
+{
+  display:none;
+}
+
+#add_friend
+{
+  background-color:#14BA79;
+  border:none;
+  bottom:0;
+  color:#FFF;
+  font-weight:700;
+  height:40px;
+  position:absolute;
+  width:100%;
+  z-index:1;
+}
+
+#friend_list li img
+{
+  display:block;
+  float:left;
+  height:36px;
+  margin-left:2px;
+  margin-top:2px;
+  width:36px;
+}
+
+#options form,#fileshare form
+{
+  margin-left:10px;
+  margin-right:10px;
+  margin-top:10px;
+}
+
+#options form fieldset,#fileshare form fieldset
+{
+  background-color:#FFF;
+  border:none;
+  border-radius:10px;
+}
+
+#options form fieldset legend,#fileshare form fieldset legend
+{
+  background-color:#14BA79;
+  color:#FFF;
+  font-weight:700;
+  margin-left:20px;
+  padding:10px;
+}
+
+#options form input
+{
+  background-color:#FFF;
+  border:1px solid #14BA79;
+  border-radius:2px;
+  margin:5px 5px 5px 10px;
+  padding:3px;
+}
+
+#options form button
+{
+  float:right;
+  margin-right:20px;
+}
+
+#fileshare input
+{
+  width:100px;
+}
+
+#file_share_button
+{
+  float:right;
+  margin-right:10px;
+}
+
+#whiteboard
+{
+  background-color:#9cf;
+  height:100%;
+  position:absolute;
+  visibility:hidden;
+  width:100%;
+}
+
+#progress_bar
+{
+  -moz-transition:opacity 1s linear;
+  -o-transition:opacity 1s linear;
+  -webkit-transition:opacity 1s linear;
+  border:1px solid #000;
+  clear:both;
+  font-size:14px;
+  margin:10px 0;
+  opacity:0;
+  padding:3px;
+}
+
+#progress_bar.loading
+{
+  opacity:1.0;
+}
+
+#progress_bar .percent
+{
+  background-color:#9cf;
+  height:auto;
+  width:0;
+}
+
+#remoteVideos video,#localVideo
+{
+  height:100px;
+}
+
+#friend_list li:nth-child(2n),#options,#fileshare
+{
+  background-color:#D9EFEE;
 }
 
 
-    #whiteboard{
-         background-color: #99ccff;
-         width:100%;
-         height:100%;
-         position: absolute;
-         visibility: hidden;
-         }
-
-         #progress_bar {
-         margin: 10px 0;
-         padding: 3px;
-         border: 1px solid #000;
-         font-size: 14px;
-         clear: both;
-         opacity: 0;
-         -moz-transition: opacity 1s linear;
-         -o-transition: opacity 1s linear;
-         -webkit-transition: opacity 1s linear;
-         }
-         #progress_bar.loading {
-         opacity: 1.0;
-         }
-         #progress_bar .percent {
-         background-color: #99ccff;
-         height: auto;
-         width: 0;
-         }

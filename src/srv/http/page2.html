@@ -1,11 +1,16 @@
 <html>
    <head>
       <link rel="icon" href="images/favicon.png" type="image/png">
-      <title>Jamii - community</title>
+      <title>
+         Jamii - community
+      </title>
       <link rel="stylesheet" href="css/style-app.css" type="text/css" />
-      <!--        <script src="http://simplewebrtc.com/latest.js"></script>-->
+      <!--        
+         <script src="http://simplewebrtc.com/latest.js">
+         </script>
+         -->
       <!-- for server on localhost -->
-      <script src="js/latest.js"></script> 
+      <script src="js/latest.js"></script>
       <script type="text/javascript" src="/socket.io/socket.io.js"></script>
       <script type="text/javascript" src="js/friendList.js"></script>
       <script type="text/javascript" src="js/friendListGUI.js"></script>
@@ -16,38 +21,46 @@
       <script type="text/javascript" src="js/video.js"></script>
       <script type="text/javascript" src="js/rest.js"></script>
       <script type="text/javascript" src="js/whiteboard.js"></script>
+      <script type="text/javascript" src="js/upper_bar.js"></script>
       <style>
-     
       </style>
    </head>
    <body onresize="onResize()">
       <!-- UPPER BAR -->
       <div id="uBar">
-         <div id="user1"  ondrop="drop(event)" ondragover="allowDrop(event)">
-            <div id="remoteVideos"></div>
+         <div id="user1"  ondrop="drop(event)" ondragover="allowDrop(event)" onclick="deleteUser()">
+            <div id="remoteVideos">
+            </div>
          </div>
-         <div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)">
+         <div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)" onclick="deleteUser()">
          </div>
-         <div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)">
+         <div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)" onclick="deleteUser()">
          </div>
-         <div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)">
+         <div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)" onclick="deleteUser()">
          </div>
-         <div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)">
+         <div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)" onclick="deleteUser()">
          </div>
          <div id="me">
-            <video id="localVideo"></video>       
+            <video id="localVideo">
+            </video>
          </div>
-         <h2>Jamii</h2>
+         <h2>
+            Jamii
+         </h2>
       </div>
       <div id="content">
          <!-- MAIN VIEW -->
          <div id="lWindow">
-
-
-	<div id="createConference">
-			START CONFERENCE
-				</div>
-
+            <div id="createConference">
+               START CONFERENCE
+               <br>
+               <input type="radio" name="conferenceVisibility" value="Private">
+               Private
+               <br>
+               <input type="radio" name="conferenceVisibility" value="Public" checked>
+               Public
+               <br>
+            </div>
             <div id="whiteboard">
                <div class="wrapper" style="border-style: solid; border-width: 2px; width: 99%;">
                   <div id="canvasesdiv" style="position:relative; width:99%; height:400px">
@@ -59,16 +72,23 @@
                         " height="400px" width="800px">
                         This text is displayed if your browser does not support HTML5 Canvas.
                      </canvas>
-                     <!-- <canvas id="layer2" -->
+                     <!-- 
+                        <canvas id="layer2" -->
                      <!--     style="z-index: 2; -->
                      <!--            position:absolute; -->
                      <!--            left:0px; -->
                      <!--            top:0px; -->
-                     <!--            " height="400px" width="800px"> -->
+                     <!--            " height="400px" width="800px">
+                        -->
                      <!--   This text is displayed if your browser does not support HTML5 Canvas. -->
-                     <!-- </canvas> -->
+                     <!-- 
+                        </canvas>
+                        -->
                   </div>
-                  <!-- <canvas id="cv" width=600px, height=400px></canvas> -->
+                  <!-- 
+                     <canvas id="cv" width=600px, height=400px>
+                     </canvas>
+                     -->
                   <script>
                      window.wb = new Whiteboard( document.getElementById("layer1") );
                      window.painter  = new Painter(1);
@@ -76,17 +96,24 @@
                      window.painter2.color = "red";
                      window.wb.init();
                      document.getElementById("layer1");
-                       
+                     
                   </script>
                </div>
                <div id="panel">
                   <table>
                      <tr>
                         <td>
-                           User 1 <br>
-                           <button type="button" style="background-color:black; width:70px;height:20px" onclick="window.painter.setColor('black')"></button><br>
-                           <button type="button" style="background-color:red; width:70px;height:20px" onclick="window.painter.setColor('red')"></button><br>
-                           <button type="button" style="background-color:green; width:70px;height:20px" onclick="window.painter.setColor('green')"></button><br>
+                           User 1 
+                           <br>
+                           <button type="button" style="background-color:black; width:70px;height:20px" onclick="window.painter.setColor('black')">
+                           </button>
+                           <br>
+                           <button type="button" style="background-color:red; width:70px;height:20px" onclick="window.painter.setColor('red')">
+                           </button>
+                           <br>
+                           <button type="button" style="background-color:green; width:70px;height:20px" onclick="window.painter.setColor('green')">
+                           </button>
+                           <br>
                         </td>
                         <td>
                         </td>
@@ -94,34 +121,87 @@
                   </table>
                </div>
             </div>
-
-
-			
             <div id="searchForm">
-               <label for="login">Login: </label><input class="valid" id="login" type="text" /><br />
-               <label for="first_name">First name: </label><input class="valid" id="first_name" type="text" /><br />
-               <label for="last_name">Last name: </label><input class="valid" id="last_name" type="text" /><br />
-               <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
+               <label for="login">
+               Login: 
+               </label>
+               <input class="valid" id="login" type="text" />
+               <br />
+               <label for="first_name">
+               First name: 
+               </label>
+               <input class="valid" id="first_name" type="text" />
+               <br />
+               <label for="last_name">
+               Last name: 
+               </label>
+               <input class="valid" id="last_name" type="text" />
+               <br />
+               <label for="email">
+               E-mail: 
+               </label>
+               <input class="valid" id="email" type="text" />
+               <br />
                <input id="search_button" class="search_button" type="button" value="Search" />
             </div>
          </div>
          <!-- OPTIONS -->
          <div id="options" class="rWindow">
+            <!--
+               <form>
+               <fieldset>
+               <legend>
+               General options
+               </legend>
+               <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>
+               Microphone
+               <br>
+               <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>
+               Camera
+               <br>
+               <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>
+               Screen
+               <br>
+               <br>
+               <br>
+               </fieldset>
+               </form>
+               -->
             <form>
                <fieldset>
-                  <legend>General options</legend>
-                  <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
-                  <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
-                  <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+                  <legend>
+                     Account info
+                  </legend>
+                  <input class="valid" id="login_options" placeholder="Login" type="text" />
+                  <br />
+                  <input class="valid" id="first_name_options" placeholder="First name" type="text" />
+                  <br />
+                  <input class="valid" id="last_name_options" placeholder="Last name" type="text" />
+                  <br />
+                  <input class="valid" id="email_options" placeholder="E-mail" type="text" />
+                  <br />
+                  <button id="change_account_button" onclick="account_change()" type="submit">
+                  Save
+                  </button>
+                  <button id="reset_options" onclick="account_reset()" type="reset">
+                  Reset
+                  </button>
                </fieldset>
             </form>
             <form>
                <fieldset>
-                  <legend>Change password</legend>
-                  <input class="valid" id="current_password" placeholder="current password" type="password" /><br />
-                  <input class="valid" id="new_password" placeholder="type new password"type="password" /><br />
-                  <input class="valid" id="confirm_password" placeholder="confirm password"type="password" /><br />
-                  <button id="change_pass_button" onclick="password_change()" type="submit">Save</button>
+                  <legend>
+                     Change password
+                  </legend>
+                  <input class="valid" id="current_password" placeholder="current password" type="password" />
+                  <br />
+                  <input class="valid" id="new_password" placeholder="type new password" type="password" />
+                  <br />
+                  <input class="valid" id="confirm_password" placeholder="confirm password" type="password" />
+                  <br />
+                  <button id="change_pass_button" onclick="password_change()" type="submit">
+                  Save
+                  </button>
                </fieldset>
             </form>
          </div>
@@ -135,15 +215,23 @@
          <div id ="fileshare" class="rWindow">
             <form>
                <fieldset>
-                  <legend>File share</legend>
+                  <legend>
+                     File share
+                  </legend>
                   <input type="file" id="files" name="file" />
-                  <button onclick="abortRead();">Cancel read</button>
+                  <button onclick="abortRead();">
+                  Cancel read
+                  </button>
                </fieldset>
             </form>
             <div id="progress_bar">
-               <div class="percent">0%</div>
+               <div class="percent">
+                  0%
+               </div>
             </div>
-            <button id = "file_share_button">Send</button>
+            <button id = "file_share_button">
+            Send
+            </button>
             <script>
                var reader;
                var progress = document.querySelector('.percent');
@@ -161,10 +249,12 @@
                      alert('File is not readable');
                      break;
                    case evt.target.error.ABORT_ERR:
-                     break; // noop
+                     break;
+                     // noop
                    default:
                      alert('An error occurred reading this file.');
-                 };
+                 }
+                 ;
                }
                
                function updateProgress(evt) {
@@ -173,15 +263,15 @@
                    var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
                    // Increase the progress bar length.
                    if (percentLoaded < 100) {
-                         document.getElementById("file_share_button").style.visibility = "hidden";
-               
+                     document.getElementById("file_share_button").style.visibility = "hidden";
+                     
                      progress.style.width = percentLoaded + '%';
                      progress.textContent = percentLoaded + '%';
-               
+                     
                    }
-               
+                   
                    if(percentLoaded==100){
-                 document.getElementById("file_share_button").style.visibility = "visible";
+                     document.getElementById("file_share_button").style.visibility = "visible";
                    }
                  }
                }
@@ -190,49 +280,61 @@
                  // Reset progress indicator on new file selection.
                  progress.style.width = '0%';
                  progress.textContent = '0%';
-               
+                 
                  reader = new FileReader();
                  reader.onerror = errorHandler;
                  reader.onprogress = updateProgress;
                  reader.onabort = function(e) {
                    alert('File read cancelled');
-                 };
+                 }
+                   ;
                  reader.onloadstart = function(e) {
                    document.getElementById('progress_bar').className = 'loading';
-                 };
+                 }
+                   ;
                  reader.onload = function(e) {
                    // Ensure that the progress bar displays 100% at the end.
                    progress.style.width = '100%';
                    progress.textContent = '100%';
                    setTimeout("document.getElementById('progress_bar').className='';", 2000);
                  }
-               
-                 // Read in the image file as a binary string.
-                 reader.readAsBinaryString(evt.target.files[0]);
+                   
+                   // Read in the image file as a binary string.
+                   reader.readAsBinaryString(evt.target.files[0]);
                }
                
                document.getElementById('files').addEventListener('change', handleFileSelect, false);
             </script>
          </div>
          <div id="friendList" class="rWindow">
-            <button id="add_friend" type="submit">+ Add Friend</button>
+            <button id="add_friend" type="submit">
+            + Add Friend
+            </button>
          </div>
       </div>
       <!-- DOWN BAR -->
       <div id="dBar">
-         <div class="chat">Chat
+         <div class="chat">
+            Chat
          </div>
-         <div class="friendList">Friends List
+         <div class="friendList">
+            Friends List
          </div>
-         <div class="whiteboard">Board
+         <div class="whiteboard">
+            Board
          </div>
-         <div class="fileshare">File Share
+         <div class="fileshare">
+            File Share
          </div>
-         <div class="createConference">Conference
+         <div class="createConference">
+            Conference
          </div>
-         <div class="options">Options
+         <div class="options">
+            Options
          </div>
-         <div class="options">Log out</div>
+         <div class="options">
+            Log out
+         </div>
       </div>
    </body>
 </html>
