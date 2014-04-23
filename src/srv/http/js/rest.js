@@ -16,6 +16,7 @@ function drop(ev){
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
     ev.target.appendChild(document.getElementById(data));
+	console.log("Dodano: "+document.getElementById(data))
 }
 
 function clickDiv(){
@@ -43,6 +44,7 @@ function clickView() {
                document.getElementById("localVideo").style.visibility = "hidden";
 
             }
+            document.getElementById("createConference").style.visibility = "hidden";
             document.getElementById("file_share_button").style.visibility = "hidden";
 
             document.getElementById("whiteboard").style.visibility = "hidden";

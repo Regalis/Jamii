@@ -33,9 +33,8 @@ function initMainScreen(){
     // inside FriendListGUI constructor, friendList is created as flg.fl
     flg = new FriendListGUI("friendList");
     window.flg = flg;
-    var w=document.getElementById('lWindow').offsetWidth;
-	var h=document.getElementById('lWindow').offsetHeight;
-	document.getElementById("localVideo").style.height=h;
+    
+
 
 }
 /*
@@ -71,8 +70,5 @@ window.onload = function() {
 }
 
 function onResize(){
-    var w=document.getElementById('lWindow').offsetWidth;
-    var h=document.getElementById('lWindow').offsetHeight;
-
-    document.getElementById("localVideo").style.height=h;
+  
 }
