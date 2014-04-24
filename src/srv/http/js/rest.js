@@ -29,6 +29,7 @@ function clickView() {
          document.getElementById("createConference").style.visibility = "hidden";
          document.getElementById("file_share_button").style.visibility = "hidden";
          document.getElementById("whiteboard").style.visibility = "hidden";
+         document.getElementById("searchForm").style.visibility = "hidden";
 	  if( document.getElementById("logout") == document.getElementById(this.className) ){
 	      window.connection.logout();
 	  }
