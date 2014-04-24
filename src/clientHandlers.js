@@ -22,10 +22,12 @@ var  strip_data_object = function(cargo) {
    
    @param cm clientManager object to be accesed by the handlers
    @param udb usersDatabase object
+   @param cfm conferenceManager object
 */
-var clientHandlers = function(cm, udb){
+var clientHandlers = function(cm, udb, cfm){
     this.cm = cm;
     this.udb = udb;
+    this.cfm = cfm;
 }
 
 
@@ -115,9 +117,27 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
 	    response["id"] = data["id"];
 	    socket.emit("userDataFromId", response);
 	} catch (e) {} 
+    };
+    
+}
+
+// for friend adding  - temporary
+clientHandlers.prototype.getUserDataFromId2Handler = function(packet, socket){
+    
+    var data = strip_data_object( packet );
+    if (!isNaN(data["id"])) {
+	var user_data;
+	try {
+	    user_data = this.udb.read_user_data(data["id"]);
+	    // TODO: strip object
+	    var response = user_data.strip_object();
+	    response["id"] = data["id"];
+	    socket.emit("userDataFromId2", response);
+	} catch (e) {} 
     }
     
 }
+// end temporary
 
 clientHandlers.prototype.searchFriendsHandler = function(packet, socket){
     var data = strip_data_object( packet );
@@ -153,54 +173,69 @@ clientHandlers.prototype.getFriendsDataHandler = function(packet, socket){
 clientHandlers.prototype.chatHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
-    
-    // broadcast
-    for(sid in this.cm.sessions) {
-	console.log(sid);
-	console.log("Handling chat for: " +  this.cm.sessions[ sid ]  );
-        this.cm.sessions[ sid ].emit("chatOK", data);
-    }
-    
+    var user_id = this.cm.get_user_by_session( session_id );
+
+    this.cfm.broadcast_me_too( user_id, "chatOK", data );
 }
 
 clientHandlers.prototype.drawHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
-    
-    // broadcast
-    for(sid in this.cm.sessions) {
-	console.log(sid);
-	console.log("Handling draw for: " +  this.cm.sessions[ sid ]  );
-        this.cm.sessions[ sid ].emit("drawOK", data);
-    }
-    
+    var user_id = this.cm.get_user_by_session( session_id );
+
+    this.cfm.broadcast( user_id, "drawOK", data );
 }
 
+// for managing the account
 clientHandlers.prototype.password_changeHandler = function(packet, socket){
-
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session(session_id);
 
     var user_obj = this.udb.read_user_data(user_id);
 	console.log("password_changeHandler: " + JSON.stringify(user_obj));
-    // check if current password matches                                                                                       
+    // check if current password matches
     if (this.cm.user_login({'login': user_obj['_login'], 'passwd': data['current']}) > 0 && data["current"] != undefined) {
-	
-        // @todo: validate new password                                                                                    
-	
-        // to be moved to separate function                                                                                
+
+        // @todo: validate new password
+
+        // to be moved to separate function
 		user_obj["_password"] = this.udb.get_password_hash(user_obj, data["new"]);
-	
         this.udb.save_user_data( user_obj );
-	// end of separate function                                                                                        
-	
+		socket.emit("password_change_confirmation", {});
+
     }else{
-        // @todo: handle incorrect current password                                                                            
+        // @todo: handle incorrect current password
+		socket.emit("password_change_error", {});
+    }
+}
+
+clientHandlers.prototype.account_changeHandler = function(packet, socket){
+
+    var session_id = packet.sessionID;
+    var data = strip_data_object(packet);
+    var user_id = this.cm.get_user_by_session(session_id);
+
+    var user_obj = this.udb.read_user_data(user_id);
+    
+    // check data for validity and change if possible                                                                         
+    if( data["last"] != "" ){
+	user_obj["_last_name"] = data["last"];
+    }
+    if( data["first"] != "" ){
+	user_obj["_first_name"] = data["first"];
+    }
+    if( data["login"] != "" ){
+	user_obj["_login"] = data["login"];
+    }
+    if( data["email"] != "" ){
+	user_obj["_email"] = data["email"];
     }
     
+    this.udb.save_user_data( user_obj );
     
 }
+
 
 // stuff for adding friends
 clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
@@ -215,7 +250,7 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
 
     // step 2 - pass the request to the invitee client and store in requests list
     var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
-    invitee_obj['_requests_list'].push( inviter_id ); // store request
+    invitee_obj['_requests_list'].push( Number(inviter_id) ); // store request
     this.udb.save_user_data( invitee_obj );    
     // pass the invitation packet
     invitee_socket.emit("sendInvitation", data);
@@ -225,8 +260,8 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
 clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
     var data = strip_data_object(packet);
 
-    var invitee_id = data['invitee'].strip_object();
-    var inviter_id = data['inviter'].strip_object();
+    var invitee_id = data['invitee'];
+    var inviter_id = data['inviter'];
     var result = data['answer'];
     var invitee_obj = this.udb.read_user_data(invitee_id);
     var inviter_obj = this.udb.read_user_data(inviter_id);
@@ -237,9 +272,19 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	var index = invitee_obj['_requests_list'].indexOf( inviter_id );
 	if( index >= 0 ){ // remove request from list
 	    invitee_obj['_requests_list'].splice( index, 1 );
-	    this.udb.save_user_data( invitee_obj );    
 	}
 
+	// update friendship information
+	if( invitee_obj._friends_list.idexOf( inviter_id ) < 0 ){
+	    invitee_obj._friends_list.push( Number(inviter_id) )
+	}
+	if( inviter_obj._friends_list.idexOf( invitee_id ) < 0 ){
+	    inviter_obj._friends_list.push( Number(invitee_id) )
+	}
+	this.udb.save_user_data( invitee_obj );    
+	this.udb.save_user_data( inviter_obj );    
+
+	// send "newFriend" packages to both sides
 	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
 	var inviter_socket = this.cm.get_socket_by_userid( inviter_id );
 	
@@ -247,6 +292,18 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	inviter_socket.emit("newFriend", invitee_obj );	
     }
 
+}
+
+
+// handlers for conference management
+clientHandlers.prototype.conf_createHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    
+    var admin_id = Number( data['my_id'] );
+    var first_friend = Number( data['user_id'] );
+    // @todo: retrieve and use visibilty information
+    this.cfm.create_conference( admin_id, first_friend );
+    
 }
 
 
