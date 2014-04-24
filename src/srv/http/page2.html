@@ -18,7 +18,7 @@
 <script type="text/javascript" src="js/whiteboard.js"></script>
 <script type="text/javascript" src="js/searchGUI.js"></script>
 <script type="text/javascript" src="js/search.js"></script>
-
+<script type="text/javascript" src="js/addFriend.js"></script>
 
 
 <style>
@@ -122,7 +122,7 @@
         <button type="button" style="background-color:black; width:70px;height:20px" onclick="window.painter.setColor('black')"></button><br>
         <button type="button" style="background-color:red; width:70px;height:20px" onclick="window.painter.setColor('red')"></button><br>
         <button type="button" style="background-color:green; width:70px;height:20px" onclick="window.painter.setColor('green')"></button><br>
-      </td>
+      </td>lW
       <td>
       </td>
     </tr>
@@ -141,7 +141,6 @@
                 <label for="email">E-mail: </label><input class="valid" id="email" type="text" /><br />
                 <input id="search_button" class="search_button" type="button" value="Search" />
             </div>
-
         </div>
 
         <!-- OPTIONS -->
@@ -261,7 +260,8 @@
 
 
         <div id="friendList" class="rWindow">
-            <button id="add_friend" type="submit">+ Add Friend</button>
+        	<button id="invitation_button" class="option_button" type="submit" ></button>
+            <button id="add_friend" type="submit" class="option_button">+ Add Friend</button>
         </div>
 
     </div>

@@ -168,6 +168,12 @@ io.sockets.on("connection", function(socket) {
     socket.on("getUserDataFromId", function(data){
 	ch.getUserDataFromIdHandler( data, socket );
     } );
+    
+    //temp
+    socket.on("getUserDataFromId2", function(data){
+	ch.getUserDataFromIdHandler2( data, socket );
+    } );
+    //end temp
 
     socket.on("searchFriends", function(data){
 	ch.searchFriendsHandler( data, socket );
@@ -192,6 +198,10 @@ io.sockets.on("connection", function(socket) {
 
     socket.on("sendInvitation", function(data){
 	ch.sendInvitationHandler( data, socket );
+    } );
+    
+    socket.on("invitationResponse", function(data){
+	ch.invitationResponseHandler( data, socket );
     } );
 
     

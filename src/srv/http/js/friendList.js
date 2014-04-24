@@ -63,10 +63,10 @@ friendList.prototype.getMyData = function(){
     window.connection.send( "whoAmI", {} );
     // retrieve main user data
     window.connection.registerHandler("yourData", function(data){
-	window.my_user_object = data;
-	console.log("Got user data: " + JSON.stringify( window.my_user_object ));
-	// only init after the user data is present
-	window.flg.fl.init();
+		window.my_user_object = data;
+		console.log("Got user data: " + JSON.stringify( window.my_user_object ));
+		// only init after the user data is present
+		window.flg.fl.init();
     });
 }
 
@@ -123,6 +123,8 @@ friendList.prototype.addFriend = function(userInfo){
     //this.friend_id_list.push(userInfo.id);
     this.friend_list.push(userInfo);
     // update GUI
+    
+    //i think it's unnecessary
     this.friend_list_gui.update();
 }
 

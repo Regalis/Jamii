@@ -112,6 +112,24 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
     
 }
 
+//temporary
+clientHandlers.prototype.getUserDataFromIdHandler2 = function(packet, socket){
+    
+    var data = strip_data_object( packet );
+    if (!isNaN(data["id"])) {
+	var user_data;
+	try {
+	    user_data = this.udb.read_user_data(data["id"]);
+	    // TODO: strip object
+	    var response = user_data.strip_object();
+	    response["id"] = data["id"];
+	    socket.emit("userDataFromId2", response);
+	} catch (e) {} 
+    }
+    
+}
+//end temporary
+
 clientHandlers.prototype.searchFriendsHandler = function(packet, socket){
     var data = strip_data_object( packet );
     var results = this.udb.findUsersMultiKey(data);
@@ -207,7 +225,7 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
 
     // step 2 - pass the request to the invitee client and store in requests list
     var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
-    invitee_obj['_requests_list'].push( inviter_id ); // store request
+    invitee_obj['_requests_list'].push( Number( inviter_id ) ); // store request
     this.udb.save_user_data( invitee_obj );    
     // pass the invitation packet
     invitee_socket.emit("sendInvitation", data);
@@ -217,8 +235,8 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
 clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
     var data = strip_data_object(packet);
 
-    var invitee_id = data['invitee'].strip_object();
-    var inviter_id = data['inviter'].strip_object();
+    var invitee_id = data['invitee'];
+    var inviter_id = data['inviter'];
     var result = data['answer'];
     var invitee_obj = this.udb.read_user_data(invitee_id);
     var inviter_obj = this.udb.read_user_data(inviter_id);
@@ -235,8 +253,12 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
 	var inviter_socket = this.cm.get_socket_by_userid( inviter_id );
 	
-	invitee_socket.emit("newFriend", inviter_obj );
-	inviter_socket.emit("newFriend", invitee_obj );	
+	if ( invitee_socket != null ) {
+		invitee_socket.emit("newFriend", inviter_obj ); 
+	}
+	if ( inviter_socket != null ) {
+		inviter_socket.emit("newFriend", invitee_obj );	
+    }
     }
 
 }

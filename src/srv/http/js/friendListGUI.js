@@ -41,14 +41,17 @@ ev.dataTransfer.setData("Text",ev.target.id);
 
 
 FriendListGUI.prototype.createTable = function(){
-
-
+	var request = document.getElementById("invitation_button");
+	request.innerHTML="invitation " + window.my_user_object["requests_list"].length;
+	
+	request.onclick = askForRequestID; 
+    
     this.ul=document.createElement('ul');
     this.parent.appendChild(this.ul);
     this.ul.setAttribute('id','friend_list'); 
     
     console.log(this.fl.n_friends);
-
+	
     for (var i=0; i<this.fl.n_friends; i++){
 
 	var li=document.createElement('li');
@@ -63,15 +66,6 @@ FriendListGUI.prototype.createTable = function(){
 	li.innerHTML= image_entry + this.fl.getFriendLogin(i);
 
     }
-
-    // var input = document.createElement('input');
-    // input.setAttribute('type', 'button');
-    // input.setAttribute('id','add_friend'); 
-    // input.setAttribute('value', 'search' );
-    // 	input.onclick = function(){ document.getElementById("searchForm").style.visibility = "visible"; }    
-    // //input.setAttribute('onclick',"" );
-    // this.ul.appendChild(input);
-    // //input.innerHTML = "Add Friend";
 
 }
 
@@ -110,21 +104,3 @@ FriendListGUI.prototype.update = function(){
     flg.createTable();
     console.log("Users list drawn.");
 }
-
-/*FriendListGUI.prototype.drawCandidates = function( parent_name ){
-	//alert("dlugosc tablicy candidates:"+window.flg.fl.candidates.length);	
-	var rodzic = getElementById( parent_name );
-	var ul = document.createElement('ul');
-	rodzic.appendChild(ul);
-	ul.setAttribute('id', 'candidatesForFriend' );
-		
-	for ( var i = 0; i < window.flg.fl.candidates.length; i++ ) {
-		var li = document.createElement('li');
-		li.innerHTML = window.flg.fl.candidates[i]["login"];
-		ul.appendChild(li);	
-	}
-
-}
-*/
-
-
