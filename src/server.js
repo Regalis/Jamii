@@ -217,6 +217,10 @@ io.sockets.on("connection", function(socket) {
 	ch.conf_requestHandler( data, socket );
     } );
 
+    socket.on("conf_response", function(data){
+	ch.conf_responseHandler( data, socket );
+    } );
+    
     
 });
 
