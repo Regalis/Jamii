@@ -28,6 +28,7 @@
       <script type="text/javascript" src="js/upper_bar.js"></script>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/searchGUI.js"></script>
+      <script type="text/javascript" src="js/fileSend.js"></script>
 
       <style>
       </style>
@@ -176,7 +177,7 @@
                </fieldset>
                </form>
                -->
-            <form>
+            <form onsubmit="account_change()" onreset="account_reset()">
                <fieldset>
                   <legend>
                      Account info
@@ -189,10 +190,10 @@
                   <br />
                   <input class="valid" id="email_options" placeholder="E-mail" type="text" />
                   <br />
-                  <button id="change_account_button" onclick="account_change()" type="submit">
+                  <button id="change_account_button" type="submit">
                   Save
                   </button>
-                  <button id="reset_options" onclick="account_reset()" type="reset">
+                  <button id="reset_options" type="reset">
                   Reset
                   </button>
                </fieldset>
@@ -215,11 +216,17 @@
             </form>
          </div>
          <!-- CHAT -->
+
+
          <div id="chat" class="rWindow">
-            <ul id="textList">
-            </ul>
-            <input id="chat_input" type="text" name="chat_input" onkeypress="runScript(event)" />
-            <input id="send" class="send_button" onclick="chat_send()" type="button" value="Send" />
+			<form onsubmit="return chat_send()">
+          <fieldset>
+            	<ul id="textList">
+            	</ul>
+            	<input id="chat_input" type="text" name="chat_input"/>
+            	<input id="send" class="send_button" type="submit" type="button" value="Send" />
+			 </fieldset>
+         </form>
          </div>
          <div id ="fileshare" class="rWindow">
             <form>
@@ -241,79 +248,8 @@
             <button id = "file_share_button">
             Send
             </button>
-            <script>
-               var reader;
-               var progress = document.querySelector('.percent');
-               
-               function abortRead() {
-                 reader.abort();
-               }
-               
-               function errorHandler(evt) {
-                 switch(evt.target.error.code) {
-                   case evt.target.error.NOT_FOUND_ERR:
-                     alert('File Not Found!');
-                     break;
-                   case evt.target.error.NOT_READABLE_ERR:
-                     alert('File is not readable');
-                     break;
-                   case evt.target.error.ABORT_ERR:
-                     break;
-                     // noop
-                   default:
-                     alert('An error occurred reading this file.');
-                 }
-                 ;
-               }
-               
-               function updateProgress(evt) {
-                 // evt is an ProgressEvent.
-                 if (evt.lengthComputable) {
-                   var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-                   // Increase the progress bar length.
-                   if (percentLoaded < 100) {
-                     document.getElementById("file_share_button").style.visibility = "hidden";
-                     
-                     progress.style.width = percentLoaded + '%';
-                     progress.textContent = percentLoaded + '%';
-                     
-                   }
-                   
-                   if(percentLoaded==100){
-                     document.getElementById("file_share_button").style.visibility = "visible";
-                   }
-                 }
-               }
-               
-               function handleFileSelect(evt) {
-                 // Reset progress indicator on new file selection.
-                 progress.style.width = '0%';
-                 progress.textContent = '0%';
-                 
-                 reader = new FileReader();
-                 reader.onerror = errorHandler;
-                 reader.onprogress = updateProgress;
-                 reader.onabort = function(e) {
-                   alert('File read cancelled');
-                 }
-                   ;
-                 reader.onloadstart = function(e) {
-                   document.getElementById('progress_bar').className = 'loading';
-                 }
-                   ;
-                 reader.onload = function(e) {
-                   // Ensure that the progress bar displays 100% at the end.
-                   progress.style.width = '100%';
-                   progress.textContent = '100%';
-                   setTimeout("document.getElementById('progress_bar').className='';", 2000);
-                 }
-                   
-                   // Read in the image file as a binary string.
-                   reader.readAsBinaryString(evt.target.files[0]);
-               }
-               
-               document.getElementById('files').addEventListener('change', handleFileSelect, false);
-            </script>
+
+      
          </div>
          <div id="friendList" class="rWindow">
             <button id="add_friend" type="submit">

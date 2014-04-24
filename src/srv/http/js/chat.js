@@ -8,12 +8,6 @@ function chat_send(){
     document.getElementById("chat_input").value="";  
     var textList = document.getElementById("textList");
     textList.scrollTop = textList.scrollHeight;
-
     return false;
 }
 
-function runScript(e) {
-    if (e.keyCode == 13) {
-                chat_send();                                        
-    }
-}

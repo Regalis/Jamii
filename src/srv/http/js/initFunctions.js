@@ -50,7 +50,7 @@ function onResize(){
 window.onload = function () {
 
    initMainScreen();
-   window.connection = new ConnectionManager("http://localhost", "9393");
+
 
    window.connection.registerHandler("chatOK", function (data) {
       var list = document.getElementById("textList");
@@ -78,9 +78,7 @@ window.onload = function () {
 
     document.getElementById("file_share_button").style.visibility = "hidden";
 
-document.getElementById("send").onclick = function() {
-    	send();
-    }
+
     fitToContainer(document.getElementById("layer1"));
 
 
