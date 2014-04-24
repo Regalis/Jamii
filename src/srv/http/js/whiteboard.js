@@ -143,8 +143,3 @@ Whiteboard.prototype.init = function(){
 Whiteboard.prototype.toggleVisibleUser = function(id){
     
 }
-
-
-clear_whiteboard(){
-
-}
