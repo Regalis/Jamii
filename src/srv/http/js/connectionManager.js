@@ -47,6 +47,9 @@ function ConnectionManager( serverAddr, serverPort ){
     this.socket.on("yourData", function(data){
 	if( data['id'] < 0 ){ // wrong user data
 	    alert("Clean your cokies please...");
+	    document.cookie="sessionID=;"+'expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	    document.cookie="userID=;"+'expires=Thu, 01 Jan 1970 00:00:01 GMT;'; 
+	    window.location.href = "/index.xhtml";
 	}else{
 	    // if sessionID in a cookie is already present  AND HAS VALID DATA, load main screen directly
 	    if(  window.location.href.slice(-10) != "page2.html" ){
