@@ -217,10 +217,11 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
 clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
     var data = strip_data_object(packet);
 
-    var invitee_id = data['invitee'];
-    var inviter_id = data['inviter'];
+    var invitee_id = data['invitee'].strip_object();
+    var inviter_id = data['inviter'].strip_object();
     var result = data['answer'];
     var invitee_obj = this.udb.read_user_data(invitee_id);
+    var inviter_obj = this.udb.read_user_data(inviter_id);
 
     if( result == 0 ){ // request rejected by invitee, ignore
 	// @todo: do something smarter here rather than ignore
@@ -228,9 +229,14 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	var index = invitee_obj['_requests_list'].indexOf( inviter_id );
 	if( index >= 0 ){ // remove request from list
 	    invitee_obj['_requests_list'].splice( index, 1 );
+	    this.udb.save_user_data( invitee_obj );    
 	}
+
+	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
+	var inviter_socket = this.cm.get_socket_by_userid( inviter_id );
 	
-	
+	invitee_socket.emit("newFriend", inviter_obj );
+	inviter_socket.emit("newFriend", invitee_obj );	
     }
 
 }
