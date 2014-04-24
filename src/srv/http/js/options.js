@@ -55,16 +55,6 @@ function account_change() {
 	return false;
 }
 
-function account_reset() {
-
-   document.getElementById("first_name_options").value = "";
-   document.getElementById("last_name_options").value = "";
-   document.getElementById("login_options").value = "";
-   document.getElementById("email_options").value = "";
-}
-
-
-
 function micro() {
    var x = document.getElementById("microphone").checked;
    if (x) {
