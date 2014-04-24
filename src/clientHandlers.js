@@ -325,5 +325,39 @@ clientHandlers.prototype.conf_requestHandler = function(packet, socket){
 
 }
 
+clientHandlers.prototype.conf_requestHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    
+    var admin_id = Number( data['my_id'] );
+    var user_id = Number( data['user_id'] );
+    // @todo: retrieve and use visibilty information
+    
+    // invite friend
+    var ff_sock = this.cm.get_socket_by_userid( user_id );
+    var to_send = {"admin_id":admin_id};
+    ff_sock.emit("conf_invitation", to_send);
+
+}
+
+clientHandlers.prototype.conf_responseHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    
+    var admin_id = Number( data['my_id'] );
+    var user_id = Number( data['user_id'] );
+    var response = data['response'] ;
+
+    if( response ){
+	this.cfm.add_user_to_conf(admin_id, user_id);
+    }else{
+	// maybe notify inviter of the refusal
+	
+    }    
+    // maybe notify inviter of the refusal
+    var sock = this.cm.get_socket_by_userid( admin_id );
+    sock.emit("conf_response", data);
+
+}
+
+
 
 module.exports.clientHandlers = clientHandlers;
