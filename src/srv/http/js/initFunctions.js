@@ -63,8 +63,9 @@ window.onload = function () {
    });
 
    window.connection.registerHandler("conf_invitation", function (data){
-		if (confirm('Are you sure you want to join conference')) {
+		if (confirm('Are you sure you want to join ' +data.admin_id+ ' conference')) {
    		//window.connection.send("conf_accept", info);
+			
 			console.log("Join to conference")
 		} else {
    		//window.connection.send("conf_discard", info);
