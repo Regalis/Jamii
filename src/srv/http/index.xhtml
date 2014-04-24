@@ -48,7 +48,21 @@
                                 window.connection.send("register", data);
 
                                 window.connection.registerHandler("registerOK", function(data){
-
+									var registration_div = document.getElementById("signin_form");
+									var registration_form = registration_div.getElementsByTagName("form")[0];
+									var ok_div = document.createElement("div");
+									var text = document.createTextNode("Registration successful!");
+									ok_div.style.display="block";
+									ok_div.style.padding="95px";
+									ok_div.style.margin="-240px auto";
+									ok_div.style.background="#FFFFFF";
+									ok_div.style.width="400px";
+									ok_div.style.position="relative";
+									ok_div.style.zIndex="4";
+									ok_div.style.textAlign="center";
+									ok_div.appendChild(text);
+									registration_div.appendChild(ok_div);
+									setTimeout(function(){ok_div.style.display="none"},3000);
                                 });
                                 return false;
                         }
