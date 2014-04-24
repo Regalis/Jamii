@@ -190,6 +190,10 @@ io.sockets.on("connection", function(socket) {
 	ch.password_changeHandler( data, socket );
     } );
 
+    socket.on("sendInvitation", function(data){
+	ch.sendInvitationHandler( data, socket );
+    } );
+
     
 });
 

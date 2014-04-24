@@ -104,7 +104,7 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
 	try {
 	    user_data = this.udb.read_user_data(data["id"]);
 	    // TODO: strip object
-	    var response = user_data.export_to_json();
+	    var response = user_data.strip_object();
 	    response["id"] = data["id"];
 	    socket.emit("userDataFromId", response);
 	} catch (e) {} 
@@ -193,5 +193,53 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
     
     
 }
+
+// stuff for adding friends
+clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    // step 1 - check whether such request was not already stored; if so, ignre this package
+    var invitee_id = data['invitee'];
+    var inviter_id = data['inviter'];
+    var invitee_obj = this.udb.read_user_data(invitee_id);
+    if( invitee_obj['_requests_list'].indexOf( inviter_id ) >= 0 ){ // request was already there
+	return; // ignore packet
+    }
+
+    // step 2 - pass the request to the invitee client and store in requests list
+    var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
+    invitee_obj['_requests_list'].push( inviter_id ); // store request
+    this.udb.save_user_data( invitee_obj );    
+    // pass the invitation packet
+    invitee_socket.emit("sendInvitation", data);
+
+}
+
+clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+
+    var invitee_id = data['invitee'].strip_object();
+    var inviter_id = data['inviter'].strip_object();
+    var result = data['answer'];
+    var invitee_obj = this.udb.read_user_data(invitee_id);
+    var inviter_obj = this.udb.read_user_data(inviter_id);
+
+    if( result == 0 ){ // request rejected by invitee, ignore
+	// @todo: do something smarter here rather than ignore
+    }else{ // if response positive
+	var index = invitee_obj['_requests_list'].indexOf( inviter_id );
+	if( index >= 0 ){ // remove request from list
+	    invitee_obj['_requests_list'].splice( index, 1 );
+	    this.udb.save_user_data( invitee_obj );    
+	}
+
+	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
+	var inviter_socket = this.cm.get_socket_by_userid( inviter_id );
+	
+	invitee_socket.emit("newFriend", inviter_obj );
+	inviter_socket.emit("newFriend", invitee_obj );	
+    }
+
+}
+
 
 module.exports.clientHandlers = clientHandlers;

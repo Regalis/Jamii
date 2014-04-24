@@ -48,13 +48,9 @@ friendList.prototype.init = function(){
     this.friend_id_list = this.user_object["friends_list"];
     this.n_friends = 0;
     this.friend_list = new Array();
-    this.candidates = new Array(); // for friend searching
     
     // finally, populate the friend list
-    window.connection.registerHandler("friendsData", flg.fl.gotFriendsDataHandler);
-    window.connection.registerHandler("matchingUsers", flg.fl.gotMathchingUsersHandler );
-    //window.connection.registerHandler("candidatesData", flg.fl.gotCandidatesDataHandler );
-	window.connection.registerHandler("userDataFromId", flg.fl.collectCandidates );    
+    window.connection.registerHandler("friendsData", flg.fl.gotFriendsDataHandler);    
     flg.fl.populateList();
     
 }
@@ -105,68 +101,6 @@ friendList.prototype.getFriendAvatar = function(i){
 
 friendList.prototype.getFriendId = function(i){
     return this.friend_list[i]["id"];
-}
-
-/**
- * Send request with user data to server.
- * Server will find list of users matching the given data and
- * respond with a "matchingUsers" packet containing a list of IDs.
- * @param data data with user info to find; form:
- *  {"login": "...", "first_name":"...", "last_name":"...", "email":"..."}
- *  where "..." may be an empty string but at least one of the above values
- *  will not be empty.
- */
-friendList.prototype.searchFriends = function(data){
-	console.log(JSON.stringify(data));
-	//var window.counterSend = 0;
-	//for ( var i = 0; i < data.length; i++ ) {
-		
-	//}    
-    connection.send("searchFriends", data);
-}
-
-/**
- * Handler function for reception of the "matchingUsers" packet
- * Sends request for detailed data if the candidates. The rest
- * is performed by the {@link gotCandidatesDataHandler} on
- * reception of the server's response.
- * @param data data part of the received packet; is of the form
- *  {'list':[id1,id2,id3,...]} 
- */
-friendList.prototype.gotMathchingUsersHandler = function(data){
-	console.log("friendList.gotMathchingUsersHandler: received everybody ID's, I'll ask for each ID's info");
-	window.flg.fl.candidates = [];	
-	//var list = data;
-	//var id = {"id":1}
-	window.counterSend = 10;
-	for ( var i = 1; i < 11; i++ ) {
-		var id = { "id" : i };
-		console.log("friendList.gotMathchingUsersHandler: calling getUserDataFromId for id number "+i);
-		window.connection.send( "getUserDataFromId", id );
-	}    
-    //connection.send("getCandidatesData", data);
-
-}
-friendList.prototype.collectCandidates = function( user ){	
-		
-	//window.flg.fl.candidates = [];	
-	//console.log(user);
-	
-	var user_info = {};
-	console.log("friendList.collectCandidates: user first name: " + user);//["login"]);
-	user_info["first_name"] = user["first_name"];
-	user_info["last_name"] = user["last_name"];
-	user_info["login"] = user["login"];
-	user_info["email"] = user["email"];
-	//user_info["id"] = list[i]["id"];
-	window.flg.fl.candidates.push(user_info);
-	
-
-	window.counterSend--;	
-	if ( counterSend == 0 ){
-		console.log("friendList.collectCandidates: received everybody, call friendListGUI.drawCandidates ");
-		window.flg.drawCandidates("lWindow");
-	}
 }
 
 /**
@@ -227,33 +161,7 @@ friendList.prototype.gotFriendsDataHandler = function(data){
     // update GUI component to the new friend list
     window.flg.update();
 }
-//getUserDataFromId, id:idnr
-//dostaje userDataFromId
 
-
-/**
- * Handler function for reception of the "candidatesData" packet
- * @param data data part of the received packet; is of the form
- *  {'user_data_list':[user1, user2, user3,...]} where userX is
- *  in the format as stored on the server
- */
-friendList.prototype.gotCandidatesDataHandler = function(data){
-    var list = data["user_data_list"];
-
-    // clear the list
-    window.flg.fl.candidates = [];
-
-    for( var i=0; i<list.length; i++ ){
-		var user_info = {};
-		user_info["first_name"] = list[i]["first_name"];
-		user_info["last_name"] = list[i]["last_name"];
-		user_info["login"] = list[i]["login"];
-		user_info["id"] = list[i]["id"];
-		candidates[i] = user_info;
-    }
-    //this.friend_list_gui.drawCandidates("lWindow");
-    
-}
 
 /**
  * Handler function for reception of the "friendInvitation" packet
@@ -296,5 +204,3 @@ friendList.prototype.gotNewFriendHandler = function(data){
     window.flg.fl.addFriend( data );
 
 }
-
-
