@@ -55,6 +55,20 @@ window.onload = function () {
       list.appendChild(entry);
    });
 
+
+
+   window.connection.registerHandler("conf_invitation", function (data){
+		if (confirm('Are you sure you want to delete this user')) {
+   		//window.connection.send("conf_accept", info);
+			console.log("Join to conference")
+} else {
+   		//window.connection.send("conf_discard", info);
+			console.log("Refuse conference invitation")
+}
+	
+	});
+
+
    window.connection.registerHandler("drawOK", window.wb.drawHandler);
 
    document.getElementById("file_share_button").style.visibility = "hidden";

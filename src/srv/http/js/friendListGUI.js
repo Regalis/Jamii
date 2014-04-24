@@ -53,7 +53,7 @@ function drop(ev) {
    ev.target.appendChild(document.getElementById(data).cloneNode(true));
    console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
 
-   window.connection.send("conf_invitation", info);
+   window.connection.send("conf_request", info);
 }
 
 
