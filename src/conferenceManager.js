@@ -28,26 +28,21 @@ conferenceManager.prototype.is_in_conf = function( id ){
    or the first_friend is in another conference
    
    @param admin_id user id of the user starting the conference (who automatically becomes admin)
-   @param first_friend user id of the first user added to conference (as it only starts when someone is added)
-
    @return negative integer in case of error
 */
-conferenceManager.prototype.create_conference = function( admin_id, first_friend ){
+conferenceManager.prototype.create_conference = function( admin_id ){
 
-    if( this.is_in_conf( admin_id ) || this.is_in_conf( first_friend ) ){
+    if( this.is_in_conf( admin_id ) ){
 	return -1;
     }
     
     var conf = new Conference( admin_id );
-    conf.participants.push( first_friend );
 
     this.conferences[ admin_id ] = conf;
 
     // add admin and first friend to the room
     var admin_socket = this.cm.get_socket_by_userid( admin_id );
     admin_socket.join( this.conferences[ admin_id ].room_name );
-    var first_friend_socket = this.cm.get_socket_by_userid( first_friend );
-    first_friend_socket.join( this.conferences[ admin_id ].room_name );
 
 }
 

@@ -302,8 +302,27 @@ clientHandlers.prototype.conf_createHandler = function(packet, socket){
     var admin_id = Number( data['my_id'] );
     var first_friend = Number( data['user_id'] );
     // @todo: retrieve and use visibilty information
-    this.cfm.create_conference( admin_id, first_friend );
+    this.cfm.create_conference( admin_id );
     
+    // invite first friend
+    var ff_sock = this.cm.get_socket_by_userid( first_friend );
+    var to_send = {"admin_id":admin_id};
+    ff_sock.emit("conf_invitation", to_send);
+
+}
+
+clientHandlers.prototype.conf_requestHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    
+    var admin_id = Number( data['my_id'] );
+    var user_id = Number( data['user_id'] );
+    // @todo: retrieve and use visibilty information
+    
+    // invite friend
+    var ff_sock = this.cm.get_socket_by_userid( user_id );
+    var to_send = {"admin_id":admin_id};
+    ff_sock.emit("conf_invitation", to_send);
+
 }
 
 
