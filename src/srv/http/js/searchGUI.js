@@ -75,7 +75,7 @@ function drawTableResults( diff ){
 	//var whereToDraw = document.getElementById("divForSearchResults");	
 	
 	var whereToDraw = document.getElementById("lWindow");	
-	var tableNameID = "tableResults";	
+	var tableNameID = "tableResults";
 	var currentPage = ( window.counterPage + diff ) * window.perPage; 
 
 	if (  currentPage >= 0 && currentPage < window.counterSend && window.counterSend != 0 ){ 		
