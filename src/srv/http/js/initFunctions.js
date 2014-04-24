@@ -29,7 +29,7 @@
 function initMainScreen(){
 	 window.selected = "me";
     window.connection = new ConnectionManager("http://localhost","9393");
-    
+//    window.connection.registerHandler("conf_invitation")
     // inside FriendListGUI constructor, friendList is created as flg.fl
     flg = new FriendListGUI("friendList");
     window.flg = flg;

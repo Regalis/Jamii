@@ -103,6 +103,10 @@ friendList.prototype.getFriendAvatar = function(i){
 }
 
 
+friendList.prototype.getFriendId = function(i){
+    return this.friend_list[i]["id"];
+}
+
 /**
  * Send request with user data to server.
  * Server will find list of users matching the given data and
