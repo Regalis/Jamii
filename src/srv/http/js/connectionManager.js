@@ -44,6 +44,17 @@ function ConnectionManager( serverAddr, serverPort ){
 	window.location.href = "/page2.html"
     });
     
+    this.socket.on("yourData", function(data){
+	if( data['id'] < 0 ){ // wrong user data
+	    alert("Clean your cokies please...");
+	}else{
+	    // if sessionID in a cookie is already present  AND HAS VALID DATA, load main screen directly
+	    if(  window.location.href.slice(-10) != "page2.html" ){
+		window.location.href = "/page2.html";
+	    }
+	}
+    });
+
     // read cookie to check if session ID already assigned
     var cookie = document.cookie;
     this.sessionID = this.getValue( cookie, "sessionID" );
@@ -51,16 +62,13 @@ function ConnectionManager( serverAddr, serverPort ){
 	// message counter
 	this.counter = 0;
     }else{ // cookie set
-		
+	
 	this.send( "whoAmI", {} );
 
 	this.userID = this.getValue( cookie, "userID" );
 	console.log( "Restored session: " + this.sessionID + " for user: " + this.userID );
 	window.my_user_id = this.userID;
-	// if sessionID in a cookie is already present, load main screen directly
-	if(  window.location.href.slice(-10) != "page2.html" ){
-	    window.location.href = "/page2.html";
-	}
+	
     }
     
     
