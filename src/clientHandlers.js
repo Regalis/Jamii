@@ -169,6 +169,7 @@ clientHandlers.prototype.drawHandler = function(packet, socket){
     
 }
 
+// for managing the account
 clientHandlers.prototype.password_changeHandler = function(packet, socket){
 
     var session_id = packet.sessionID;
@@ -188,11 +189,36 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
 	// end of separate function                                                                                        
 	
     }else{
-        // @todo: handle incorrect current password                                                                            
+        // @todo: handle incorrect current password                                                                           
+    }    
+}
+
+clientHandlers.prototype.account_changeHandler = function(packet, socket){
+
+    var session_id = packet.sessionID;
+    var data = strip_data_object(packet);
+    var user_id = this.cm.get_user_by_session(session_id);
+
+    var user_obj = this.udb.read_user_data(user_id);
+    
+    // check data for validity and change if possible                                                                         
+    if( data["last"] != "" ){
+	user_obj["_last_name"] = data["last"];
+    }
+    if( data["first"] != "" ){
+	user_obj["_first_name"] = data["first"];
+    }
+    if( data["login"] != "" ){
+	user_obj["_login"] = data["login"];
+    }
+    if( data["email"] != "" ){
+	user_obj["_email"] = data["email"];
     }
     
+    this.udb.save_user_data( user_obj );
     
 }
+
 
 // stuff for adding friends
 clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
@@ -229,9 +255,19 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	var index = invitee_obj['_requests_list'].indexOf( inviter_id );
 	if( index >= 0 ){ // remove request from list
 	    invitee_obj['_requests_list'].splice( index, 1 );
-	    this.udb.save_user_data( invitee_obj );    
 	}
 
+	// update friendship information
+	if( invitee_obj._friends_list.idexOf( inviter_id ) < 0 ){
+	    invitee_obj._friends_list.push(   inviter_id )
+	}
+	if( inviter_obj._friends_list.idexOf( invitee_id ) < 0 ){
+	    inviter_obj._friends_list.push(   invitee_id )
+	}
+	this.udb.save_user_data( invitee_obj );    
+	this.udb.save_user_data( inviter_obj );    
+
+	// send "newFriend" packages to both sides
 	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
 	var inviter_socket = this.cm.get_socket_by_userid( inviter_id );
 	
