@@ -66,11 +66,19 @@ window.onload = function() {
         entry.appendChild(document.createTextNode(data.message));
         list.appendChild(entry);
     });
+
+    window.connection.registerHandler("drawOK", window.wb.drawHandler );
+
     document.getElementById("file_share_button").style.visibility = "hidden";
+    //check it
+	//document.getElementById("searchForm").style.display = "none";
+
+    //document.getElementById("add_friend").onclick = function() {
+            //document.getElementById("localVideo").style.display = "none";
+            //document.getElementById("searchForm").style.display = "block";
+    //}
 
     fitToContainer(document.getElementById("layer1"));
-    fitToContainer(document.getElementById("layer2"));
-
 
 clickDiv();
 clickView();

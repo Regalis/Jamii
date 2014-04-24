@@ -32,6 +32,7 @@
 
 
 }
+
   #progress_bar {
     margin: 10px 0;
     padding: 3px;
@@ -94,20 +95,21 @@
                " height="400px" width="800px">
       This text is displayed if your browser does not support HTML5 Canvas.
     </canvas>
-    <canvas id="layer2"
-        style="z-index: 2;
-               position:absolute;
-               left:0px;
-               top:0px;
-               " height="400px" width="800px">
-      This text is displayed if your browser does not support HTML5 Canvas.
-    </canvas>
+    <!-- <canvas id="layer2" -->
+    <!--     style="z-index: 2; -->
+    <!--            position:absolute; -->
+    <!--            left:0px; -->
+    <!--            top:0px; -->
+    <!--            " height="400px" width="800px"> -->
+    <!--   This text is displayed if your browser does not support HTML5 Canvas. -->
+    <!-- </canvas> -->
       </div>
       <!-- <canvas id="cv" width=600px, height=400px></canvas> -->
       <script>
-    window.wb = new Whiteboard( document.getElementById("layer2"), document.getElementById("layer1") );
+    window.wb = new Whiteboard( document.getElementById("layer1") );
     window.painter  = new Painter(1);
     window.painter2  = new Painter(2);
+    window.painter2.color = "red";
     window.wb.init();
     document.getElementById("layer1");
       </script>
@@ -144,9 +146,14 @@
 
         <!-- OPTIONS -->
         <div id="options" class="rWindow">
-            <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
-            <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
-            <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+			<form>
+				<fieldset>
+					<legend>General options</legend>
+					<input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>Microphone<br>
+					<input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>Camera<br>
+					<input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>Screen<br><br><br>
+				</fieldset>
+			</form>
 			<form>
 				<fieldset>
 					<legend>Change password</legend>
@@ -170,9 +177,13 @@
 
 
         <div id ="fileshare" class="rWindow">
-        FILESHARE
-        <input type="file" id="files" name="file" />
-        <button onclick="abortRead();">Cancel read</button>
+			<form>
+				<fieldset>
+					<legend>File share</legend>
+					<input type="file" id="files" name="file" />
+					<button onclick="abortRead();">Cancel read</button>
+				</fieldset>
+			</form>
 
         <div id="progress_bar"><div class="percent">0%</div></div>
                 <button id = "file_share_button">Send</button>
@@ -263,7 +274,8 @@
         </div><div class="whiteboard">Board
         </div><div class="fileshare">File Share
         </div><div class="desktopShare">Desktop Share
-        </div><div class="options">Options</div>
+        </div><div class="options">Options
+        </div><div class="options">Log out</div>
     </div>
 </body>
 </html>
