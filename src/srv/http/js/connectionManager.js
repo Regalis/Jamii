@@ -97,7 +97,6 @@ ConnectionManager.prototype.getValue = function( cookie, key ){
  *
  */
 ConnectionManager.prototype.send = function( header, data ){
-
     this.counter++;
 
     var cargo = {};
@@ -106,7 +105,6 @@ ConnectionManager.prototype.send = function( header, data ){
     cargo['data'] = data;
     
     this.socket.emit( header, cargo );
-
 }
 
 /**
