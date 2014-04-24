@@ -99,6 +99,10 @@ friendList.prototype.getFriendAvatar = function(i){
 }
 
 
+friendList.prototype.getFriendId = function(i){
+    return this.friend_list[i]["id"];
+}
+
 /**
  * User invites friend
  * @param id ID of a user to be invited to friends

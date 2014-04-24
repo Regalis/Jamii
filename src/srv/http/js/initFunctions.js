@@ -32,30 +32,65 @@ function initMainScreen(){
     
     // inside FriendListGUI constructor, friendList is created as flg.fl
     window.flg = new FriendListGUI("friendList");
-    var w=document.getElementById('lWindow').offsetWidth;
-	var h=document.getElementById('lWindow').offsetHeight;
-	document.getElementById("localVideo").style.height=h;
-
 	//call searchFormInit to prepare to show search form if Add Friend button is pushed     
-    searchInit();
+
+	searchInit();
 
 }
 /*
 * Initialize
 */
-window.onload = function() {
-    initMainScreen();
-	clickDiv();
 
-    document.getElementById("send").onclick = function() {
-    	send();
-    }
-
-}
 
 function onResize(){
-    var w=document.getElementById('lWindow').offsetWidth;
-    var h=document.getElementById('lWindow').offsetHeight;
-
-    document.getElementById("localVideo").style.height=h;
+  
 }
+
+
+window.onload = function () {
+
+   initMainScreen();
+   window.connection = new ConnectionManager("http://localhost", "9393");
+
+   window.connection.registerHandler("chatOK", function (data) {
+      var list = document.getElementById("textList");
+      var entry = document.createElement('li');
+      console.log("got messae from: " + data.login + " : " + data.message);
+      var loginText = data.login + ": ";
+      entry.appendChild(document.createTextNode(loginText));
+      entry.appendChild(document.createTextNode(data.message));
+      list.appendChild(entry);
+   });
+
+   window.connection.registerHandler("conf_invitation", function (data){
+		if (confirm('Are you sure you want to delete this user')) {
+   		//window.connection.send("conf_accept", info);
+			console.log("Join to conference")
+} else {
+   		//window.connection.send("conf_discard", info);
+			console.log("Refuse conference invitation")
+}
+	
+	});
+
+
+   window.connection.registerHandler("drawOK", window.wb.drawHandler);
+
+    document.getElementById("file_share_button").style.visibility = "hidden";
+
+document.getElementById("send").onclick = function() {
+    	send();
+    }
+    fitToContainer(document.getElementById("layer1"));
+
+
+   clickDiv();
+   clickView();
+
+   var micro = document.getElementById("microphone");
+
+}
+
+
+
+

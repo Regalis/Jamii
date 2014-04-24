@@ -42,6 +42,7 @@ function drag(ev) {
 function allowDrop(ev) {
    ev.preventDefault();
 }
+
 function drop(ev) {
    ev.preventDefault();
    var data = ev.dataTransfer.getData("Login");
@@ -54,12 +55,16 @@ function drop(ev) {
 
    window.connection.send("conf_request", info);
 }
+
+
+
 function dropFirst(ev) {
    ev.preventDefault();
    var create_conf_data = {
       "my_id": window.my_user_object["id"],
       "user_id": ev.dataTransfer.getData("Id"),
       "visibility": "public"
+
    };
    var data = ev.dataTransfer.getData("Login");
    ev.target.appendChild(document.getElementById(data).cloneNode(true));
@@ -68,11 +73,16 @@ function dropFirst(ev) {
 }
 
 FriendListGUI.prototype.createTable = function () {
+
+
    this.ul = document.createElement('ul');
    this.parent.appendChild(this.ul);
    this.ul.setAttribute('id', 'friend_list');
+
    console.log(this.fl.n_friends);
+
    for (var i = 0; i < this.fl.n_friends; i++) {
+
       var li = document.createElement('li');
       li.setAttribute('id', this.fl.getFriendLogin(i));
       li.setAttribute('data-id', this.fl.getFriendId(i));
@@ -84,38 +94,86 @@ FriendListGUI.prototype.createTable = function () {
          this.fl.getFriendAvatar(i) + "\" />";
       //console.log(image_entry);
       li.innerHTML = image_entry + this.fl.getFriendLogin(i);
+
    }
+
+   // var input = document.createElement('input');
+   // input.setAttribute('type', 'button');
+   // input.setAttribute('id','add_friend'); 
+   // input.setAttribute('value', 'search' );
+   // 	input.onclick = function(){ document.getElementById("searchForm").style.visibility = "visible"; }    
+   // //input.setAttribute('onclick',"" );
+   // this.ul.appendChild(input);
+   // //input.innerHTML = "Add Friend";
 
 }
 
 
 FriendListGUI.prototype.createFoundUsers = function (data) {
+
+
    this.ul = document.createElement('ul');
    document.body.appendChild(this.ul);
    this.ul.setAttribute('id', 'found_users');
 
-   
-for (var i = 0; i < this.data.length; i++) {
+
+
+   for (var i = 0; i < this.data.length; i++) {
+
       var li = document.createElement('li');
       li.setAttribute('id', data[i].login);
+
       this.ul.appendChild(li);
       li.innerHTML = data[i].login
+
    }
    var li = document.createElement('input');
+
+<<<<<<< HEAD
    li.setAttribute('id', 'add_friend');
+=======
+/*FriendListGUI.prototype.drawCandidates = function( parent_name ){
+	//alert("dlugosc tablicy candidates:"+window.flg.fl.candidates.length);	
+	var rodzic = getElementById( parent_name );
+	var ul = document.createElement('ul');
+	rodzic.appendChild(ul);
+	ul.setAttribute('id', 'candidatesForFriend' );
+		
+	for ( var i = 0; i < window.flg.fl.candidates.length; i++ ) {
+		var li = document.createElement('li');
+		li.innerHTML = window.flg.fl.candidates[i]["login"];
+		ul.appendChild(li);	
+	}
+>>>>>>> d514226bb2d24761c5484110d2b2b1ac3e3419a8
+
    this.ul.appendChild(li);
    li.innerHTML = "Add Friend";
 }
+<<<<<<< HEAD
 
-FriendListGUI.prototype.update = function(){
-    if( typeof this.ul != undefined && this.ul.parentNode == this.parent ){
-		this.parent.removeChild(this.ul);
-    }
-    //delete this.fl.friend_list[--this.fl.n_friends];
-    flg.createTable();
-    console.log("Users list drawn.");
+FriendListGUI.prototype.update = function () {
+   if (typeof this.ul != undefined && this.ul.parentNode == this.parent) {
+      this.parent.removeChild(this.ul);
+   }
+   //delete this.fl.friend_list[--this.fl.n_friends];
+   flg.createTable();
+   console.log("Users list drawn.");
 }
+=======
+*/
+>>>>>>> d514226bb2d24761c5484110d2b2b1ac3e3419a8
 
+FriendListGUI.prototype.drawCandidates = function (parent_name) {
+   //alert("dlugosc tablicy candidates:"+window.flg.fl.candidates.length);	
+   var rodzic = getElementById(parent_name);
+   var ul = document.createElement('ul');
+   rodzic.appendChild(ul);
+   ul.setAttribute('id', 'candidatesForFriend');
 
+   for (var i = 0; i < window.flg.fl.candidates.length; i++) {
+      var li = document.createElement('li');
+      li.innerHTML = window.flg.fl.candidates[i]["login"];
+      ul.appendChild(li);
+   }
 
-
+}
