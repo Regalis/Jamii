@@ -48,7 +48,6 @@ function clickView() {
             document.getElementById("whiteboard").style.visibility = "hidden";
 
 
-
             document.getElementById(this.className).style.visibility = "visible";
         };
     }
@@ -68,36 +67,10 @@ window.onload = function() {
         list.appendChild(entry);
     });
     document.getElementById("file_share_button").style.visibility = "hidden";
-    document.getElementById("searchForm").style.display = "none";
-
-    document.getElementById("add_friend").onclick = function() {
-            document.getElementById("localVideo").style.display = "none";
-            document.getElementById("searchForm").style.display = "block";
-    }
 
     fitToContainer(document.getElementById("layer1"));
-        fitToContainer(document.getElementById("layer2"));
+    fitToContainer(document.getElementById("layer2"));
 
-
-	
-   
-
-document.getElementById("search_button").onclick = function() {
-                
-    if ( validate() ) {
-        var data = {};
-        data ["login"] = document.getElementById("login").value;
-        data ["first_name"] = document.getElementById("first_name").value;
-        data ["last_name"] = document.getElementById("last_name").value;
-        data ["email"] = document.getElementById("email").value;
-
-        document.getElementById("searchForm").style.visibility = "hidden";        
-        window.flg.fl.searchFriends( data );
-    }
-    else {
-        alert("Uzupelnij chociaz jedno pole");
-    }
-}
 
 clickDiv();
 clickView();
@@ -105,8 +78,4 @@ clickView();
 
 var micro = document.getElementById("microphone");        
 
-
-    
 }
-
-

@@ -499,7 +499,7 @@ io.sockets.on("connection", function(socket) {
 			try {
 				user_data = udb.read_user_data(data["id"]);
 				// TODO: strip object
-				var response = user_data.export_to_json();
+				var response = user_data.strip_object();
 				response["id"] = data["id"];
 				socket.emit("userDataFromId", response);
 			} catch (e) {} 
