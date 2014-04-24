@@ -1,6 +1,7 @@
 var fs = require("fs");
 var sys = require("sys");
 var path = require("path");
+var crypto = require("crypto");
 
 
 /** Create instance of class User from JSON string
@@ -30,10 +31,19 @@ var new_user_from_json = function(json) {
  *	 -> var/users/logins
  */
 function UsersDatabase() {
+
+	/** PRIVATE MEMBERS & METHODS */
+
 	var db_path = path.join(process.cwd(), "/var/users");
 	var lastid_file = path.join(db_path, '.lastid');
 	var last_user_id = undefined;
 	
+	/** Constructor
+	 * Initialize core database files
+	 *  -> create .lastid if does not exists
+	 *
+	 *  @throw string if there was an error while writing to file
+	 */
 	var init = function() {
 		if (!fs.existsSync(lastid_file)) {
 			fs.writeFileSync(lastid_file, '0', 'utf8', function(err) {
@@ -43,12 +53,36 @@ function UsersDatabase() {
 		}
 	}
 
+	/** Call constructor */
 	init();
 
 	var validate_user = function(user) {
 		// TODO: perform full validation
 		if (isNaN(user.id))
 			throw "Bad user id";
+	}
+
+	/* PUBLIC METHODS */
+
+	/** Get password hash from User object
+	 *
+	 * @param user_object filled instance of User class
+	 * @param password plain text password to encode
+	 * 
+	 * @throw string if user_object is not an instance of User class
+	 * or user has empty id or registration date or password_string is empty
+	 *
+	 * @return base64 encoded sha256 hash (including salt)
+	 */
+	this.get_password_hash = function(user_object, password_string) {
+		if (!user_object instanceof User)
+			throw "UsersDatabase::get_password_hash: user_object must be an instance of User class";
+		if (isNaN(user_object["id"]) || !user_object["_registration_date"] || !password_string)
+			throw "UsersDatabase::get_password_hash: empty id, password or registration date";
+		var str = user_object["id"].toString() + user_object["_registration_date"] + password_string + user_object["_registration_date"];
+		console.log("Hash string: " + str);
+
+		return crypto.createHash('sha256').update(str).digest('base64');
 	}
 
 	/** Get next available user id
@@ -133,6 +167,7 @@ function UsersDatabase() {
 			throw "UsersDatabase::register_new_user: user parameter must be an instance of User class";
 		try {
 			user.id = this.get_next_user_id();
+			user._password = this.get_password_hash(user, user._password);
 			this.save_user_data(user);
 			this.update_next_user_id();
 			return user.id;
@@ -197,7 +232,6 @@ function UsersDatabase() {
 
 
 module.exports.UsersDatabase = UsersDatabase;
-
 
 
 /*** Users block ***/

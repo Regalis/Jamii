@@ -33,30 +33,42 @@ function ConnectionManager( serverAddr, serverPort ){
     // TODO: error control
     this.socket = io.connect( serverAddr + ":" + serverPort );   
 
+    this.socket.on("loginOK", function(data){
+	this.sessionID = data["sessionID"];
+	this.userID = data["userID"];
+	console.log("Got session ID: " + this.sessionID );
+	// store a cookie representing the session
+	document.cookie="sessionID="+this.sessionID;
+	document.cookie="userID=" + this.userID;
+	// finally, reload page
+	window.location.href = "/page2.html"
+    });
+    
+    this.socket.on("yourData", function(data){
+	if( data['id'] < 0 ){ // wrong user data
+	    alert("Clean your cokies please...");
+	}else{
+	    // if sessionID in a cookie is already present  AND HAS VALID DATA, load main screen directly
+	    if(  window.location.href.slice(-10) != "page2.html" ){
+		window.location.href = "/page2.html";
+	    }
+	}
+    });
+
     // read cookie to check if session ID already assigned
     var cookie = document.cookie;
     this.sessionID = this.getValue( cookie, "sessionID" );
     if( this.sessionID == "" ){ // fresh connection before login
 	// message counter
 	this.counter = 0;
-	this.socket.on("loginOK", function(data){
-	    this.sessionID = data["sessionID"];
-	    this.userID = data["userID"];
-	    console.log("Got session ID: " + this.sessionID );
-	    // store a cookie representing the session
-	    document.cookie="sessionID="+this.sessionID;
-	    document.cookie="userID=" + this.userID;
-	    // finally, reload page
-	    window.location.href = "/page2.html"
-	});
-    }else{
+    }else{ // cookie set
+	
+	this.send( "whoAmI", {} );
+
 	this.userID = this.getValue( cookie, "userID" );
 	console.log( "Restored session: " + this.sessionID + " for user: " + this.userID );
 	window.my_user_id = this.userID;
-	// if sessionID in a cookie is already present, load main screen directly
-	if(  window.location.href.slice(-10) != "page2.html" ){
-	    window.location.href = "/page2.html";
-	}
+	
     }
     
     
@@ -111,4 +123,13 @@ ConnectionManager.prototype.send = function( header, data ){
  */
 ConnectionManager.prototype.registerHandler = function( header, handlerFunction ){
     this.socket.on( header, handlerFunction );
+}
+
+
+ConnectionManager.prototype.logout = function( ){
+    this.send("logout", {});
+    // clear cookies
+    document.cookie="sessionID=;"+'expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie="userID=;"+'expires=Thu, 01 Jan 1970 00:00:01 GMT;'; 
+    window.location.href = "/index.xhtml";
 }
