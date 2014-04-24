@@ -27,6 +27,8 @@ function clickView() {
          document.getElementById("createConference").style.visibility = "hidden";
          document.getElementById("file_share_button").style.visibility = "hidden";
          document.getElementById("whiteboard").style.visibility = "hidden";
+
+
 			
          document.getElementById(this.className).style.visibility = "visible";
       };

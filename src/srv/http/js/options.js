@@ -52,7 +52,7 @@ function account_change() {
    };
    console.log(first);
    window.connection.send("account_change", data);
-
+	return false;
 }
 
 function account_reset() {
