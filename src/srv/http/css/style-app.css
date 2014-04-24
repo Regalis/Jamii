@@ -14,6 +14,10 @@ body
   width:100%;
 }
 
+#chat {
+	background-color: #D9EFEE;
+}
+
 #chat > input
 {
   bottom:2px;
@@ -80,7 +84,7 @@ body
   background-color:#64A101;
   bottom:0;
   height:40px;
-  position:fixed;
+  position:absolute;
   width:100%;
 }
 
@@ -94,7 +98,7 @@ body
   line-height:40px;
   margin:0;
   text-align:center;
-  width:14.1%;
+  width:13.8%;
 }
 
 #dBar > div:last-child
@@ -107,9 +111,10 @@ body
   background-color:#FFC0CB;
   bottom:40px;
   display:block;
-  position:absolute;
+  position:fixed;
   top:100px;
   width:100%;
+  padding-bottom: 40px;
 }
 
 #lWindow
@@ -145,12 +150,19 @@ body
   right:20px;
 }
 
+#friendList {
+}
+
 #friend_list
 {
   font-size:15px;
   list-style-type:none;
   margin-left:-40px;
   margin-top:0;
+  overflow: auto;
+  height: 100%;
+  margin-top: 40px;
+  margin-bottom: 120px;
 }
 
 #friend_list li
@@ -161,22 +173,23 @@ body
   text-align:center;
 }
 
-#friend_list li:last-child
-{
-  display:none;
+#add_friend {
+	bottom: 0;
 }
 
-#add_friend
-{
-  background-color:#14BA79;
-  border:none;
-  bottom:0;
-  color:#FFF;
-  font-weight:700;
-  height:40px;
-  position:absolute;
-  width:100%;
-  z-index:1;
+#invitation_button {
+	top: 0;
+}
+
+button.option_button {
+  background-color: #14BA79;
+  border: none;
+  color: #FFF;
+  font-weight: 700;
+  height: 40px;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
 }
 
 #friend_list li img
@@ -240,7 +253,7 @@ body
 
 #whiteboard
 {
-  background-color:#9cf;
+  background-color: #D9EFEE;;
   height:100%;
   position:absolute;
   visibility:hidden;
