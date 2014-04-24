@@ -13,7 +13,7 @@ var conferenceManager = function( cm ){
 }
 
 // "Public" methods
-conferenceManager.prototype.is_in_conf() = function( id ){
+conferenceManager.prototype.is_in_conf = function( id ){
     for(var conf in this.conferences){
 	if( conf.participants.indexOf( id ) >= 0 || conf.admin == id ){
 	    return true;
@@ -32,7 +32,7 @@ conferenceManager.prototype.is_in_conf() = function( id ){
 
    @return negative integer in case of error
 */
-conferenceManager.prototype.create_conference() = function( admin_id, first_friend ){
+conferenceManager.prototype.create_conference = function( admin_id, first_friend ){
 
     if( this.is_in_conf( admin_id ) || this.is_in_conf( first_friend ) ){
 	return -1;
@@ -43,8 +43,13 @@ conferenceManager.prototype.create_conference() = function( admin_id, first_frie
 
     this.conferences[ admin_id ] = conf;
 
-}
+    // add admin and first friend to the room
+    var admin_socket = this.cm.get_socket_by_userid( admin_id );
+    admin_socket.join( this.conferences[ admin_id ].room_name );
+    var first_friend_socket = this.cm.get_socket_by_userid( first_friend );
+    first_friend_socket.join( this.conferences[ admin_id ].room_name );
 
+}
 
 conferenceManager.prototype.add_user_to_conf = function(admin_id, victim_id){
     if( this.is_in_conf( victim_id ) ){
@@ -70,7 +75,10 @@ conferenceManager.prototype.rm_user_from_conf = function(admin_id, victim_id){
 
 conferenceManager.prototype.broadcast = function(user_id, header, packet){
     var conf = this.get_conf_by_user( user_id );
-    if( conf == null ) return;
+    if( conf == null ){ 
+	console.log("User requested broadcast, but is not in a conference");
+	return; 
+    }
     
     var my_socket = this.cm.get_socket_by_userid( user_id );
     my_socket.broadcast.to( conf.room_name ).emit(header , packet);
@@ -78,18 +86,22 @@ conferenceManager.prototype.broadcast = function(user_id, header, packet){
 
 conferenceManager.prototype.broadcast_me_too = function(user_id, header, packet){
     var conf = this.get_conf_by_user( user_id );
-    if( conf == null ) return;
+    if( conf == null ){ 
+	console.log("User requested broadcast, but is not in a conference");
+	return;
+    }
     
     var my_socket = this.cm.get_socket_by_userid( user_id );
     my_socket.broadcast.to( conf.room_name ).emit(header , packet);
     // also send to myself - useful for chat messages
     my_socket.emit(header , packet);
-    // @todo: add entering and leaving rooms onadding and removing users
 }
 
 conferenceManager.prototype.get_conf_by_user = function(user_id){
     for(var aid in this.conferences){
-	if( aid==user_id || this.conferences[aid].participants.indexOf(user_id) >= 0 ){// user is in a conference
+	console.log( "User to search: " +  user_id );
+	console.log( this.conferences[aid].participants );
+	if( aid==user_id || this.conferences[aid].participants.indexOf( Number(user_id) ) >= 0 ){// user is in a conference
 	    return this.conferences[aid];
 	}
     }

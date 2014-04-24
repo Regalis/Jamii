@@ -20,10 +20,12 @@ var  strip_data_object = function(cargo) {
    
    @param cm clientManager object to be accesed by the handlers
    @param udb usersDatabase object
+   @param cfm conferenceManager object
 */
-var clientHandlers = function(cm, udb){
+var clientHandlers = function(cm, udb, cfm){
     this.cm = cm;
     this.udb = udb;
+    this.cfm = cfm;
 }
 
 
@@ -164,27 +166,17 @@ clientHandlers.prototype.getFriendsDataHandler = function(packet, socket){
 clientHandlers.prototype.chatHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
-    
-    // broadcast
-    for(sid in this.cm.sessions) {
-	console.log(sid);
-	console.log("Handling chat for: " +  this.cm.sessions[ sid ]  );
-        this.cm.sessions[ sid ].emit("chatOK", data);
-    }
-    
+    var user_id = this.cm.get_user_by_session( session_id );
+
+    this.cfm.broadcast_me_too( user_id, "chatOK", data );
 }
 
 clientHandlers.prototype.drawHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
-    
-    // broadcast
-    for(sid in this.cm.sessions) {
-	console.log(sid);
-	console.log("Handling draw for: " +  this.cm.sessions[ sid ]  );
-        this.cm.sessions[ sid ].emit("drawOK", data);
-    }
-    
+    var user_id = this.cm.get_user_by_session( session_id );
+
+    this.cfm.broadcast( user_id, "drawOK", data );
 }
 
 // for managing the account
@@ -251,7 +243,7 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
 
     // step 2 - pass the request to the invitee client and store in requests list
     var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
-    invitee_obj['_requests_list'].push( inviter_id ); // store request
+    invitee_obj['_requests_list'].push( Number(inviter_id) ); // store request
     this.udb.save_user_data( invitee_obj );    
     // pass the invitation packet
     invitee_socket.emit("sendInvitation", data);
@@ -277,10 +269,10 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 
 	// update friendship information
 	if( invitee_obj._friends_list.idexOf( inviter_id ) < 0 ){
-	    invitee_obj._friends_list.push(   inviter_id )
+	    invitee_obj._friends_list.push( Number(inviter_id) )
 	}
 	if( inviter_obj._friends_list.idexOf( invitee_id ) < 0 ){
-	    inviter_obj._friends_list.push(   invitee_id )
+	    inviter_obj._friends_list.push( Number(invitee_id) )
 	}
 	this.udb.save_user_data( invitee_obj );    
 	this.udb.save_user_data( inviter_obj );    
@@ -293,6 +285,18 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	inviter_socket.emit("newFriend", invitee_obj );	
     }
 
+}
+
+
+// handlers for conference management
+clientHandlers.prototype.conf_createHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    
+    var admin_id = Number( data['my_id'] );
+    var first_friend = Number( data['user_id'] );
+    // @todo: retrieve and use visibilty information
+    this.cfm.create_conference( admin_id, first_friend );
+    
 }
 
 
