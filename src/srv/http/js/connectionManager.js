@@ -52,7 +52,7 @@ function ConnectionManager( serverAddr, serverPort ){
 	this.counter = 0;
     }else{ // cookie set
 		
-	window.connection.send( "whoAmI", {} );
+	this.send( "whoAmI", {} );
 
 	this.userID = this.getValue( cookie, "userID" );
 	console.log( "Restored session: " + this.sessionID + " for user: " + this.userID );
