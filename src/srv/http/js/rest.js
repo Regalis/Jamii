@@ -10,6 +10,8 @@ function fitToContainer(canvas) {
 function clickDiv() {
    var something = document.getElementById('me');
    something.style.cursor = 'pointer';
+	var whiteboard = document.getElementById('layer1');
+   whiteboard.style.cursor = 'crosshair';
    //something.onclick = function () {
      // document.getElementById("lWindow").innerHTML = document.getElementById('me');
    //};
