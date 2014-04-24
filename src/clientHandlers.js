@@ -112,6 +112,24 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
     
 }
 
+// for friend adding  - temporary
+clientHandlers.prototype.getUserDataFromId2Handler = function(packet, socket){
+    
+    var data = strip_data_object( packet );
+    if (!isNaN(data["id"])) {
+	var user_data;
+	try {
+	    user_data = this.udb.read_user_data(data["id"]);
+	    // TODO: strip object
+	    var response = user_data.strip_object();
+	    response["id"] = data["id"];
+	    socket.emit("userDataFromId2", response);
+	} catch (e) {} 
+    }
+    
+}
+// end temporary
+
 clientHandlers.prototype.searchFriendsHandler = function(packet, socket){
     var data = strip_data_object( packet );
     var results = this.udb.findUsersMultiKey(data);

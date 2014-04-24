@@ -169,6 +169,12 @@ io.sockets.on("connection", function(socket) {
 	ch.getUserDataFromIdHandler( data, socket );
     } );
 
+    // temp
+    socket.on("getUserDataFromId2", function(data){
+	ch.getUserDataFromId2Handler( data, socket );
+    } );
+    // end temp
+
     socket.on("searchFriends", function(data){
 	ch.searchFriendsHandler( data, socket );
     } );
