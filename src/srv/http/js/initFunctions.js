@@ -63,15 +63,19 @@ window.onload = function () {
    });
 
    window.connection.registerHandler("conf_invitation", function (data){
+		var temp ={}
 		if (confirm('Are you sure you want to join ' +data.admin_id+ ' conference')) {
    		//window.connection.send("conf_accept", info);
-			
+			temp["response"]=true;
 			console.log("Join to conference")
 		} else {
    		//window.connection.send("conf_discard", info);
+			temp["response"]=false;
 			console.log("Refuse conference invitation")
-}
-	
+		}
+		temp["user_id"] = window.flg.fl.my_user_object.id;
+		temp["admin_id"]=data.admin_id;
+    	window.connection.send("conf_response", temp);	
 	});
 
 
@@ -94,12 +98,12 @@ window.connection.registerHandler("password_change_error", function (data) {
 
 
 
-   window.connection.registerHandler("drawOK", window.wb.drawHandler);
+	window.connection.registerHandler("drawOK", window.wb.drawHandler);
 
-    document.getElementById("file_share_button").style.visibility = "hidden";
+	document.getElementById("file_share_button").style.visibility = "hidden";
 
 
-    fitToContainer(document.getElementById("layer1"));
+	fitToContainer(document.getElementById("layer1"));
 
 
    clickDiv();
