@@ -197,7 +197,7 @@
                   </button>
                </fieldset>
             </form>
-            <form>
+            <form onsubmit="password_change(); return false;">
                <fieldset>
                   <legend>
                      Change password
@@ -208,7 +208,7 @@
                   <br />
                   <input class="valid" id="confirm_password" placeholder="confirm password" type="password" />
                   <br />
-                  <button id="change_pass_button" onclick="password_change()" type="submit">
+                  <button id="change_pass_button" type="submit">
                   Save
                   </button>
                </fieldset>

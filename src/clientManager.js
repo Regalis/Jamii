@@ -41,6 +41,8 @@ clientManager.prototype.register_client = function( user_id, session_id ){
 }
 
 clientManager.prototype.get_user_by_session = function( session_id ){
+	console.log("Sessions: " + JSON.stringify(this.clients));
+	console.log("Requested session id: " + session_id);
     return this.clients[ session_id ];
 }
 
@@ -70,19 +72,21 @@ clientManager.prototype.get_socket_by_userid = function( user_id ){
 */
 clientManager.prototype.user_login = function( data ){
     
-    var user = this.udb.findUsers("login", data.login);
-    if (Object.keys(user).length != 1) {
-	return -1;
+    var users = this.udb.findUsers("login", data.login);
+    if (Object.keys(users).length != 1) {
+		return -1;
     }
-    var user_id = Object.keys(user)[0];
-    if (data.passwd ==	user[ user_id ]._password && typeof data.passwd != 'undefined') {
-	console.info("User " + user[ user_id ]._login + " successfully logged in");
-	return user_id;
+
+    var user_id = Object.keys(users)[0];
+	console.log(this.udb.get_password_hash(users[user_id], data.passwd));
+	console.log(users[user_id]._password);
+    if (this.udb.get_password_hash(users[user_id], data.passwd) == users[user_id]._password && typeof data.passwd != 'undefined') {
+		console.info("User " + users[user_id]._login + " successfully logged in");
+		return user_id;
     } else {
-	return -2;
+		return -2;
     }
-    return 1; 
-    
+    return -1; 
 }
 
 /** 
@@ -93,10 +97,8 @@ clientManager.prototype.user_login = function( data ){
 
 	This function is necessary to allow for restoring an interrrupted session. If the client reconnects during an already open session, his socket on the server might have changed. This function, called from clientHandlers.whoAmIHandler (which is the first handler called after re-connection) updates the socket information of this client.
 */
-clientManager.prototype.update_session_socket = function( session_id, socket_object ){
-    
-    this.sessions[ session_id ] = socket_object;
-    
+clientManager.prototype.update_session_socket = function(session_id, socket_object) {
+    this.sessions[session_id] = socket_object;
 }
 
 module.exports.clientManager = clientManager;

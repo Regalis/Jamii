@@ -89,8 +89,12 @@ var udb = new usersDatabase();
 var clientManager = require("./clientManager.js").clientManager;
 var cm = new clientManager( udb );
 
+var conferenceManager = require("./conferenceManager.js").conferenceManager;
+var cfm = new conferenceManager( cm );
+
 var clientHandlers = require("./clientHandlers.js").clientHandlers;
-var ch = new clientHandlers( cm, udb );
+var ch = new clientHandlers( cm, udb, cfm );
+
 
 // http server
 var http_server = http.createServer(function(request, response) {
@@ -153,6 +157,7 @@ io.sockets.on("connection", function(socket) {
     // 	}
     // }
 
+
     socket.on("login", function(data){
 	ch.loginHandler( data, socket );
     } );
@@ -168,6 +173,12 @@ io.sockets.on("connection", function(socket) {
     socket.on("getUserDataFromId", function(data){
 	ch.getUserDataFromIdHandler( data, socket );
     } );
+
+    // temp
+    socket.on("getUserDataFromId2", function(data){
+	ch.getUserDataFromId2Handler( data, socket );
+    } );
+    // end temp
 
     socket.on("searchFriends", function(data){
 	ch.searchFriendsHandler( data, socket );
@@ -190,10 +201,18 @@ io.sockets.on("connection", function(socket) {
 	ch.password_changeHandler( data, socket );
     } );
 
+    socket.on("account_change", function(data){
+	ch.account_changeHandler( data, socket );
+    } );
+     
     socket.on("sendInvitation", function(data){
 	ch.sendInvitationHandler( data, socket );
     } );
 
+    socket.on("conf_create", function(data){
+	ch.conf_createHandler( data, socket );
+    } );
+    
     
 });
 

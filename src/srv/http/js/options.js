@@ -21,6 +21,7 @@
 function password_change() {
    var new_password = document.getElementById("new_password").value;
    var confirm_pasword = document.getElementById("confirm_password").value;
+   console.log("password_change()");
    if (confirm_pasword == new_password) {
       var current_password = document.getElementById("current_password").value;
       var data = {
@@ -31,6 +32,7 @@ function password_change() {
    } else {
       alert("Your new passwords don't match");
    }
+   return false;
 }
 
 

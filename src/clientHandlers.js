@@ -1,3 +1,5 @@
+usersDatabase = require('./usersDatabase.js');
+
 /** 
 	Function to retreieve data object from object received by a socket
 	Could do some additional checking for session ID if necesary.
@@ -52,18 +54,23 @@ clientHandlers.prototype.loginHandler =  function(data, socket){
 }
 
 
-clientHandlers.prototype.whoAmIHandler = function(packet, socket){
-    
+clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
     var session_id = packet.sessionID;
+	console.log("WhoAmI handler... packet: " + JSON.stringify(packet));
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session(session_id);
-    
-    // fix the change of socket for client
-    this.cm.update_session_socket( session_id, socket );
-    
-    var user_obj = this.udb.read_user_data(user_id).strip_object() ;
+	console.log("userId: " + user_id);
+	
+	var user_obj = new usersDatabase.User();
+
+	if (user_id != undefined) {
+		// fix the change of socket for client
+		this.cm.update_session_socket(session_id, socket);
+		user_obj = this.udb.read_user_data(user_id).strip_object() ;
+	} else {
+		user_obj.id = -1;
+	}
     socket.emit("yourData", user_obj);
-    
 }
 
 
@@ -176,13 +183,14 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
     var user_id = this.cm.get_user_by_session(session_id);
 
     var user_obj = this.udb.read_user_data(user_id);
+	console.log("password_changeHandler: " + JSON.stringify(user_obj));
     // check if current password matches                                                                                       
-    if( data["current"] == user_obj["_password"] && data["current"] != "undefined" ){
+    if (this.cm.user_login({'login': user_obj['_login'], 'passwd': data['current']}) > 0 && data["current"] != undefined) {
 	
         // @todo: validate new password                                                                                    
 	
         // to be moved to separate function                                                                                
-	user_obj["_password"] = data["new"];
+		user_obj["_password"] = this.udb.get_password_hash(user_obj, data["new"]);
 	
         this.udb.save_user_data( user_obj );
 	// end of separate function                                                                                        
