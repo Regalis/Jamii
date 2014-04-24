@@ -50,7 +50,7 @@ function onResize(){
 window.onload = function () {
 
    initMainScreen();
-   window.connection = new ConnectionManager("http://localhost", "9393");
+
 
    window.connection.registerHandler("chatOK", function (data) {
       var list = document.getElementById("textList");
@@ -63,10 +63,10 @@ window.onload = function () {
    });
 
    window.connection.registerHandler("conf_invitation", function (data){
-		if (confirm('Are you sure you want to delete this user')) {
+		if (confirm('Are you sure you want to join conference')) {
    		//window.connection.send("conf_accept", info);
 			console.log("Join to conference")
-} else {
+		} else {
    		//window.connection.send("conf_discard", info);
 			console.log("Refuse conference invitation")
 }
@@ -78,9 +78,7 @@ window.onload = function () {
 
     document.getElementById("file_share_button").style.visibility = "hidden";
 
-document.getElementById("send").onclick = function() {
-    	send();
-    }
+
     fitToContainer(document.getElementById("layer1"));
 
 
