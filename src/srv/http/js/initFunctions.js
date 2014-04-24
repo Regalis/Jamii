@@ -31,11 +31,13 @@ function initMainScreen(){
     window.connection = new ConnectionManager("http://localhost","9393");
     
     // inside FriendListGUI constructor, friendList is created as flg.fl
-    flg = new FriendListGUI("friendList");
-    window.flg = flg;
+    window.flg = new FriendListGUI("friendList");
     var w=document.getElementById('lWindow').offsetWidth;
 	var h=document.getElementById('lWindow').offsetHeight;
 	document.getElementById("localVideo").style.height=h;
+
+	//call searchFormInit to prepare to show search form if Add Friend button is pushed     
+    searchInit();
 
 }
 /*
@@ -48,26 +50,7 @@ window.onload = function() {
     document.getElementById("send").onclick = function() {
     	send();
     }
-    document.getElementById("searchForm").style.visibility = "hidden";
-    
-    
-	document.getElementById("search_button").onclick = function() {
-		
-		if ( validate() ) {
-		 	var data  = {};
-		 	data ["login"] = document.getElementById("login").value;
-		 	data ["first_name"] = document.getElementById("first_name").value;
-		 	data ["last_name"] = document.getElementById("last_name").value;
-		 	data ["email"] = document.getElementById("email").value;
-		
-			document.getElementById("searchForm").style.visibility = "hidden";	    
-		    window.flg.fl.searchFriends( data );
-		 }
-		 else {
-			alert("Uzupelnij chociaz jedno pole");
-		}
-	
-	}
+
 }
 
 function onResize(){

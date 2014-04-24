@@ -111,7 +111,7 @@ FriendListGUI.prototype.update = function(){
     console.log("Users list drawn.");
 }
 
-FriendListGUI.prototype.drawCandidates = function( parent_name ){
+/*FriendListGUI.prototype.drawCandidates = function( parent_name ){
 	//alert("dlugosc tablicy candidates:"+window.flg.fl.candidates.length);	
 	var rodzic = getElementById( parent_name );
 	var ul = document.createElement('ul');
@@ -125,6 +125,6 @@ FriendListGUI.prototype.drawCandidates = function( parent_name ){
 	}
 
 }
-
+*/
 
 
