@@ -86,8 +86,7 @@ clientManager.prototype.user_login = function( data ){
     } else {
 		return -2;
     }
-    return 1; 
-    
+    return -1; 
 }
 
 /** 
