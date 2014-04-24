@@ -355,8 +355,12 @@ clientHandlers.prototype.conf_responseHandler = function(packet, socket){
     // maybe notify inviter of the refusal
     var sock = this.cm.get_socket_by_userid( admin_id );
     sock.emit("conf_response", data);
+	
+	console.log("conference "+ JSON.stringify(this.cfm.conferences));
 
 }
+
+
 
 
 
