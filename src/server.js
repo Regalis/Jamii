@@ -213,6 +213,10 @@ io.sockets.on("connection", function(socket) {
 	ch.conf_createHandler( data, socket );
     } );
     
+    socket.on("conf_request", function(data){
+	ch.conf_requestHandler( data, socket );
+    } );
+
     
 });
 
