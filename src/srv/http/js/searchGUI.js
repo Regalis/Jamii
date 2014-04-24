@@ -74,7 +74,7 @@ function searchFriends() {
 function drawTableResults( diff ){
 	//var whereToDraw = document.getElementById("divForSearchResults");	
 	
-	var whereToDraw = document.getElementById("lWindow");	
+	var whereToDraw = document.getElementById("search_result_div");	
 	var tableNameID = "tableResults";	
 	var currentPage = ( window.counterPage + diff ) * window.perPage; 
 
@@ -130,9 +130,12 @@ function drawTableResults( diff ){
 		createButton( td, "nextButton", "next", clickHandler );		
 		tr.appendChild( td );
 		table.appendChild( tr );
-					
+
 		whereToDraw.appendChild( table );
-		
+
+
+
+
 	}
 }
 

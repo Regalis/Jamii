@@ -10,9 +10,9 @@ function fitToContainer(canvas) {
 function clickDiv() {
    var something = document.getElementById('me');
    something.style.cursor = 'pointer';
-   something.onclick = function () {
-      document.getElementById("lWindow").innerHTML = document.getElementById('me');
-   };
+   //something.onclick = function () {
+     // document.getElementById("lWindow").innerHTML = document.getElementById('me');
+   //};
 }
 function clickView() {
    var views = document.getElementById("dBar").getElementsByTagName("div");
