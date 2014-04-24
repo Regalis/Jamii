@@ -153,6 +153,7 @@ io.sockets.on("connection", function(socket) {
     // 	}
     // }
 
+
     socket.on("login", function(data){
 	ch.loginHandler( data, socket );
     } );

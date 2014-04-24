@@ -1,3 +1,5 @@
+usersDatabase = require('./usersDatabase.js');
+
 /** 
 	Function to retreieve data object from object received by a socket
 	Could do some additional checking for session ID if necesary.
@@ -52,18 +54,23 @@ clientHandlers.prototype.loginHandler =  function(data, socket){
 }
 
 
-clientHandlers.prototype.whoAmIHandler = function(packet, socket){
-    
+clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
     var session_id = packet.sessionID;
+	console.log("WhoAmI handler... packet: " + JSON.stringify(packet));
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session(session_id);
-    
-    // fix the change of socket for client
-    this.cm.update_session_socket( session_id, socket );
-    
-    var user_obj = this.udb.read_user_data(user_id).strip_object() ;
+	console.log("userId: " + user_id);
+	
+	var user_obj = new usersDatabase.User();
+
+	if (user_id != undefined) {
+		// fix the change of socket for client
+		this.cm.update_session_socket(session_id, socket);
+		user_obj = this.udb.read_user_data(user_id).strip_object() ;
+	} else {
+		user_obj.id = -1;
+	}
     socket.emit("yourData", user_obj);
-    
 }
 
 
