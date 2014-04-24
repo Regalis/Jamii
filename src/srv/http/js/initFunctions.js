@@ -74,6 +74,25 @@ window.onload = function () {
 	});
 
 
+
+
+window.connection.registerHandler("password_change_confirmation", function (data) {
+	alert("Password has been changed");
+	document.getElementById("new_password").value="";
+	document.getElementById("confirm_password").value="";
+	document.getElementById("current_password").value="";
+});
+
+window.connection.registerHandler("password_change_error", function (data) {
+	alert("Wrong current password, please try again");
+	document.getElementById("new_password").value="";
+	document.getElementById("confirm_password").value="";
+	document.getElementById("current_password").value="";
+});
+
+
+
+
    window.connection.registerHandler("drawOK", window.wb.drawHandler);
 
     document.getElementById("file_share_button").style.visibility = "hidden";
