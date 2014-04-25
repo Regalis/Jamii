@@ -235,6 +235,9 @@ io.sockets.on("connection", function(socket) {
 	ch.conf_responseHandler( data, socket );
     } );
 
+    socket.on("send_file", function(data){
+	ch.send_fileHandler( data, socket );
+    } );
     
     
     
