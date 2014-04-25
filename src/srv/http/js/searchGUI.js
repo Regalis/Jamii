@@ -43,7 +43,7 @@ function formValidate(){
 
 function showSearchForm () {
 	window.removeTableResults( "tableRequests" );
-	document.getElementById("localVideo").style.display = "none";
+
 	//document.getElementById("divForSearchResults").style.display = "none";
 	document.getElementById("searchForm").style.display = "block";
 	
