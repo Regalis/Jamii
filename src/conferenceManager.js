@@ -5,6 +5,8 @@ var Conference = function(admin_id){
     this.admin = admin_id;
     this.participants = [];
     this.room_name = admin_id.toString();
+    // a list of files sent by the users
+    this.files = [];
 }
 
 var conferenceManager = function( cm ){
@@ -108,5 +110,16 @@ conferenceManager.prototype.get_conf_by_user = function(user_id){
     return null;
 }
 
+
+conferenceManager.prototype.share_file = function(user_id, file){
+    var conf = this.get_conf_by_user( user_id );
+    file["sender"] = user_id;
+    conf.files.push( file );
+    
+    // notify users about new file
+    var to_send = { "name":file["name"], "sender":user_id };
+    this.broadcast( user_id, "new_file", to_send );
+    
+}
 
 module.exports.conferenceManager = conferenceManager;

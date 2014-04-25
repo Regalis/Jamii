@@ -388,6 +388,15 @@ clientHandlers.prototype.conf_responseHandler = function(packet, socket){
     
 }
 
+// for file sharing
+clientHandlers.prototype.send_fileHandler = function(packet, socket){
+    var data = strip_data_object(packet);
+    var session_id = packet.sessionID;
+    var user_id = this.cm.get_user_by_session( session_id );
+    
+    this.cfm.share_file( user_id, data );
+
+}
 
 
 
