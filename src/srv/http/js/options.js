@@ -18,6 +18,9 @@
  * Contributors:
  * -> Mateusz Zajac <matteo.zajac@gmail.com>
  */
+
+var gm = require('gm');
+
 function password_change() {
    var new_password = document.getElementById("new_password").value;
    var confirm_pasword = document.getElementById("confirm_password").value;
@@ -80,4 +83,11 @@ function screen() {
    } else {
       alert("SCREEN OFF");
    }
+}
+
+
+function avatar_change(){
+var data = {};
+data["avatar"]= window.avatar;
+window.connection.send("avatar_change", data)
 }

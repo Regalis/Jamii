@@ -241,7 +241,7 @@ clientHandlers.prototype.avatar_changeHandler = function(packet, socket){
     
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
-    var user_id = this.cm.get_user_by_session( packet["session_id"] );
+    var user_id = this.cm.get_user_by_session( session_id );
     var new_avatar = data["avatar"];
 
     // @todo: resize the received image to avatar size before storing

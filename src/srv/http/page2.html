@@ -27,11 +27,17 @@
       <script type="text/javascript" src="js/whiteboard.js"></script>
       <script type="text/javascript" src="js/upper_bar.js"></script>
 		<script type="text/javascript" src="js/search.js"></script>
+		<script type="text/javascript" src="js/sendFile.js"></script>
 		<script type="text/javascript" src="js/searchGUI.js"></script>
 <script type="text/javascript" src="js/addFriend.js"></script>
 
-      <style>
-      </style>
+     <style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
    </head>
    <body onresize="onResize()">
       <!-- UPPER BAR -->
@@ -152,26 +158,7 @@ Clear
          </div>
          <!-- OPTIONS -->
          <div id="options" class="rWindow">
-            <!--
-               <form>
-               <fieldset>
-               <legend>
-               General options
-               </legend>
-               <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>
-               Microphone
-               <br>
-               <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>
-               Camera
-               <br>
-               <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>
-               Screen
-               <br>
-               <br>
-               <br>
-               </fieldset>
-               </form>
-               -->
+       
             <form onsubmit="return account_change()">
                <fieldset>
                   <legend>
@@ -193,6 +180,12 @@ Clear
                   </button>
                </fieldset>
             </form>
+
+<input type="file" id="files" name="files[]" multiple />
+<output id="list"></output>
+<button id="avatar_change_button" onclick="avatar_change()">Change</button>
+
+
             <form onsubmit="password_change(); return false;">
                <fieldset>
                   <legend>

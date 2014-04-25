@@ -5,8 +5,9 @@ var webrtc = new SimpleWebRTC({
         autoRequestMedia: true
 });
 
+/*
 webrtc.on('readyToCall', function () {
         webrtc.joinRoom('My room name');
 });
 
-
+*/
