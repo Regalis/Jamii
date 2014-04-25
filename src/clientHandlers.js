@@ -342,7 +342,7 @@ clientHandlers.prototype.conf_requestHandler = function(packet, socket){
 clientHandlers.prototype.conf_responseHandler = function(packet, socket){
     var data = strip_data_object(packet);
     
-    var admin_id = Number( data['my_id'] );
+    var admin_id = Number( data['admin_id'] );
     var user_id = Number( data['user_id'] );
     var response = data['response'] ;
 
