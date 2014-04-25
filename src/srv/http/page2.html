@@ -181,9 +181,9 @@ Clear
                </fieldset>
             </form>
 
-<input type="file" id="files" name="files[]" multiple />
-<output id="list"></output>
-<button id="avatar_change_button" onclick="avatar_change()">Change</button>
+					<input type="file" id="files" name="files[]" multiple />
+					<output id="list"></output>
+					<button id="avatar_change_button" onclick="avatar_change()">Change</button>
 
 
             <form onsubmit="password_change(); return false;">
@@ -217,25 +217,18 @@ Clear
          </form>
          </div>
          <div id ="fileshare" class="rWindow">
-            <form>
+            <form onsubmit="return file_transfer();">
                <fieldset>
                   <legend>
                      File share
                   </legend>
-                  <input type="file" id="files" name="file" />
-                  <button onclick="abortRead();">
-                  Cancel read
+               	 <input type="file" id="filesToSend" name="files[]" multiple /><br>
+						<output id="listFiles"></output><br>
+						<button id="file_send_button" type="submit">Send</button><br>
                   </button>
                </fieldset>
             </form>
-            <div id="progress_bar">
-               <div class="percent">
-                  0%
-               </div>
-            </div>
-            <button id = "file_share_button">
-            Send
-            </button>
+          
 
       
          </div>

@@ -60,10 +60,13 @@ function handleFileSelect(evt) {
         return function(e) {
 			var result = reader.result;
 
-var temp = JSON.stringify(result);
-var splited = temp.split(",");
-console.log(splited[1]);
-window.avatar = splited[1];
+			var temp = JSON.stringify(result);
+			var splited = temp.split(",");
+			console.log(splited[1]);
+			window.file = splited[1];
+			//
+
+	
           // Render thumbnail.
          /* var span = document.createElement('span');
           span.innerHTML = ['<img class="thumb" src="', e.target.result,
@@ -74,6 +77,11 @@ window.avatar = splited[1];
 
       // Read in the image file as a data URL.
       reader.readAsDataURL(f);
+window.file_name = f.name;
+
+
+
+		
 
 
 
@@ -81,6 +89,7 @@ window.avatar = splited[1];
   }
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
+  document.getElementById('filesToSend').addEventListener('change', handleFileSelect, false);
 }
 /*
 * Initialize
@@ -147,7 +156,7 @@ window.connection.registerHandler("password_change_error", function (data) {
 
 	window.connection.registerHandler("drawOK", window.wb.drawHandler);
 
-	document.getElementById("file_share_button").style.visibility = "hidden";
+
 
 
 	fitToContainer(document.getElementById("layer1"));
