@@ -34,9 +34,39 @@ function FriendListGUI(parent_name){
 
 }
 
-function drag(ev)
-{
-ev.dataTransfer.setData("Text",ev.target.id);
+function drag(ev) {
+   ev.dataTransfer.setData("Login", ev.target.id);
+   ev.dataTransfer.setData("Id", ev.target.getAttribute("data-id"));
+
+}
+
+
+function allowDrop(ev) {
+   ev.preventDefault();
+}
+function drop(ev) {
+   ev.preventDefault();
+   var data = ev.dataTransfer.getData("Login");
+   var info = {
+      "my_id": window.my_user_object["id"],
+      "user_id": ev.dataTransfer.getData("Id"),
+   }
+   ev.target.appendChild(document.getElementById(data).cloneNode(true));
+   console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
+
+   window.connection.send("conf_request", info);
+}
+function dropFirst(ev) {
+   ev.preventDefault();
+   var create_conf_data = {
+      "my_id": window.my_user_object["id"],
+      "user_id": ev.dataTransfer.getData("Id"),
+      "visibility": "public"
+   };
+   var data = ev.dataTransfer.getData("Login");
+   ev.target.appendChild(document.getElementById(data).cloneNode(true));
+   console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
+   window.connection.send("conf_create", create_conf_data);
 }
 
 
@@ -57,6 +87,8 @@ FriendListGUI.prototype.createTable = function(){
 	var li=document.createElement('li');
 	li.setAttribute('id', this.fl.getFriendLogin(i)); 
  	li.setAttribute('draggable','true');	
+	li.setAttribute('data-id', this.fl.getFriendId(i));
+
 	li.setAttribute('ondragstart','drag(event)'); 
 	this.ul.appendChild(li);
 	// create html enry to display the user's avatar
