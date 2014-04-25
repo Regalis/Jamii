@@ -41,9 +41,9 @@ ev.dataTransfer.setData("Text",ev.target.id);
 
 
 FriendListGUI.prototype.createTable = function(){
+	
 	var request = document.getElementById("invitation_button");
 	request.innerHTML="invitation " + window.my_user_object["requests_list"].length;
-	
 	request.onclick = askForRequestID; 
     
     this.ul=document.createElement('ul');

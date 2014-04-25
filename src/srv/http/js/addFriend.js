@@ -33,8 +33,20 @@ function sendInvitation(id){
 function gotNewFriend( data ) {	
 	console.log("NEW FRIEND :")	
 	console.log(JSON.stringify(data) );
-	window.flg.fl.addFriend( data );
+	
+	var user_info = {};
+	user_info["id"] = data["id"];	
+	user_info["first_name"] = data["_first_name"];
+	user_info["last_name"] = data["_last_name"];
+	user_info["login"] = data["_login"];
+	user_info["avatar"] = data["_avatar"];
+	//var index = window.flg.fl.friend_list["id"].indexOf( user_info["id"] );	
+	//if ( index < 0 ) {
+		window.flg.fl.addFriend( user_info );
+	//}	
+	//window.flg.fl.friend_list_gui.update();
 }
+
 function gotRequest( data ){
 	console.log( data );
 	
@@ -43,25 +55,20 @@ function gotRequest( data ){
 	
 	alert("Someone wants to be friend with you, check your invitations");
 	
-/*	hideSearchForm();
-	removeTableResults("tableResults");	
-	document.getElementById("localVideo").style.display = "none";
-	
-	window.candidates = [];
-	window.counterSend = 1;
-	window.counterReceive = 0;
-	window.perPage = 10;
-	window.counterPage = -1;
-	*/
 	
 }
 
 function askForRequestID(){
-	alert("askForRequestID");	
+	hideSearchForm();
+	removeTableResults ( "tableResults" );
+	document.getElementById("localVideo").style.display = "none";
+	
+	//alert("askForRequestID");	
 	
 	//console.log( "friendList.gotMathchingUsersHandler: received everybody ID's, I'll ask for each ID's info" );
 	//console.log( JSON.stringify( data ) );	
-	
+	console.log("your requests list ");
+	console.log( window.my_user_object["requests_list"] );
 	window.candidatesRequest = [];
 	window.counterSendRequest = window.my_user_object["requests_list"].length; //window.flg.fl.user_object["requests_list"].length;
 	window.counterReceiveRequest = 0;
@@ -76,7 +83,9 @@ function askForRequestID(){
 }
 
 function collectRequest ( user ){
-	alert("collectRequest");	
+	//alert("collectRequest");
+	console.log("dziwne zachowanie collect request");
+	console.log(user);	
 	var user_info = {};
 	
 	user_info["id"] = user["id"];
@@ -84,7 +93,7 @@ function collectRequest ( user ){
 	user_info["first_name"] = user["first_name"];
 	user_info["last_name"] = user[ "last_name" ];
 	user_info["email"] = user[ "email" ];
-	console.log( "friendList.collectCandidates:before pushing user_info: " );
+	console.log( "Add friend: " );
 	console.log( user_info );
 
 	window.candidatesRequest.push( user_info );		

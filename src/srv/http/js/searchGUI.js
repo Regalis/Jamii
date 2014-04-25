@@ -25,7 +25,7 @@ function searchInit(){
 	addInit();
 }
 
-function searchFormInit(){	
+function searchFormInit(){
 	document.getElementById("searchForm").style.display = "none";
 	//document.getElementById("divForSearchResults").style.display = "none";	
 	document.getElementById("add_friend").onclick = showSearchForm;
@@ -42,6 +42,7 @@ function formValidate(){
 }
 
 function showSearchForm () {
+	window.removeTableResults( "tableRequests" );
 	document.getElementById("localVideo").style.display = "none";
 	//document.getElementById("divForSearchResults").style.display = "none";
 	document.getElementById("searchForm").style.display = "block";
@@ -167,10 +168,12 @@ function clickHandler( evt ){
 	if ( node.name == "acceptButton" && node.value == "accept" ){
 		alert("accept");
 		node.value = "accepted";
-		//remove from window.user_object.["requests_list"]		
+		//remove from window.user_object.["requests_list"]				
 		var index = window.my_user_object["requests_list"].indexOf( node.parentNode.id );
-		if ( index > -1 )
-			window.my_user_object["requests_list"].splice( index, 1 );		
+		if ( index > -1 ){
+			window.my_user_object["requests_list"].splice( index, 1 );
+		}
+		
 		//alert( "inviter"+node.parentNode.id + "invitee"+window.my_user_object["id"] );		
 		window.connection.send( "invitationResponse", {"inviter":node.parentNode.id, "invitee":window.my_user_object["id"], "answer":1} );
 	

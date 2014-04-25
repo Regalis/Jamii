@@ -118,7 +118,12 @@ friendList.prototype.confirmation = function(isAccepted){
 
 
 friendList.prototype.addFriend = function(userInfo){
-    
+    console.log("TUTAJ FRIENDLIST");
+    console.log( this.friend_list );
+	for ( var i = 0; i < this.n_friends; ++i ) {
+		if ( this.friend_list[i]["id"] == userInfo["id"] )
+			return;
+	}    
     this.n_friends++;
     //this.friend_id_list.push(userInfo.id);
     this.friend_list.push(userInfo);
@@ -197,8 +202,7 @@ friendList.prototype.respondInvitation = function( invitation, decision ){
  *  object as stored on the server
  */
 friendList.prototype.gotNewFriendHandler = function(data){
-
-    // TODO: convert user data format if necessary
-    window.flg.fl.addFriend( data );
+	// TODO: convert user data format if necessary
+    window.flg.fl.addFriend( user_info );
 
 }

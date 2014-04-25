@@ -113,6 +113,7 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
 }
 
 //temporary
+
 clientHandlers.prototype.getUserDataFromIdHandler2 = function(packet, socket){
     
     var data = strip_data_object( packet );
@@ -213,6 +214,7 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
 }
 
 // stuff for adding friends
+
 clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
     var data = strip_data_object(packet);
     // step 1 - check whether such request was not already stored; if so, ignre this package

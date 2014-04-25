@@ -145,9 +145,9 @@ body {
 	background-color: #D9EFEE;
 }
 
-#friend_list li:last-child {
+/*#friend_list li:last-child {
 	display: none;
-}
+}*/
 
 #add_friend {
 	background-color: #14BA79;
