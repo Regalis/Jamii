@@ -30,6 +30,8 @@
 		<script type="text/javascript" src="js/sendFile.js"></script>
 		<script type="text/javascript" src="js/searchGUI.js"></script>
 <script type="text/javascript" src="js/addFriend.js"></script>
+<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
+
 
      <style>
   .thumb {
@@ -110,7 +112,7 @@
                      window.wb = new Whiteboard( document.getElementById("layer1") );
                      window.painter  = new Painter(1);
                      window.painter2  = new Painter(2);
-                     window.painter2.color = "red";
+                     window.painter.color = "#FF00FF";
                      window.wb.init();
                      document.getElementById("layer1");
                      
@@ -120,20 +122,12 @@
                   <table>
                      <tr>
                         <td>
-                           User 1 
-                           <br>
-                           <button type="button" style="background-color:black; width:70px;height:20px" onclick="window.painter.setColor('black')">
-                           </button>
-                           <br>
-                           <button type="button" style="background-color:red; width:70px;height:20px" onclick="window.painter.setColor('red')">
-                           </button>
-                           <br>
-                           <button type="button" style="background-color:green; width:70px;height:20px" onclick="window.painter.setColor('green')">
-                           </button>
+                          
 
   <button type="button" style="width:70px;height:20px" onclick="clear_whiteboard()">
 Clear
                            </button>
+<input class="color {hash:true}">
                            <br>
                         </td>
                         <td>
