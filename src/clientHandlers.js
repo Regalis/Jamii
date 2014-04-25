@@ -237,6 +237,21 @@ clientHandlers.prototype.account_changeHandler = function(packet, socket){
 }
 
 
+clientHandlers.prototype.avatar_changeHandler = function(packet, socket){
+    
+    var session_id = packet.sessionID;
+    var data = strip_data_object(packet);
+    var user_id = this.cm.get_user_by_session( packet["session_id"] );
+    var new_avatar = data["avatar"];
+
+    // @todo: resize the received image to avatar size before storing
+    var user_obj = this.udb.read_user_data(user_id);
+    user_obj["_avatar"] = new_avatar;
+    this.udb.save_user_data( user_obj );
+
+}
+
+
 // stuff for adding friends
 clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
     var data = strip_data_object(packet);
@@ -372,7 +387,6 @@ clientHandlers.prototype.conf_responseHandler = function(packet, socket){
     console.log("conference "+ JSON.stringify(this.cfm.conferences));
     
 }
-
 
 
 
