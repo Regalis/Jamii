@@ -253,7 +253,9 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
     invitee_obj['_requests_list'].push( Number(inviter_id) ); // store request
     this.udb.save_user_data( invitee_obj );    
     // pass the invitation packet
-    invitee_socket.emit("sendInvitation", data);
+    if( invitee_socket != null ){
+	invitee_socket.emit("sendInvitation", data);
+    }
 
 }
 
@@ -269,10 +271,6 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
     if( result == 0 ){ // request rejected by invitee, ignore
 	// @todo: do something smarter here rather than ignore
     }else{ // if response positive
-	var index = invitee_obj['_requests_list'].indexOf( inviter_id );
-	if( index >= 0 ){ // remove request from list
-	    invitee_obj['_requests_list'].splice( index, 1 );
-	}
 
 	// update friendship information
 	if( invitee_obj._friends_list.indexOf( inviter_id ) < 0 ){
@@ -281,8 +279,6 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	if( inviter_obj._friends_list.indexOf( invitee_id ) < 0 ){
 	    inviter_obj._friends_list.push( Number(invitee_id) )
 	}
-	this.udb.save_user_data( invitee_obj );    
-	this.udb.save_user_data( inviter_obj );    
 
 	// send "newFriend" packages to both sides
 	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
@@ -291,7 +287,14 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	invitee_socket.emit("newFriend", inviter_obj );
 	inviter_socket.emit("newFriend", invitee_obj );	
     }
-
+    
+    var index = invitee_obj['_requests_list'].indexOf( inviter_id );
+    if( index >= 0 ){ // remove request from list
+	invitee_obj['_requests_list'].splice( index, 1 );
+    }
+    this.udb.save_user_data( invitee_obj );    
+    this.udb.save_user_data( inviter_obj );    
+    
 }
 
 
@@ -299,6 +302,8 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 clientHandlers.prototype.conf_createHandler = function(packet, socket){
     var data = strip_data_object(packet);
     
+    console.log("CONFCREATEHANDLER: " + JSON.stringify( data ) );
+
     var admin_id = Number( data['my_id'] );
     var first_friend = Number( data['user_id'] );
     // @todo: retrieve and use visibilty information
@@ -307,7 +312,9 @@ clientHandlers.prototype.conf_createHandler = function(packet, socket){
     // invite first friend
     var ff_sock = this.cm.get_socket_by_userid( first_friend );
     var to_send = {"admin_id":admin_id};
-    ff_sock.emit("conf_invitation", to_send);
+    if( ff_sock != null ){
+	ff_sock.emit("conf_invitation", to_send);
+    }
 
 }
 
@@ -321,7 +328,9 @@ clientHandlers.prototype.conf_requestHandler = function(packet, socket){
     // invite friend
     var ff_sock = this.cm.get_socket_by_userid( user_id );
     var to_send = {"admin_id":admin_id};
-    ff_sock.emit("conf_invitation", to_send);
+    if( ff_sock != null ){
+	ff_sock.emit("conf_invitation", to_send);
+    }
 
 }
 
@@ -335,7 +344,9 @@ clientHandlers.prototype.conf_requestHandler = function(packet, socket){
     // invite friend
     var ff_sock = this.cm.get_socket_by_userid( user_id );
     var to_send = {"admin_id":admin_id};
-    ff_sock.emit("conf_invitation", to_send);
+    if( ff_sock != null ){
+	ff_sock.emit("conf_invitation", to_send);
+    }
 
 }
 
@@ -354,10 +365,12 @@ clientHandlers.prototype.conf_responseHandler = function(packet, socket){
     }    
     // maybe notify inviter of the refusal
     var sock = this.cm.get_socket_by_userid( admin_id );
-    sock.emit("conf_response", data);
+    if( sock != null ){
+	sock.emit("conf_response", data);
+    }
 	
-	console.log("conference "+ JSON.stringify(this.cfm.conferences));
-
+    console.log("conference "+ JSON.stringify(this.cfm.conferences));
+    
 }
 
 

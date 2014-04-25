@@ -57,7 +57,7 @@ clientManager.prototype.get_socket_by_userid = function( user_id ){
     }
 
     if( session_id  == -1 ){
-	return [];
+	return null;
     }
 
     return this.sessions[ session_id ];
