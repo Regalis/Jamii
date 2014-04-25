@@ -73,7 +73,7 @@ window.onload = function () {
 			temp["response"]=false;
 			console.log("Refuse conference invitation")
 		}
-		temp["user_id"] = window.flg.fl.my_user_object.id;
+		temp["user_id"] = window.my_user_object['id'];
 		temp["admin_id"]=data.admin_id;
     	window.connection.send("conf_response", temp);	
 	});
