@@ -14,7 +14,8 @@ var conferenceManager = function( cm ){
 
 // "Public" methods
 conferenceManager.prototype.is_in_conf = function( id ){
-    for(var conf in this.conferences){
+    for(var aid in this.conferences){
+	var conf = this.conferences[aid];
 	if( conf.participants.indexOf( id ) >= 0 || conf.admin == id ){
 	    return true;
 	}
@@ -44,11 +45,15 @@ conferenceManager.prototype.create_conference = function( admin_id ){
     var admin_socket = this.cm.get_socket_by_userid( admin_id );
     admin_socket.join( this.conferences[ admin_id ].room_name );
 
+    console.log("Present conferences after \"create_conference\": " + JSON.stringify( this.conferences ) );
+
 }
 
 conferenceManager.prototype.add_user_to_conf = function(admin_id, victim_id){
+    console.log("Beginning of \"add user to conf\" for admin " + admin_id + " and user " + victim_id );
+
     if( this.is_in_conf( victim_id ) ){
-	return -1;
+    	return -1;
     }
     
     this.conferences[ admin_id ].participants.push( victim_id );
