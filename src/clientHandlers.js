@@ -122,7 +122,7 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
 }
 
 // for friend adding  - temporary
-clientHandlers.prototype.getUserDataFromId2Handler = function(packet, socket){
+clientHandlers.prototype.getUserDataFromIdHandler2 = function(packet, socket){
     
     var data = strip_data_object( packet );
     if (!isNaN(data["id"])) {
@@ -275,10 +275,10 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	}
 
 	// update friendship information
-	if( invitee_obj._friends_list.idexOf( inviter_id ) < 0 ){
+	if( invitee_obj._friends_list.indexOf( inviter_id ) < 0 ){
 	    invitee_obj._friends_list.push( Number(inviter_id) )
 	}
-	if( inviter_obj._friends_list.idexOf( invitee_id ) < 0 ){
+	if( inviter_obj._friends_list.indexOf( invitee_id ) < 0 ){
 	    inviter_obj._friends_list.push( Number(invitee_id) )
 	}
 	this.udb.save_user_data( invitee_obj );    

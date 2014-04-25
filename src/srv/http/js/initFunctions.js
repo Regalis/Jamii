@@ -29,12 +29,14 @@
 function initMainScreen(){
 
     window.connection = new ConnectionManager("http://localhost","9393");
+        
+	//call searchFormInit to prepare to show search form if Add Friend button is pushed     
+    searchInit();
+	addInit();
     
     // inside FriendListGUI constructor, friendList is created as flg.fl
     window.flg = new FriendListGUI("friendList");
-    //call searchFormInit to prepare to show search form if Add Friend button is pushed     
-    
-    searchInit();
+
 
 }
 /*
