@@ -22,9 +22,10 @@
 function searchInit(){
 	searchFormInit();
 	search();
+	addInit();
 }
 
-function searchFormInit(){	
+function searchFormInit(){
 	document.getElementById("searchForm").style.display = "none";
 	//document.getElementById("divForSearchResults").style.display = "none";	
 	document.getElementById("add_friend").onclick = showSearchForm;
@@ -41,6 +42,7 @@ function formValidate(){
 }
 
 function showSearchForm () {
+	window.removeTableResults( "tableRequests" );
 	document.getElementById("localVideo").style.display = "none";
 	//document.getElementById("divForSearchResults").style.display = "none";
 	document.getElementById("searchForm").style.display = "block";
@@ -74,8 +76,8 @@ function searchFriends() {
 function drawTableResults( diff ){
 	//var whereToDraw = document.getElementById("divForSearchResults");	
 	
-	var whereToDraw = document.getElementById("search_result_div");	
-	var tableNameID = "tableResults";	
+	var whereToDraw = document.getElementById("lWindow");	
+	var tableNameID = "tableResults";
 	var currentPage = ( window.counterPage + diff ) * window.perPage; 
 
 	if (  currentPage >= 0 && currentPage < window.counterSend && window.counterSend != 0 ){ 		
@@ -129,13 +131,9 @@ function drawTableResults( diff ){
 		createButton( td, "prevButton", "prev", clickHandler );
 		createButton( td, "nextButton", "next", clickHandler );		
 		tr.appendChild( td );
-		table.appendChild( tr );
-
+		table.appendChild( tr );				
 		whereToDraw.appendChild( table );
-
-
-
-
+		
 	}
 }
 
@@ -160,12 +158,37 @@ function clickHandler( evt ){
 	var node = evt.target || evt.srcElement;	
 	if ( node.name == "sendButton" && node.value == "send" ){ 
 		node.value = "sended";
-		alert( 'inviter: ' +window.my_user_object["id"] +"\ninvitee: " +node.parentNode.id );
+		alert( 'inviter: ' +window.my_user_object["id"] +"\ninvitee: " +node.parentNode.id );		
 		sendInvitation( node.parentNode.id );
 	}	
 	if ( node.name == "prevButton" )
 		drawTableResults( -1 );
 	if ( node.name == "nextButton" )
 		drawTableResults( 1 );
+	if ( node.name == "acceptButton" && node.value == "accept" ){
+		alert("accept");
+		node.value = "accepted";
+		//remove from window.user_object.["requests_list"]				
+		var index = window.my_user_object["requests_list"].indexOf( node.parentNode.id );
+		if ( index > -1 ){
+			window.my_user_object["requests_list"].splice( index, 1 );
+		}
+		
+		//alert( "inviter"+node.parentNode.id + "invitee"+window.my_user_object["id"] );		
+		window.connection.send( "invitationResponse", {"inviter":node.parentNode.id, "invitee":window.my_user_object["id"], "answer":1} );
+	
+	}
+	if ( node.name == "rejectButton" && node.value == "reject" ){
+		node.value = "rejected";
+		//remove from window.user_object["requests_list"]		
+		var index = window.my_user_object["requests_list"].indexOf( node.parentNode.id );
+		if ( index > -1 )
+			window.my_user_object["requests_list"].splice( index, 1 );			
+		window.connection.send( "invitationResponse", {"inviter":node.parentNode.id, "invitee":window.my_user_object["id"], "answer":0} );
+	}
+	if ( node.name == "prevButtonRequest" )
+		drawTableRequest( -1 );
+	if ( node.name == "nextButtonRequest" )
+		drawTableRequest( 1 );
 }
 

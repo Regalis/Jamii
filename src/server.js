@@ -173,10 +173,16 @@ io.sockets.on("connection", function(socket) {
     socket.on("getUserDataFromId", function(data){
 	ch.getUserDataFromIdHandler( data, socket );
     } );
+    
+    //temp
+    socket.on("getUserDataFromId2", function(data){
+	ch.getUserDataFromIdHandler2( data, socket );
+    } );
+    //end temp
 
     // temp
     socket.on("getUserDataFromId2", function(data){
-	ch.getUserDataFromId2Handler( data, socket );
+	ch.getUserDataFromIdHandler2( data, socket );
     } );
     // end temp
 
@@ -207,6 +213,10 @@ io.sockets.on("connection", function(socket) {
      
     socket.on("sendInvitation", function(data){
 	ch.sendInvitationHandler( data, socket );
+    } );
+    
+    socket.on("invitationResponse", function(data){
+	ch.invitationResponseHandler( data, socket );
     } );
 
     socket.on("conf_create", function(data){
