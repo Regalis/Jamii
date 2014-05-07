@@ -147,3 +147,11 @@ Whiteboard.prototype.init = function(){
 Whiteboard.prototype.toggleVisibleUser = function(id){
     
 }
+
+function clear_whiteboard(){
+
+	window.wb.canvas.getContext("2d").clearRect(0,0,window.wb.canvas.width, window.wb.canvas.height);
+}
+function pickColor(data){	
+	window.painter.color = data["color"];
+}

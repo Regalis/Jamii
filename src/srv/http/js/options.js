@@ -19,7 +19,7 @@
  * -> Mateusz Zajac <matteo.zajac@gmail.com>
  */
 
-var gm = require('gm');
+
 
 function password_change() {
    var new_password = document.getElementById("new_password").value;
@@ -88,6 +88,7 @@ function screen() {
 
 function avatar_change(){
 var data = {};
-data["avatar"]= window.avatar;
+data["avatar"]= window.file;
 window.connection.send("avatar_change", data)
+return false;
 }

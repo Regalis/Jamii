@@ -26,8 +26,7 @@ function clickView() {
          document.getElementById("friendList").style.visibility = "hidden";
          document.getElementById("options").style.visibility = "hidden";
          document.getElementById("fileshare").style.visibility = "hidden";
-         document.getElementById("createConference").style.visibility = "hidden";
-         document.getElementById("file_share_button").style.visibility = "hidden";
+         //document.getElementById("createConference").style.visibility = "hidden";
          document.getElementById("whiteboard").style.visibility = "hidden";
 	  if( document.getElementById("logout") == document.getElementById(this.className) ){
 	      window.connection.logout();
