@@ -19,6 +19,8 @@ Painter.prototype.setActive = function(val){
 
     if ( this.active == true && val ==false ){
 	window.wb.sendStroke();
+    }else{
+	window.wb.stroke = [];
     }
     this.active = val;
 }
@@ -31,22 +33,22 @@ function Whiteboard(canvas){
  
 
 Whiteboard.prototype.drawHandler = function(packet){
-    
-    // don't re-drwa your own strokes
+
+    // don't re-draw your own strokes
     if( packet["author"] == window.flg.fl.user_object.id ){
 	return;
     }
 
-    console.log("Received draw data ");
-    window.wb.drawStroke( window.painter2, packet);
-    
+    window.wb.drawStroke( packet.painter, packet);
 }
 
 Whiteboard.prototype.sendStroke = function(){
     var data = {};
     data["points"] = this.stroke;
     data["author"] = window.flg.fl.user_object.id;
+    data["painter"] = window.painter;
     window.connection.send("draw", data);
+    this.stroke = [];
 }
 
 
@@ -74,6 +76,8 @@ Whiteboard.prototype.drawStroke = function(painter, data) {
     console.log("Received points: " + JSON.stringify( points ) );
 
     var ctx = this.canvas.getContext('2d');
+
+    ctx.beginPath(); 
    
     for(var i=0; i<points.length-1; i++){
 	
@@ -83,15 +87,15 @@ Whiteboard.prototype.drawStroke = function(painter, data) {
 
 
 
-	ctx.beginPath(); 
 	ctx.moveTo(point.x, point.y);
 	ctx.strokeStyle = painter.color;
 	ctx.lineWidth = painter.thickness;
 	var point = points[i+1];
 	ctx.lineTo(point.x,point.y);
-	ctx.stroke();
     }
-
+    
+    ctx.closePath();
+    ctx.stroke();
 
 }
 
