@@ -105,6 +105,13 @@ window.onload = function () {
 
 	initMainScreen();
 
+document.getElementById("avatar_snap_button").addEventListener("click", function() {
+	var canvas = document.getElementById("uBar");
+		context = canvas.getContext("2d");
+		alert("AASSA");
+	context.drawImage(video, 0, 0, 640, 480);
+});
+
 
 	window.connection.registerHandler("chatOK", function (data) {
 		var list = document.getElementById("textList");
@@ -252,7 +259,6 @@ function dropFirst(ev) {
 	window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
 	window.conf_admin = window.my_user_object["id"];
 }
-
 
 
 
