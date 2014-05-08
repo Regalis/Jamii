@@ -58,14 +58,19 @@ function initMainScreen(){
 			}
 
 			var reader = new FileReader();
-
+			window.reader = reader;
 			// Closure to capture the file information.
 			reader.onload = (function(theFile) {
 				return function(e) {
 					var result = reader.result;
-
+					
 					var temp = JSON.stringify(result);
 					var splited = temp.split(",");
+temp =  splited[0];
+temp = temp.replace("\"data:","");
+var arr = temp.split(";");
+temp = arr[0];
+	window.file_type=temp;
 					console.log(splited[1]);
 					window.file = splited[1];
 					//
@@ -132,7 +137,7 @@ var a = document.createElement('a');
 
 var linkText = document.createTextNode(data.name);
 a.appendChild(linkText);
-a.title = "Google";
+a.title = "data.name";
 a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+data.name;
 
 
