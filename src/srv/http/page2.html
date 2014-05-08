@@ -1,261 +1,262 @@
 <html>
-   <head>
-      <link rel="icon" href="images/favicon.png" type="image/png">
-      <title>
-         Jamii - community
-      </title>
-      <link rel="stylesheet" href="css/style-app.css" type="text/css" />
-      
-         <script src="http://simplewebrtc.com/latest.js">
-         </script>
-        
-      <!-- for server on localhost 
+<head>
+<link rel="icon" href="images/favicon.png" type="image/png">
+<title>
+	Jamii - community
+</title>
+<link rel="stylesheet" href="css/style-app.css" type="text/css" />
+
+<script src="http://simplewebrtc.com/latest.js">
+</script>
+
+<!-- for server on localhost 
 
       <script src="js/latest.js"></script>
 
 -->
 
-      <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-      <script type="text/javascript" src="js/friendList.js"></script>
-      <script type="text/javascript" src="js/friendListGUI.js"></script>
-      <script type="text/javascript" src="js/connectionManager.js"></script>
-      <script type="text/javascript" src="js/chat.js"></script>
-      <script type="text/javascript" src="js/initFunctions.js"></script>
-      <script type="text/javascript" src="js/options.js"></script>
-      <script type="text/javascript" src="js/video.js"></script>
-      <script type="text/javascript" src="js/rest.js"></script>
-      <script type="text/javascript" src="js/whiteboard.js"></script>
-      <script type="text/javascript" src="js/upper_bar.js"></script>
-		<script type="text/javascript" src="js/search.js"></script>
-		<script type="text/javascript" src="js/sendFile.js"></script>
-		<script type="text/javascript" src="js/searchGUI.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="js/friendList.js"></script>
+<script type="text/javascript" src="js/friendListGUI.js"></script>
+<script type="text/javascript" src="js/connectionManager.js"></script>
+<script type="text/javascript" src="js/chat.js"></script>
+<script type="text/javascript" src="js/initFunctions.js"></script>
+<script type="text/javascript" src="js/options.js"></script>
+<script type="text/javascript" src="js/video.js"></script>
+<script type="text/javascript" src="js/rest.js"></script>
+<script type="text/javascript" src="js/whiteboard.js"></script>
+<script type="text/javascript" src="js/upper_bar.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
+<script type="text/javascript" src="js/sendFile.js"></script>
+<script type="text/javascript" src="js/searchGUI.js"></script>
 <script type="text/javascript" src="js/addFriend.js"></script>
 <script type="text/javascript" src="js/jscolor/jscolor.js"></script>
 
 
-     <style>
-  .thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
+<style>
+.thumb {
+	height: 75px;
+	border: 1px solid #000;
+	margin: 10px 5px 0 0;
+}
 </style>
-   </head>
-   <body onresize="onResize()">
-      <!-- UPPER BAR -->
-      <div id="uBar">
-         <div id="user1"  ondrop="dropFirst(event)" ondragover="allowDrop(event)">
-            <div id="remoteVideos">
-            </div>
-         </div>
-         <div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)" >
-         </div>
-         <div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)" >
-         </div>
-         <div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)" >
-         </div>
-         <div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)" >
-         </div>
-         <div id="me">
-            <video id="localVideo">
-            </video>
-         </div>
-         <h2>
-            Jamii
-         </h2>
-      </div>
-      <div id="content">
-         <!-- MAIN VIEW -->
-         <div id="lWindow">
-				<div id="search_result_div" >
+</head>
+<body onresize="onResize()">
+<!-- UPPER BAR -->
+<div id="uBar">
+	<div id="user1"  ondrop="dropFirst(event)" ondragover="allowDrop(event)">
+		<div id="remoteVideos">
+		</div>
+	</div>
+	<div id="user2"  ondrop="drop(event)" ondragover="allowDrop(event)" >
+	</div>
+	<div id="user3"  ondrop="drop(event)" ondragover="allowDrop(event)" >
+	</div>
+	<div id="user4"  ondrop="drop(event)" ondragover="allowDrop(event)" >
+	</div>
+	<div id="user5"  ondrop="drop(event)" ondragover="allowDrop(event)" >
+	</div>
+	<div id="me">
+		<video id="localVideo">
+		</video>
+	</div>
+	<h2>
+		Jamii
+	</h2>
+</div>
+<div id="content">
+	<!-- MAIN VIEW -->
+	<div id="lWindow">
+		<div id="search_result_div" >
+		</div>
+		<div id="createConference">
+			START CONFERENCE
+			<br>
+			<input type="radio" name="conferenceVisibility" value="Private">
+			Private
+			<br>
+			<input type="radio" name="conferenceVisibility" value="Public" checked>
+			Public
+			<br>
+		</div>
+		<div id="whiteboard">
+			<div class="wrapper" style="border-bottom:solid #000000;border-top:solid #000000; width: 100%;">
+				<div id="canvasesdiv" style="position:relative; width:100%; height:400px">
+					<canvas id="layer1"
+						style="z-index: 1;
+						position:absolute;
+						background-color:#ffe4c4;
+						left:0px;
+						top:0px;
+						" height="400px" width="100%">
+						This text is displayed if your browser does not support HTML5 Canvas.
+					</canvas>
+					<!-- 
+			<canvas id="layer2" -->
+					<!--     style="z-index: 2; -->
+					<!--            position:absolute; -->
+					<!--            left:0px; -->
+					<!--            top:0px; -->
+					<!--            " height="400px" width="800px">
+			-->
+					<!--   This text is displayed if your browser does not support HTML5 Canvas. -->
+					<!-- 
+			</canvas>
+			-->
 				</div>
-            <div id="createConference">
-               START CONFERENCE
-               <br>
-               <input type="radio" name="conferenceVisibility" value="Private">
-               Private
-               <br>
-               <input type="radio" name="conferenceVisibility" value="Public" checked>
-               Public
-               <br>
-            </div>
-            <div id="whiteboard">
-               <div class="wrapper" style="border-bottom:solid #000000;border-top:solid #000000; width: 100%;">
-                  <div id="canvasesdiv" style="position:relative; width:100%; height:400px">
-                     <canvas id="layer1"
-                        style="z-index: 1;
-                        position:absolute;
-								background-color:#ffe4c4;
-                        left:0px;
-                        top:0px;
-                        " height="400px" width="100%">
-                        This text is displayed if your browser does not support HTML5 Canvas.
-                     </canvas>
-                     <!-- 
-                        <canvas id="layer2" -->
-                     <!--     style="z-index: 2; -->
-                     <!--            position:absolute; -->
-                     <!--            left:0px; -->
-                     <!--            top:0px; -->
-                     <!--            " height="400px" width="800px">
-                        -->
-                     <!--   This text is displayed if your browser does not support HTML5 Canvas. -->
-                     <!-- 
-                        </canvas>
-                        -->
-                  </div>
-                  <!-- 
-                     <canvas id="cv" width=600px, height=400px>
-                     </canvas>
-                     -->
-                  <script>
-                     window.wb = new Whiteboard( document.getElementById("layer1") );
-                     window.painter  = new Painter(1);
-                     window.painter2  = new Painter(2);
-                     window.painter.color = "#FF00FF";
-                     window.wb.init();
-                     document.getElementById("layer1");
-                     
-                  </script>
-               </div>
-               <div id="panel">
-                  <table>
-                     <tr>
-                        <td>
-                          
+				<!-- 
+		     <canvas id="cv" width=600px, height=400px>
+		     </canvas>
+		     -->
+				<script>
+window.wb = new Whiteboard( document.getElementById("layer1") );
+window.painter  = new Painter(1);
+window.painter2  = new Painter(2);
+window.painter.color = "#FF00FF";
+window.wb.init();
+document.getElementById("layer1");
 
-  <button type="button" style="width:70px;height:20px" onclick="clear_whiteboard()">
-Clear
-                           </button>
-<input class="color {hash:true}">
-                           <br>
-                        </td>
-                        <td>
-                        </td>
-                     </tr>
-                  </table>
-               </div>
-            </div>
-            <div id="searchForm" class="popup_form">
-				<form>
-					<fieldset>
-						<legend>Search Friend</legend>
-						<label for="login">Login: </label><input id="login" type="text" class="valid" /><br />
-						<label for="first_name">First name: </label><input id="first_name" type="text" class="valid" /><br />
-						<label for="last_name">Last name: </label><input id="last_name" type="text" class="valid" /><br />
-						<label for="email">Email: </label><input id="email" type="text" class="valid"/><br />
-						<label for="passwd">Password: </label><input id="passwdReg" type="password" /><br /><br />
-						<input id="search_button" class="search_button" type="button" value="Search" />
-					</fieldset>
-				</form>
-         	</div>
-         </div>
-         <!-- OPTIONS -->
-         <div id="options" class="rWindow">
-       
-            <form onsubmit="return account_change()">
-               <fieldset>
-                  <legend>
-                     Account info
-                  </legend>
-                  <input class="valid" id="login_options" placeholder="Login" type="text" />
-                  <br />
-                  <input class="valid" id="first_name_options" placeholder="First name" type="text" />
-                  <br />
-                  <input class="valid" id="last_name_options" placeholder="Last name" type="text" />
-                  <br />
-                  <input class="valid" id="email_options" placeholder="E-mail" type="text" />
-                  <br />
-                  <button id="change_account_button" type="submit">
-                  Save
-                  </button>
-                  <button id="reset_options" type="reset">
-                  Reset
-                  </button>
-               </fieldset>
-            </form>
-
-					<input type="file" id="files" name="files[]" multiple />
-					<output id="list"></output>
-					<button id="avatar_change_button" onclick="avatar_change()">Change</button>
+				</script>
+			</div>
+			<div id="panel">
+				<table>
+					<tr>
+						<td>
 
 
-            <form onsubmit="password_change(); return false;">
-               <fieldset>
-                  <legend>
-                     Change password
-                  </legend>
-                  <input class="valid" id="current_password" placeholder="current password" type="password" />
-                  <br />
-                  <input class="valid" id="new_password" placeholder="type new password" type="password" />
-                  <br />
-                  <input class="valid" id="confirm_password" placeholder="confirm password" type="password" />
-                  <br />
-                  <button id="change_pass_button" type="submit">
-                  Save
-                  </button>
-               </fieldset>
-            </form>
-         </div>
-         <!-- CHAT -->
+							<button type="button" onclick="clear_whiteboard()">
+								Clear
+							</button>
+							<input class="color {hash:true}">
+							<br>
+						</td>
+						<td>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="searchForm" class="popup_form">
+			<form>
+				<fieldset>
+					<legend>Search Friend</legend>
+					<label for="login">Login: </label><input id="login" type="text" class="valid" /><br />
+					<label for="first_name">First name: </label><input id="first_name" type="text" class="valid" /><br />
+					<label for="last_name">Last name: </label><input id="last_name" type="text" class="valid" /><br />
+					<label for="email">Email: </label><input id="email" type="text" class="valid"/><br />
+					<label for="passwd">Password: </label><input id="passwdReg" type="password" /><br /><br />
+					<input id="search_button" class="search_button" type="button" value="Search" />
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<!-- OPTIONS -->
+	<div id="options" class="rWindow">
+
+		<form onsubmit="return account_change()">
+			<fieldset>
+				<legend>
+					Account info
+				</legend>
+				<input class="valid" id="login_options" placeholder="Login" type="text" />
+				<br />
+				<input class="valid" id="first_name_options" placeholder="First name" type="text" />
+				<br />
+				<input class="valid" id="last_name_options" placeholder="Last name" type="text" />
+				<br />
+				<input class="valid" id="email_options" placeholder="E-mail" type="text" />
+				<br />
+				<button id="change_account_button" type="submit">
+					Save
+				</button>
+				<button id="reset_options" type="reset">
+					Reset
+				</button>
+			</fieldset>
+		</form>
+
+		<input type="file" id="files" name="files[]" multiple />
+		<output id="list"></output>
+		<button id="avatar_change_button" onclick="avatar_change()">Change</button>
 
 
-         <div id="chat" class="rWindow">
-			<form onsubmit="return chat_send()">
-          <fieldset>
-            	<ul id="textList">
-            	</ul>
-            	<input id="chat_input" type="text" name="chat_input"/>
-            	<input id="send" class="send_button" type="submit" type="button" value="Send" />
-			 </fieldset>
-         </form>
-         </div>
-         <div id ="fileshare" class="rWindow">
-            <form onsubmit="return file_transfer();">
-               <fieldset>
-                  <legend>
-                     File share
-                  </legend>
-               	 <input type="file" id="filesToSend" name="files[]" multiple /><br>
-						<output id="listFiles"></output><br>
-						<button id="file_send_button" type="submit">Send</button><br>
-                  </button>
-               </fieldset>
-            </form>
-          
+		<form onsubmit="password_change(); return false;">
+			<fieldset>
+				<legend>
+					Change password
+				</legend>
+				<input class="valid" id="current_password" placeholder="current password" type="password" />
+				<br />
+				<input class="valid" id="new_password" placeholder="type new password" type="password" />
+				<br />
+				<input class="valid" id="confirm_password" placeholder="confirm password" type="password" />
+				<br />
+				<button id="change_pass_button" type="submit">
+					Save
+				</button>
+			</fieldset>
+		</form>
+	</div>
+	<!-- CHAT -->
 
-      
-         </div>
-         <div id="friendList" class="rWindow">
-	   <button id="invitation_button" class="option_button" type="submit" ></button>
-           <button id="add_friend" type="submit" class="option_button">
-            + Add Friend
-            </button>
-         </div>
+
+	<div id="chat" class="rWindow">
+		<form onsubmit="return chat_send()">
+			<fieldset>
+				<ul id="textList">
+				</ul>
+				<input id="chat_input" type="text" name="chat_input"/>
+				<input id="send" class="send_button" type="submit" type="button" value="Send" />
+			</fieldset>
+		</form>
+	</div>
+	<div id ="fileshare" class="rWindow">
+		<form onsubmit="return file_transfer();">
+			<fieldset>
+				<legend>
+					File share
+				</legend>
+				<input type="file" id="filesToSend" name="files[]" multiple /><br>
+				<output id="listFiles"></output><br>
+				<button id="file_send_button" type="submit">Send</button><br>
+			</button>
+		</fieldset>
+	</form>
+
+
+
+</div>
+<div id="friendList" class="rWindow">
+	<button id="invitation_button" class="option_button" type="submit" ></button>
+	<button id="add_friend" type="submit" class="option_button">
+		+ Add Friend
+	</button>
+</div>
       </div>
       <!-- DOWN BAR -->
       <div id="dBar">
-         <div class="chat">
-            Chat
-         </div>
-         <div class="friendList">
-            Friends List
-         </div>
-         <div class="whiteboard">
-            Board
-         </div>
-         <div class="fileshare">
-            File Share
-         </div>
-         <div class="options">
-            Conference
-         </div>
-         <div class="options">
-            Options
-         </div>
-         <div class="logout">
-            Log out
-         </div>
+<div class="chat">
+	Chat
+</div>
+<div class="friendList">
+	Friends List
+</div>
+<div class="whiteboard">
+	Board
+</div>
+<div class="fileshare">
+	File Share
+</div>
+<div class="options">
+	Conference
+</div>
+<div class="options">
+	Options
+</div>
+<div class="logout">
+	Log out
+</div>
       </div>
    </body>
 </html>
+
