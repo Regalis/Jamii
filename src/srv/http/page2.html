@@ -6,14 +6,14 @@
       </title>
       <link rel="stylesheet" href="css/style-app.css" type="text/css" />
       
-         <script src="http://simplewebrtc.com/latest.js">
-         </script>
+         <!-- <script src="http://simplewebrtc.com/latest.js"> -->
+         <!-- </script> -->
         
       <!-- for server on localhost 
-
+--> 
       <script src="js/latest.js"></script>
 
--->
+
 
       <script type="text/javascript" src="/socket.io/socket.io.js"></script>
       <script type="text/javascript" src="js/friendList.js"></script>
@@ -27,11 +27,19 @@
       <script type="text/javascript" src="js/whiteboard.js"></script>
       <script type="text/javascript" src="js/upper_bar.js"></script>
 		<script type="text/javascript" src="js/search.js"></script>
+		<script type="text/javascript" src="js/sendFile.js"></script>
 		<script type="text/javascript" src="js/searchGUI.js"></script>
 <script type="text/javascript" src="js/addFriend.js"></script>
+<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
 
-      <style>
-      </style>
+
+     <style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
    </head>
    <body onresize="onResize()">
       <!-- UPPER BAR -->
@@ -104,7 +112,7 @@
                      window.wb = new Whiteboard( document.getElementById("layer1") );
                      window.painter  = new Painter(1);
                      window.painter2  = new Painter(2);
-                     window.painter2.color = "red";
+                     window.painter.color = "#FF00FF";
                      window.wb.init();
                      document.getElementById("layer1");
                      
@@ -114,20 +122,12 @@
                   <table>
                      <tr>
                         <td>
-                           User 1 
-                           <br>
-                           <button type="button" style="background-color:black; width:70px;height:20px" onclick="window.painter.setColor('black')">
-                           </button>
-                           <br>
-                           <button type="button" style="background-color:red; width:70px;height:20px" onclick="window.painter.setColor('red')">
-                           </button>
-                           <br>
-                           <button type="button" style="background-color:green; width:70px;height:20px" onclick="window.painter.setColor('green')">
-                           </button>
+                          
 
   <button type="button" style="width:70px;height:20px" onclick="clear_whiteboard()">
 Clear
                            </button>
+<input class="color {hash:true}">
                            <br>
                         </td>
                         <td>
@@ -152,26 +152,7 @@ Clear
          </div>
          <!-- OPTIONS -->
          <div id="options" class="rWindow">
-            <!--
-               <form>
-               <fieldset>
-               <legend>
-               General options
-               </legend>
-               <input type = "checkbox" id = "microphone" value = "Microphone" onchange="micro()"/>
-               Microphone
-               <br>
-               <input type = "checkbox" id = "camera" value = "Camera" onchange="camera()"/>
-               Camera
-               <br>
-               <input type = "checkbox" id = "screen" value = "Screen" onchange="screen()"/>
-               Screen
-               <br>
-               <br>
-               <br>
-               </fieldset>
-               </form>
-               -->
+       
             <form onsubmit="return account_change()">
                <fieldset>
                   <legend>
@@ -193,6 +174,12 @@ Clear
                   </button>
                </fieldset>
             </form>
+
+					<input type="file" id="files" name="files[]" multiple />
+					<output id="list"></output>
+					<button id="avatar_change_button" onclick="avatar_change()">Change</button>
+
+
             <form onsubmit="password_change(); return false;">
                <fieldset>
                   <legend>
@@ -224,25 +211,18 @@ Clear
          </form>
          </div>
          <div id ="fileshare" class="rWindow">
-            <form>
+            <form onsubmit="return file_transfer();">
                <fieldset>
                   <legend>
                      File share
                   </legend>
-                  <input type="file" id="files" name="file" />
-                  <button onclick="abortRead();">
-                  Cancel read
+               	 <input type="file" id="filesToSend" name="files[]" multiple /><br>
+						<output id="listFiles"></output><br>
+						<button id="file_send_button" type="submit">Send</button><br>
                   </button>
                </fieldset>
             </form>
-            <div id="progress_bar">
-               <div class="percent">
-                  0%
-               </div>
-            </div>
-            <button id = "file_share_button">
-            Send
-            </button>
+          
 
       
          </div>

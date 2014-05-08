@@ -25,7 +25,8 @@ var http = require("http");
 var path = require("path");
 var url = require("url");
 var fs = require("fs");
-
+var signaller = require("./signaller.js");
+signaller();
 
 /**
  * Conference class
@@ -210,6 +211,10 @@ io.sockets.on("connection", function(socket) {
     socket.on("account_change", function(data){
 	ch.account_changeHandler( data, socket );
     } );
+
+    socket.on("avatar_change", function(data){
+	ch.avatar_changeHandler( data, socket );
+    } );
      
     socket.on("sendInvitation", function(data){
 	ch.sendInvitationHandler( data, socket );
@@ -230,6 +235,11 @@ io.sockets.on("connection", function(socket) {
     socket.on("conf_response", function(data){
 	ch.conf_responseHandler( data, socket );
     } );
+
+    socket.on("send_file", function(data){
+	ch.send_fileHandler( data, socket );
+    } );
+    
     
     
 });

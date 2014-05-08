@@ -30,14 +30,66 @@ function initMainScreen(){
 
     window.connection = new ConnectionManager("http://localhost","9393");
         
+	window.webrtc = new SimpleWebRTC({
+		localVideoEl: 'localVideo',
+		remoteVideosEl: 'remoteVideos',
+		autoRequestMedia: true
+	});
 	//call searchFormInit to prepare to show search form if Add Friend button is pushed     
     searchInit();
 	addInit();
-    
+
     // inside FriendListGUI constructor, friendList is created as flg.fl
     window.flg = new FriendListGUI("friendList");
 
+function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
 
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+			var result = reader.result;
+
+			var temp = JSON.stringify(result);
+			var splited = temp.split(",");
+			console.log(splited[1]);
+			window.file = splited[1];
+			//
+
+	
+          // Render thumbnail.
+         /* var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);*/
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+window.file_name = f.name;
+
+
+
+		
+
+
+
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+  document.getElementById('filesToSend').addEventListener('change', handleFileSelect, false);
 }
 /*
 * Initialize
@@ -69,15 +121,17 @@ window.onload = function () {
 		if (confirm('Are you sure you want to join ' +data.admin_id+ ' conference')) {
    		//window.connection.send("conf_accept", info);
 			temp["response"]=true;
-			console.log("Join to conference")
+			console.log("Join to conference");
+        window.webrtc.joinRoom("jamiiroom"+data.admin_id);
 		} else {
    		//window.connection.send("conf_discard", info);
 			temp["response"]=false;
-			console.log("Refuse conference invitation")
+			console.log("Refuse conference invitation");
 		}
 		temp["user_id"] = window.my_user_object['id'];
 		temp["admin_id"]=data.admin_id;
     	window.connection.send("conf_response", temp);	
+
 	});
 
 
@@ -102,7 +156,7 @@ window.connection.registerHandler("password_change_error", function (data) {
 
 	window.connection.registerHandler("drawOK", window.wb.drawHandler);
 
-	document.getElementById("file_share_button").style.visibility = "hidden";
+
 
 
 	fitToContainer(document.getElementById("layer1"));
@@ -113,7 +167,12 @@ window.connection.registerHandler("password_change_error", function (data) {
 
    var micro = document.getElementById("microphone");
 
+
+
 }
+
+
+
 
 
 

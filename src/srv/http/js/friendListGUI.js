@@ -67,6 +67,7 @@ function dropFirst(ev) {
    ev.target.appendChild(document.getElementById(data).cloneNode(true));
    console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
    window.connection.send("conf_create", create_conf_data);
+        window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
 }
 
 
