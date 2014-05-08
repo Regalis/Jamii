@@ -5,16 +5,8 @@
          Jamii - community
       </title>
       <link rel="stylesheet" href="css/style-app.css" type="text/css" />
-      
-         <!-- <script src="http://simplewebrtc.com/latest.js"> -->
-         <!-- </script> -->
-        
-      <!-- for server on localhost
--->
+
       <script src="js/latest.js"></script>
-
-
-
       <script type="text/javascript" src="/socket.io/socket.io.js"></script>
       <script type="text/javascript" src="js/friendList.js"></script>
       <script type="text/javascript" src="js/friendListGUI.js"></script>
@@ -22,15 +14,13 @@
       <script type="text/javascript" src="js/chat.js"></script>
       <script type="text/javascript" src="js/initFunctions.js"></script>
       <script type="text/javascript" src="js/options.js"></script>
-      <script type="text/javascript" src="js/video.js"></script>
-      <script type="text/javascript" src="js/rest.js"></script>
       <script type="text/javascript" src="js/whiteboard.js"></script>
       <script type="text/javascript" src="js/upper_bar.js"></script>
-<script type="text/javascript" src="js/search.js"></script>
-<script type="text/javascript" src="js/sendFile.js"></script>
-<script type="text/javascript" src="js/searchGUI.js"></script>
-<script type="text/javascript" src="js/addFriend.js"></script>
-<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
+		<script type="text/javascript" src="js/search.js"></script>
+		<script type="text/javascript" src="js/sendFile.js"></script>
+		<script type="text/javascript" src="js/searchGUI.js"></script>
+		<script type="text/javascript" src="js/addFriend.js"></script>
+		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
 
 
      <style>
@@ -91,23 +81,9 @@ top:0px;
 " height="400px" width="100%">
                         This text is displayed if your browser does not support HTML5 Canvas.
                      </canvas>
-                     <!--
-<canvas id="layer2" -->
-                     <!-- style="z-index: 2; -->
-                     <!-- position:absolute; -->
-                     <!-- left:0px; -->
-                     <!-- top:0px; -->
-                     <!-- " height="400px" width="800px">
--->
-                     <!-- This text is displayed if your browser does not support HTML5 Canvas. -->
-                     <!--
-</canvas>
--->
+
                   </div>
-                  <!--
-<canvas id="cv" width=600px, height=400px>
-</canvas>
--->
+
                   <script>
                      window.wb = new Whiteboard( document.getElementById("layer1") );
                      window.painter = new Painter(1);
@@ -178,6 +154,7 @@ Clear
 <input type="file" id="files" name="files[]" multiple />
 <output id="list"></output>
 <button id="avatar_change_button" onclick="avatar_change()">Change</button>
+<button id="avatar_snap_button" onclick="avatar_snap()">Snap</button>
 
 
             <form onsubmit="password_change(); return false;">

@@ -58,14 +58,19 @@ function initMainScreen(){
 			}
 
 			var reader = new FileReader();
-
+			window.reader = reader;
 			// Closure to capture the file information.
 			reader.onload = (function(theFile) {
 				return function(e) {
 					var result = reader.result;
-
+					
 					var temp = JSON.stringify(result);
 					var splited = temp.split(",");
+temp =  splited[0];
+temp = temp.replace("\"data:","");
+var arr = temp.split(";");
+temp = arr[0];
+	window.file_type=temp;
 					console.log(splited[1]);
 					window.file = splited[1];
 					//
@@ -105,6 +110,13 @@ window.onload = function () {
 
 	initMainScreen();
 
+document.getElementById("avatar_snap_button").addEventListener("click", function() {
+	var canvas = document.getElementById("uBar");
+		context = canvas.getContext("2d");
+		alert("AASSA");
+	context.drawImage(video, 0, 0, 640, 480);
+});
+
 
 	window.connection.registerHandler("chatOK", function (data) {
 		var list = document.getElementById("textList");
@@ -116,11 +128,23 @@ window.onload = function () {
 		list.appendChild(entry);
 	});
 
-	window.connection.registerHandler("file_receive", function (data) {
+	window.connection.registerHandler("new_file", function (data) {
+
 		var ul = document.getElementById("files_list");
 		var li = document.createElement("li");
-		li.appendChild(document.createTextNode(data.name));
+
+var a = document.createElement('a');
+
+var linkText = document.createTextNode(data.name);
+a.appendChild(linkText);
+a.title = "data.name";
+a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+data.name;
+
+
+
+		li.appendChild(a);
 		ul.appendChild(li);	
+
 	});
 
 	window.connection.registerHandler("conf_invitation", function (data){
@@ -137,6 +161,7 @@ window.onload = function () {
 		}
 		temp["user_id"] = window.my_user_object['id'];
 		temp["admin_id"]=data.admin_id;
+		window.conf_admin = data.admin_id;
 		window.connection.send("conf_response", temp);	
 
 	});
@@ -237,8 +262,8 @@ function dropFirst(ev) {
 	console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
 	window.connection.send("conf_create", create_conf_data);
 	window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
+	window.conf_admin = window.my_user_object["id"];
 }
-
 
 
 
