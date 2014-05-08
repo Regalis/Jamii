@@ -28,7 +28,11 @@
 */
 function initMainScreen(){
 
-    window.connection = new ConnectionManager("http://localhost","9393");
+	var host = window.location.host;
+	if (host.indexOf(':') != -1) {
+		host = host.substring(0, host.indexOf(':'));
+	}
+    window.connection = new ConnectionManager("http://" + host,"9393");
         
 	window.webrtc = new SimpleWebRTC({
 		localVideoEl: 'localVideo',

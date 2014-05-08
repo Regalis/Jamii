@@ -14,9 +14,16 @@
                         document.getElementById("status").textContent += data + "\n";
                 }
                 window.onload = function() {
-                        window.connection = new ConnectionManager("http://localhost","9393");
-
-
+						/*
+						 * TODO: Duplication!
+						 * Source: srv/http/js/initFunctions.js:31
+						 */
+						var host = window.location.host;
+						if (host.indexOf(':') != -1) {
+							host = host.substring(0, host.indexOf(':'));
+						}
+						window.connection = new ConnectionManager("http://" + host,"9393");
+        
                         document.getElementsByClassName("login_button")[0].onclick = function() {
                                 log("Get login data");
                                 var data  = {};
