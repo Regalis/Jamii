@@ -27,7 +27,15 @@
  }
  
 function sendInvitation(id){
-    window.connection.send("sendInvitation", {"inviter":window.my_user_object["id"], "invitee":id} );
+	var his_id = parseInt( id );
+	var my_id = parseInt( window.my_user_object["id"] );
+	if ( his_id == my_id)
+		alert("Are you nuts? Why on earth would you want to invite yourself?");
+	else
+		if ( window.my_user_object["friends_list"].indexOf( his_id ) >= 0 )
+			alert("You are already friends!");	
+		else
+    		window.connection.send("sendInvitation", {"inviter":my_id, "invitee":his_id } );
 }
 
 function gotNewFriend( data ) {	
@@ -49,19 +57,19 @@ function gotNewFriend( data ) {
 
 function gotRequest( data ){
 	console.log( data );
-	
-	window.my_user_object["requests_list"].push( data["inviter"] );
-	window.flg.fl.user_object = window.my_user_object;	
-	
-	alert("Someone wants to be friend with you, check your invitations");
-	
-	
+	var index = window.my_user_object["requests_list"].indexOf( parseInt( data["inviter"] ));
+	if ( index < 0 ){
+		window.my_user_object["requests_list"].push( parseInt( data["inviter"] ) );
+		window.flg.fl.user_object = window.my_user_object;	
+		window.flg.updateRequest();
+		alert("Someone wants to be friend with you, check your invitations1");
+	}
 }
 
 function askForRequestID(){
 	hideSearchForm();
 	removeTableResults ( "tableResults" );
-	document.getElementById("localVideo").style.display = "none";
+	//document.getElementById("localVideo").style.display = "none";
 	
 	//alert("askForRequestID");	
 	
@@ -83,9 +91,6 @@ function askForRequestID(){
 }
 
 function collectRequest ( user ){
-	//alert("collectRequest");
-	console.log("dziwne zachowanie collect request");
-	console.log(user);	
 	var user_info = {};
 	
 	user_info["id"] = user["id"];
@@ -169,6 +174,4 @@ function drawTableRequest( diff ){
 		
 	}
 }
-
-
 

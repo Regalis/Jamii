@@ -253,16 +253,19 @@ clientHandlers.prototype.avatar_changeHandler = function(packet, socket){
 
 
 // stuff for adding friends
+
 clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
     var data = strip_data_object(packet);
     // step 1 - check whether such request was not already stored; if so, ignre this package
-    var invitee_id = data['invitee'];
-    var inviter_id = data['inviter'];
+    var invitee_id = parseInt( data['invitee'] );
+    var inviter_id = parseInt( data['inviter'] );
     var invitee_obj = this.udb.read_user_data(invitee_id);
-    if( invitee_obj['_requests_list'].indexOf( inviter_id ) >= 0 ){ // request was already there
-	return; // ignore packet
+    var indexRequest = invitee_obj['_requests_list'].indexOf( inviter_id );
+    var indexFriends = invitee_obj['_friends_list'].indexOf( inviter_id );
+    if( indexRequest >= 0 || indexFriends >= 0 || invitee_id == inviter_id ){ // request was already there
+		return; // ignore packet
     }
-
+	else {
     // step 2 - pass the request to the invitee client and store in requests list
     var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
     invitee_obj['_requests_list'].push( Number(inviter_id) ); // store request
@@ -271,6 +274,7 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
     if( invitee_socket != null ){
 	invitee_socket.emit("sendInvitation", data);
     }
+	}
 
 }
 
@@ -282,9 +286,13 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
     var result = data['answer'];
     var invitee_obj = this.udb.read_user_data(invitee_id);
     var inviter_obj = this.udb.read_user_data(inviter_id);
-
+	if ( invitee_obj['_friends_list'].indexOf( parseInt( inviter_id )) >= 0 )	//they are already
+		return;
     if( result == 0 ){ // request rejected by invitee, ignore
 	// @todo: do something smarter here rather than ignore
+		var index = invitee_obj['_requests_list'].indexOf( inviter_id );
+		if ( index >= 0 )
+			invitee_obj['_requests_list'].splice( index, 1 );
     }else{ // if response positive
 
 	// update friendship information
@@ -387,8 +395,33 @@ clientHandlers.prototype.conf_responseHandler = function(packet, socket){
     console.log("conference "+ JSON.stringify(this.cfm.conferences));
     
 }
+clientHandlers.prototype.removeFriendHandler = function(packet, socket){
+    var data = strip_data_object(packet);
 
+    var user_id = data['user_id'];
+    var friend_id = data['friend_id'];
+    
+    var user_obj = this.udb.read_user_data( parseInt(user_id ) );
+    var friend_obj = this.udb.read_user_data( parseInt( friend_id) );
+	
+	var friend_obj_index = friend_obj['_friends_list'].indexOf( parseInt( user_id ) );	
+	var user_obj_index = user_obj['_friends_list'].indexOf( parseInt( friend_id ) );	
+	
+	
+	if ( friend_obj_index >= 0 ){
+		friend_obj['_friends_list'].splice( user_obj_index, 1 );
+	}
+	
+	if ( user_obj_index >= 0 ){	
+		user_obj['_friends_list'].splice( friend_obj_index, 1 );
+	}	
 
-
+    this.udb.save_user_data( user_obj );    
+    this.udb.save_user_data( friend_obj );    
+    //TODO: in future if you want to notify "friend" that he was deleted then you must store that somewhere in serv in case 
+    //he is not logged in but you still should check if he is logged now and send him some notification because he
+    //has you on his list
+    
+}
 
 module.exports.clientHandlers = clientHandlers;

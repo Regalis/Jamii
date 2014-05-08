@@ -180,11 +180,6 @@ io.sockets.on("connection", function(socket) {
     } );
     //end temp
 
-    // temp
-    socket.on("getUserDataFromId2", function(data){
-	ch.getUserDataFromIdHandler2( data, socket );
-    } );
-    // end temp
 
     socket.on("searchFriends", function(data){
 	ch.searchFriendsHandler( data, socket );
@@ -235,6 +230,9 @@ io.sockets.on("connection", function(socket) {
 	ch.conf_responseHandler( data, socket );
     } );
 
+    socket.on("removeFriend", function(data){
+	ch.removeFriendHandler( data, socket );
+    } );
     
     
     
