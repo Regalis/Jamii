@@ -18,9 +18,9 @@ Painter.prototype.setColor = function(color){
 Painter.prototype.setActive = function(val){
 
     if ( this.active == true && val ==false ){
-	window.wb.sendStroke();
+window.wb.sendStroke();
     }else{
-	window.wb.stroke = [];
+window.wb.stroke = [];
     }
     this.active = val;
 }
@@ -36,7 +36,7 @@ Whiteboard.prototype.drawHandler = function(packet){
 
     // don't re-draw your own strokes
     if( packet["author"] == window.flg.fl.user_object.id ){
-	return;
+return;
     }
 
     window.wb.drawStroke( packet.painter, packet);
@@ -56,7 +56,7 @@ Whiteboard.prototype.draw = function(painter, point) {
     if( !painter.active ) return;
     
     var ctx = this.canvas.getContext('2d');
-    ctx.beginPath(); 
+    ctx.beginPath();
     ctx.moveTo(painter.prevPt.x, painter.prevPt.y);
     ctx.strokeStyle = painter.color;
     ctx.lineWidth = painter.thickness;
@@ -77,21 +77,21 @@ Whiteboard.prototype.drawStroke = function(painter, data) {
 
     var ctx = this.canvas.getContext('2d');
 
-    ctx.beginPath(); 
+    ctx.beginPath();
    
     for(var i=0; i<points.length-1; i++){
-	
-	var point = points[i];
 
-	console.log( "Processing point : " +  JSON.stringify(point) );
+var point = points[i];
+
+console.log( "Processing point : " + JSON.stringify(point) );
 
 
 
-	ctx.moveTo(point.x, point.y);
-	ctx.strokeStyle = painter.color;
-	ctx.lineWidth = painter.thickness;
-	var point = points[i+1];
-	ctx.lineTo(point.x,point.y);
+ctx.moveTo(point.x, point.y);
+ctx.strokeStyle = painter.color;
+ctx.lineWidth = painter.thickness;
+var point = points[i+1];
+ctx.lineTo(point.x,point.y);
     }
     
     ctx.closePath();
@@ -103,7 +103,7 @@ Whiteboard.prototype.drawStroke = function(painter, data) {
 
 
 Whiteboard.prototype.getPos = function(evt){
-    var rect = this.canvas.getBoundingClientRect();    
+    var rect = this.canvas.getBoundingClientRect();
     var pt = new Point();
     pt.x = evt.clientX - rect.left;
     pt.y = evt.clientY - rect.top;
@@ -115,7 +115,7 @@ Whiteboard.prototype.init = function(){
     var me = this;
 
     
-    // var context = this.canvas2.getContext('2d');	
+    // var context = this.canvas2.getContext('2d');
     // context.beginPath();
     // context.arc(100, 100, 10, 0, 2 * Math.PI, false);
     // context.fillStyle = 'green';
@@ -125,24 +125,24 @@ Whiteboard.prototype.init = function(){
     // context.stroke();
 
     this.canvas.addEventListener('mousemove', function(evt) {
-	me.draw(window.painter, me.getPos(evt));
+me.draw(window.painter, me.getPos(evt));
     }, false);
     
     this.canvas.addEventListener('mousedown', function(evt) {
-	window.stroke = [];
-	window.painter.active = true;
-	window.painter.prevPt = me.getPos(evt);
+window.stroke = [];
+window.painter.active = true;
+window.painter.prevPt = me.getPos(evt);
     }, false);
     
     this.canvas.addEventListener('mouseup', function(evt) {
-	window.painter.setActive( false );
+window.painter.setActive( false );
     }, false);
     
     this.canvas.addEventListener('mouseout', function(evt) {
-	window.painter.setActive( false );
+window.painter.setActive( false );
     }, false);
     
-} 
+}
 
 Whiteboard.prototype.toggleVisibleUser = function(id){
     
@@ -150,8 +150,8 @@ Whiteboard.prototype.toggleVisibleUser = function(id){
 
 function clear_whiteboard(){
 
-	window.wb.canvas.getContext("2d").clearRect(0,0,window.wb.canvas.width, window.wb.canvas.height);
+window.wb.canvas.getContext("2d").clearRect(0,0,window.wb.canvas.width, window.wb.canvas.height);
 }
 function pickColor(data){	
-	window.painter.color = data["color"];
+window.painter.color = data["color"];
 }

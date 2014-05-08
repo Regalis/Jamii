@@ -68,14 +68,14 @@ function micro() {
 }
 
 function camera() {
-   var x = document.getElementById("camera").checked;
+        var x = document.getElementById("camera").checked;
    if (x) {
       alert("CAMERA ON");
    } else {
-      alert("CAMERA OFF");
+        alert("CAMERA OFF");
    }
 }
-
+   
 function screen() {
    var x = document.getElementById("screen").checked;
    if (x) {
