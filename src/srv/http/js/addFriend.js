@@ -59,7 +59,6 @@ function gotRequest( data ){
 }
 
 function askForRequestID(){
-	hideSearchForm();
 	removeTableResults ( "tableResults" );
 	document.getElementById("localVideo").style.display = "none";
 	

@@ -28,7 +28,7 @@ function searchInit(){
 function searchFormInit(){
 	document.getElementById("searchForm").style.display = "none";
 	//document.getElementById("divForSearchResults").style.display = "none";	
-	document.getElementById("add_friend").onclick = showSearchForm;
+	document.getElementById("add_friend").onclick = toggleSearchForm;
 	document.getElementById("search_button").onclick = searchFriends;
 }
 
@@ -41,17 +41,13 @@ function formValidate(){
 	return false;
 }
 
-function showSearchForm () {
+function toggleSearchForm () {
 	window.removeTableResults( "tableRequests" );
 
 	//document.getElementById("divForSearchResults").style.display = "none";
-	document.getElementById("searchForm").style.display = "block";
-	
+	var searchForm = document.getElementById("searchForm");
+	searchForm.style.display == "none" ? searchForm.style.display = "block" : searchForm.style.display = "none";
 	removeTableResults("tableResults");
-}
- 
-function hideSearchForm() {
-	document.getElementById("searchForm").style.display = "none";
 }
 
 function searchFriends() {
