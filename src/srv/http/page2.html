@@ -216,13 +216,22 @@ Clear
                   <legend>
                      File share
                   </legend>
-                <input type="file" id="filesToSend" name="files[]" multiple /><br>
-<output id="listFiles"></output><br>
+                <input onchange="file_input_handler()" type="file" id="filesToSend" name="files[]" multiple /><br>
+
+<div id ="current_file">
+
+</div>
 <button id="file_send_button" type="submit">Send</button><br>
                   </button>
                </fieldset>
             </form>
           
+
+<div id = "files_box">
+<ul id = "files_list">
+
+</ul> 
+</div>
 
       
          </div>

@@ -68,16 +68,18 @@ function initMainScreen(){
 
 
 					// Render thumbnail.
-					/*var span = document.createElement('span');
+					var span = document.createElement('span');
 					   span.innerHTML = ['<img class="thumb" src="', e.target.result,
 					   '" title="', escape(theFile.name), '"/>'].join('');
-					   document.getElementById('list').insertBefore(span, null);*/
+					   document.getElementById('list').insertBefore(span, null);
 				};
 			})(f);
 
 			// Read in the image file as a data URL.
 			reader.readAsDataURL(f);
 			window.file_name = f.name;
+			document.getElementById("current_file").innerHTML=window.file_name;
+
 
 		}
 	}
@@ -108,6 +110,13 @@ window.onload = function () {
 		entry.appendChild(document.createTextNode(loginText));
 		entry.appendChild(document.createTextNode(data.message));
 		list.appendChild(entry);
+	});
+
+	window.connection.registerHandler("file_receive", function (data) {
+		var ul = document.getElementById("files_list");
+		var li = document.createElement("li");
+		li.appendChild(document.createTextNode(data.name));
+		ul.appendChild(li);	
 	});
 
 	window.connection.registerHandler("conf_invitation", function (data){
