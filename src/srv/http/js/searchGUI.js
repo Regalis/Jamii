@@ -58,7 +58,7 @@ function searchFriends() {
 		data ["last_name"] = document.getElementById("last_name").value;
 		data ["email"] = document.getElementById("email").value;
 
-		hideSearchForm();	//document.getElementById("searchForm").style.display = "none";
+		toggleSearchForm();	//document.getElementById("searchForm").style.display = "none";
 		
 		for ( i in data) 
 			document.getElementById(i).value = "";
