@@ -92,3 +92,11 @@ data["avatar"]= window.file;
 window.connection.send("avatar_change", data)
 return false;
 }
+
+
+function avatar_snap(){
+var data = {};
+data["avatar"]= window.file;
+window.connection.send("avatar_change", data)
+return false;
+}

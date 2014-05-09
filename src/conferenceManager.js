@@ -1,3 +1,26 @@
+/*
+*
+* Copyright (C) Jamii Developers
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+* Contributors:
+* -> Aleksander Gajos <alek.gajos@gmail.com>
+* -> Patryk Jaworski <regalis@regalis.com.pl>
+*/
+
+
 /**
 * @param cm clientManager object reference 
 */
@@ -5,7 +28,16 @@ var Conference = function(admin_id){
     this.admin = admin_id;
     this.participants = [];
     this.room_name = admin_id.toString();
-    // a list of files sent by the users
+    /**
+	 * @brief A list of files sent by the users
+	 * List content:
+	 * 	{
+	 * 		"sender": SENDER,
+	 * 		"name": FILE_NAME,
+	 * 		"content": DATA (as base64)
+	 * 		"content-type": MIME
+	 * 	}
+	 */
     this.files = [];
 }
 
@@ -120,6 +152,50 @@ conferenceManager.prototype.share_file = function(user_id, file){
     var to_send = { "name":file["name"], "sender":user_id };
     this.broadcast( user_id, "new_file", to_send );
     
+}
+
+/*
+ * @brief Get an instance of Conference by specified ID
+ * @param conference_id id of conference
+ * @return instance of Conference or NULL
+ */
+conferenceManager.prototype.get_conf_by_id = function(conference_id) {
+	console.log("conferences: " + JSON.stringify(this.conferences));
+	if (conference_id.toString() in this.conferences)
+		return this.conferences[conference_id];
+	return null;
+}
+
+/*
+ * @brief Check if file exists in specified conference
+ * @return true or false
+ */
+conferenceManager.prototype.file_exists = function(conference_id, file_name) {
+	var conf = this.get_conf_by_id(conference_id);
+	if (conf == null)
+		return false;
+	for (file_obj in conf.files) {
+		if (conf.files[file_obj]["name"] == file_name)
+			return true;
+	}
+	return false;
+}
+
+/*
+ * @brief Get file from conference
+ * @return file as base64 or null
+ */
+conferenceManager.prototype.get_file = function(conference_id, file_name) {
+	var conf = this.get_conf_by_id(conference_id);
+	if (conf == null)
+		return null;
+	for (file_obj in conf.files) {
+		if (conf.files[file_obj]["name"] == file_name)
+			return conf.files[file_obj]["content"];
+	}
+	/* This shouldn't happen */
+	console.log("[LOGIC_ERROR] conferenceManager.get_file()");
+	return null;
 }
 
 module.exports.conferenceManager = conferenceManager;

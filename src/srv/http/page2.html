@@ -1,28 +1,26 @@
 <html>
 	<head>
-		<link rel="icon" href="images/favicon.png" type="image/png">
-		<title>Jamii - community</title>
-		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
-		 <!-- <script src="http://simplewebrtc.com/latest.js"> -->
-		 <!-- </script> -->
-		<script src="js/latest.js"></script>
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="js/friendList.js"></script>
-		<script type="text/javascript" src="js/friendListGUI.js"></script>
-		<script type="text/javascript" src="js/connectionManager.js"></script>
-		<script type="text/javascript" src="js/chat.js"></script>
-		<script type="text/javascript" src="js/initFunctions.js"></script>
-		<script type="text/javascript" src="js/options.js"></script>
-		<script type="text/javascript" src="js/video.js"></script>
-		<script type="text/javascript" src="js/rest.js"></script>
-		<script type="text/javascript" src="js/whiteboard.js"></script>
-		<script type="text/javascript" src="js/upper_bar.js"></script>
+      <link rel="icon" href="images/favicon.png" type="image/png">
+      <title>
+         Jamii - community
+      </title>
+      <link rel="stylesheet" href="css/style-app.css" type="text/css" />
+
+      <script src="js/latest.js"></script>
+      <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+      <script type="text/javascript" src="js/friendList.js"></script>
+      <script type="text/javascript" src="js/friendListGUI.js"></script>
+      <script type="text/javascript" src="js/connectionManager.js"></script>
+      <script type="text/javascript" src="js/chat.js"></script>
+      <script type="text/javascript" src="js/initFunctions.js"></script>
+      <script type="text/javascript" src="js/options.js"></script>
+      <script type="text/javascript" src="js/whiteboard.js"></script>
+      <script type="text/javascript" src="js/upper_bar.js"></script>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/sendFile.js"></script>
 		<script type="text/javascript" src="js/searchGUI.js"></script>
 		<script type="text/javascript" src="js/addFriend.js"></script>
 		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
-
 		<style>
 			.thumb {
 				height: 75px;
@@ -95,7 +93,6 @@
 				</div>
 			</div>
 			<!-- WHITEBOARD END-->
-
 			<!-- SEARCH FORM -->
             <div id="searchForm" class="popup_form">
 				<form>
@@ -173,17 +170,38 @@
 			</div>
 			<!-- CHAT END -->
 
+
+
+
 			<!-- FILE SHARE -->
-			<div id ="fileshare" class="rWindow">
-				<form onsubmit="return file_transfer();">
-					<fieldset>
-						<legend>File share</legend>
-						<input type="file" id="filesToSend" name="files[]" multiple />
-						<button id="file_send_button" type="submit">Send</button><br></button>
-						<output id="listFiles"></output>
-					</fieldset>
-				</form>
-			</div>
+         <div id ="fileshare" class="rWindow">
+            <form onsubmit="return file_transfer();">
+               <fieldset>
+                  <legend>
+                     File share
+                  </legend>
+                <input onchange="file_input_handler()" type="file" id="filesToSend" name="files[]" multiple /><br>
+
+<div id ="current_file">
+
+</div>
+<button id="file_send_button" type="submit">Send</button><br>
+                  </button>
+               </fieldset>
+            </form>
+          
+
+<div id = "files_box">
+<ul id = "files_list">
+
+</ul> 
+</div>
+
+      
+         </div>
+
+
+
 			<!-- FILE SHARE END-->
 
 			<!-- FRIEND LIST -->

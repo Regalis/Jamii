@@ -99,34 +99,112 @@ var ch = new clientHandlers( cm, udb, cfm );
 
 // http server
 var http_server = http.createServer(function(request, response) {
-var requested_path = url.parse(request.url).pathname;
-if (requested_path == "/" || requested_path.startsWith("../") || requested_path.startsWith("/..") || requested_path.startsWith("//")) {
-requested_path = "/index.xhtml";
-}
-console.info("New file request: " + requested_path);
-var server_path = path.join(process.cwd(), "/srv/http", requested_path);
-console.info("server_path: " + server_path);
-fs.exists(server_path, function(exists) {
-if (!exists) {
-response.writeHeader(404, {"Content-type": "text/html"});
-response.write("<h1>404 Not found</h1>\n");
-response.end();
-} else {
-fs.readFile(server_path, "binary", function(err, file) {
-if (err) {
-response.writeHeader(500, {"Content-type": "text/html"});
-response.write("<h1>500 Internal server error... Or bad request...</h1>\n");
-response.end();
-} else {
-response.writeHeader(200);
-response.write(file, "binary");
-response.end();
-}
-});
-}
-});
-})
+	var requested_path = url.parse(request.url).pathname;
+	console.info("[HTTP] New request: " + requested_path);
 
+	if (requested_path.startsWith("/get_file/")) {
+		http_conference_share_file_handler(request, response);
+	} else {
+		http_static_file_handler(request, response);
+	}
+
+});
+
+var http_parse_cookies = function(request) {
+	var list = {}, rc = request.headers.cookie;
+
+	rc && rc.split(';').forEach(function(cookie) {
+		var parts = cookie.split('=');
+		list[parts.shift().trim()] = unescape(parts.join('='));
+	});
+
+	return list;
+}
+
+var http_conference_share_file_handler = function(request, response) {
+	var requested_path = url.parse(request.url).pathname;
+	console.log("[HTTP] Requested conference file: " + requested_path);
+	
+	/* Parse request */
+	var request_parts = requested_path.split("/");
+	var conference_id = request_parts[2];
+	var file_name = request_parts[3];
+
+	console.log("request_parts: " + JSON.stringify(request_parts));
+	console.log("[HTTP] Requested file '" + file_name + "' from conference #" + conference_id);
+	
+	/* Validate user */
+	cookies = http_parse_cookies(request);
+	if ((!"sessionID" in cookies) || (!"userID" in cookies)) {
+		console.log("[HTTP] Invalid cookies");
+		http_error_404(request, response);
+		return;
+	}
+	/* TODO: Validate session! */
+
+	/* Check if user is conference member */
+	console.log("[HTTP] Cookies: " + JSON.stringify(cookies));					
+	/* TODO: check specified conference ID! */
+	/*if (!cfm.is_in_conf(cookies["userID"])) {
+		console.log("[HTTP] User is not a conference member");
+		http_error_404(request, response);
+		return;
+	}*/
+
+	/* Check if file is available */
+	if (!cfm.file_exists(conference_id, file_name)) {
+		console.log("[HTTP] Requested file does not exist in conference");
+		http_error_404(request, response);
+		return;
+	}
+	
+	/* Read file */
+	var file_buffer = new Buffer(cfm.get_file(conference_id, file_name), "base64");
+
+	/* Send file */
+	/* TODO: get content-type from file */
+	response.writeHeader(200, {
+		"Content-type": "application/ocet-stream",
+		"Content-length": file_buffer.length.toString(),
+		"Content-Disposition": 'attachment; filename="' + file_name + '"'
+		});
+	response.write(file_buffer, "binary");
+	response.end();
+}
+
+var http_error_404 = function(request, response) {
+	response.writeHeader(404, {"Content-type": "text/html"});
+	response.write("<h1>404 Not found</h1>\n");
+	response.end();
+}
+
+var http_static_file_handler = function(request, response) {
+	var requested_path = url.parse(request.url).pathname;
+	if (requested_path == "/" || requested_path.startsWith("../") ||
+			requested_path.startsWith("/..") || requested_path.startsWith("//")) {
+		requested_path = "/index.xhtml";
+	}
+	console.log("[HTTP] Filtered static file request: " + requested_path);
+	var server_path = path.join(process.cwd(), "/srv/http", requested_path);
+	console.info("[HTTP] Server_path: " + server_path);
+	fs.exists(server_path, function(exists) {
+		if (!exists) {
+			http_error_404(request, response);
+		} else {
+			fs.readFile(server_path, "binary", function(err, file) {
+				if (err) {
+					response.writeHeader(500, {"Content-type": "text/html"});
+					response.write("<h1>500 Internal server error... Or bad request...</h1>\n");
+					response.end();
+				} else {
+					response.writeHeader(200);
+					response.write(file, "binary");
+					response.end();
+				}
+			});
+		}
+	});
+}
 
 // sockets
 var io = require("socket.io").listen(http_server);
@@ -239,8 +317,6 @@ ch.conf_responseHandler( data, socket );
     socket.on("send_file", function(data){
 ch.send_fileHandler( data, socket );
     } );
-    
-    
     
 });
 
