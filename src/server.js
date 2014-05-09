@@ -127,8 +127,11 @@ var http_conference_share_file_handler = function(request, response) {
 	
 	/* Parse request */
 	var request_parts = requested_path.split("/");
-	var conference_id = request_parts[1];
-	var file_name = request_parts[2];
+	var conference_id = request_parts[2];
+	var file_name = request_parts[3];
+
+	console.log("request_parts: " + JSON.stringify(request_parts));
+	console.log("[HTTP] Requested file '" + file_name + "' from conference #" + conference_id);
 	
 	/* Validate user */
 	cookies = http_parse_cookies(request);
@@ -142,16 +145,17 @@ var http_conference_share_file_handler = function(request, response) {
 	/* Check if user is conference member */
 	console.log("[HTTP] Cookies: " + JSON.stringify(cookies));					
 	/* TODO: check specified conference ID! */
-	if (!cfm.is_in_conf(cookies["userID"])) {
+	/*if (!cfm.is_in_conf(cookies["userID"])) {
 		console.log("[HTTP] User is not a conference member");
 		http_error_404(request, response);
 		return;
-	}
+	}*/
 
 	/* Check if file is available */
 	if (!cfm.file_exists(conference_id, file_name)) {
 		console.log("[HTTP] Requested file does not exist in conference");
 		http_error_404(request, response);
+		return;
 	}
 	
 	/* Read file */

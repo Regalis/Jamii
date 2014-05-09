@@ -160,7 +160,8 @@ conferenceManager.prototype.share_file = function(user_id, file){
  * @return instance of Conference or NULL
  */
 conferenceManager.prototype.get_conf_by_id = function(conference_id) {
-	if (conference_id in this.conferences)
+	console.log("conferences: " + JSON.stringify(this.conferences));
+	if (conference_id.toString() in this.conferences)
 		return this.conferences[conference_id];
 	return null;
 }
@@ -174,7 +175,7 @@ conferenceManager.prototype.file_exists = function(conference_id, file_name) {
 	if (conf == null)
 		return false;
 	for (file_obj in conf.files) {
-		if (file_obj["name"] == file_name)
+		if (conf.files[file_obj]["name"] == file_name)
 			return true;
 	}
 	return false;
@@ -189,8 +190,8 @@ conferenceManager.prototype.get_file = function(conference_id, file_name) {
 	if (conf == null)
 		return null;
 	for (file_obj in conf.files) {
-		if (file_obj["name"] == file_name)
-			return file_obj["content"];
+		if (conf.files[file_obj]["name"] == file_name)
+			return conf.files[file_obj]["content"];
 	}
 	/* This shouldn't happen */
 	console.log("[LOGIC_ERROR] conferenceManager.get_file()");
