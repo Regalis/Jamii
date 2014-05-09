@@ -183,6 +183,9 @@ function clickView() {
 			if( document.getElementById("logout") == document.getElementById(this.className) ){
 				window.connection.logout();
 			}
+			if( document.getElementById("whiteboard") == document.getElementById(this.className) ){
+				document.getElementById("chat").style.visibility = "visible";
+			}
 
 			document.getElementById(this.className).style.visibility = "visible";
 		};
