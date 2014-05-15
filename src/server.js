@@ -33,16 +33,16 @@ signaller();
 */
 function conference(conf_id) {
 
-    this.id = conf_id;
-    this.participants = [];
-    this.is_active = false;
-    
-    this.add_participant = function(id) {
-        this.participants.push(id);
-        // TODO: abort if user already in a conference
+	this.id = conf_id;
+	this.participants = [];
+	this.is_active = false;
+	
+	this.add_participant = function(id) {
+		this.participants.push(id);
+		// TODO: abort if user already in a conference
 // conferences[];
-    }
-    
+	}
+	
 }
 
 
@@ -88,13 +88,13 @@ var User = require("./usersDatabase.js").User;
 var udb = new usersDatabase();
 
 var clientManager = require("./clientManager.js").clientManager;
-var cm = new clientManager( udb );
+var cm = new clientManager(udb);
 
 var conferenceManager = require("./conferenceManager.js").conferenceManager;
-var cfm = new conferenceManager( cm );
+var cfm = new conferenceManager(cm);
 
 var clientHandlers = require("./clientHandlers.js").clientHandlers;
-var ch = new clientHandlers( cm, udb, cfm );
+var ch = new clientHandlers(cm, udb, cfm);
 
 
 // http server
@@ -215,111 +215,111 @@ var http_static_file_handler = function(request, response) {
 var io = require("socket.io").listen(http_server);
 
 io.sockets.on("connection", function(socket) {
-    
-    console.info("Got new WebSocket connection (" + socket.id + ")...");
-    // do not do anything special on base connection
-    
-    // ping for testing
-    socket.on('ping', function(data) {
-console.log("Got ping command from client...");
-socket.emit("pong", data);
-console.log("Sending pong...");
-    });
-    
-    // set handlers for communication with clients
-    
-    // automatically find all handlers in the clientHandlers object, reject the "Handler" suffix and set them to handle respective packet names
-    // for( var method in ch ){
-    // var index = method.search(/Handler/);
-    // if( index > 0 ){
-    // var packetName = method.substr(0, index);
-    // console.log("assigning " + method + " to : " + packetName);
-    // socket.on( packetName, function(data){
-    // console.log("handling "+packetName + "with: " + JSON.stringify( data ) );
-    // ch[ method ]( data, socket );
-    // });
-    // }
-    // }
+	
+	console.info("Got new WebSocket connection (" + socket.id + ")...");
+	// do not do anything special on base connection
+	
+	// ping for testing
+	socket.on('ping', function(data) {
+		console.log("Got ping command from client...");
+		socket.emit("pong", data);
+		console.log("Sending pong...");
+	});
+	
+	// set handlers for communication with clients
+	
+	// automatically find all handlers in the clientHandlers object, reject the "Handler" suffix and set them to handle respective packet names
+	// for(var method in ch) {
+	// var index = method.search(/Handler/);
+	// if(index > 0) {
+	// var packetName = method.substr(0, index);
+	// console.log("assigning " + method + " to : " + packetName);
+	// socket.on(packetName, function(data) {
+	// console.log("handling "+packetName + "with: " + JSON.stringify(data));
+	// ch[ method ](data, socket);
+	// });
+	// }
+	// }
 
 
-    socket.on("login", function(data){
-ch.loginHandler( data, socket );
-    } );
+	socket.on("login", function(data) {
+		ch.loginHandler(data, socket);
+	});
 
-    socket.on("whoAmI", function(data){
-ch.whoAmIHandler( data, socket );
-    } );
+	socket.on("whoAmI", function(data) {
+		ch.whoAmIHandler(data, socket);
+	});
 
-    socket.on("register", function(data){
-ch.registerHandler( data, socket );
-    } );
+	socket.on("register", function(data) {
+		ch.registerHandler(data, socket);
+	});
 
-    socket.on("getUserDataFromId", function(data){
-ch.getUserDataFromIdHandler( data, socket );
-    } );
-    
-    //temp
-    socket.on("getUserDataFromId2", function(data){
-ch.getUserDataFromIdHandler2( data, socket );
-    } );
-    //end temp
+	socket.on("getUserDataFromId", function(data) {
+		ch.getUserDataFromIdHandler(data, socket);
+	});
 
-    socket.on("searchFriends", function(data){
-ch.searchFriendsHandler( data, socket );
-    } );
+	//temp
+	socket.on("getUserDataFromId2", function(data) {
+		ch.getUserDataFromIdHandler2(data, socket);
+	});
+	//end temp
 
-    socket.on("getFriendsData", function(data){
-ch.getFriendsDataHandler( data, socket );
-    } );
+	socket.on("searchFriends", function(data) {
+		ch.searchFriendsHandler(data, socket);
+	});
 
-    socket.on("chat", function(data){
-ch.chatHandler( data, socket );
-    } );
+	socket.on("getFriendsData", function(data) {
+		ch.getFriendsDataHandler(data, socket);
+	});
 
-    socket.on("draw", function(data){
-ch.drawHandler( data, socket );
-    } );
+	socket.on("chat", function(data) {
+		ch.chatHandler(data, socket);
+	});
 
-    socket.on("password_change", function(data){
-ch.password_changeHandler( data, socket );
-    } );
+	socket.on("draw", function(data) {
+		ch.drawHandler(data, socket);
+	});
 
-    socket.on("account_change", function(data){
-ch.account_changeHandler( data, socket );
-    } );
+	socket.on("password_change", function(data) {
+		ch.password_changeHandler(data, socket);
+	});
 
-    socket.on("avatar_change", function(data){
-ch.avatar_changeHandler( data, socket );
-    } );
-     
-    socket.on("sendInvitation", function(data){
-ch.sendInvitationHandler( data, socket );
-    } );
-    
-    socket.on("invitationResponse", function(data){
-ch.invitationResponseHandler( data, socket );
-    } );
+	socket.on("account_change", function(data) {
+		ch.account_changeHandler(data, socket);
+	});
 
-    socket.on("conf_create", function(data){
-ch.conf_createHandler( data, socket );
-    } );
-    
-    socket.on("conf_request", function(data){
-ch.conf_requestHandler( data, socket );
-    } );
+	socket.on("avatar_change", function(data) {
+		ch.avatar_changeHandler(data, socket);
+	});
+	 
+	socket.on("sendInvitation", function(data) {
+		ch.sendInvitationHandler(data, socket);
+	});
 
-    socket.on("conf_response", function(data){
-ch.conf_responseHandler( data, socket );
-    } );
+	socket.on("invitationResponse", function(data) {
+		ch.invitationResponseHandler(data, socket);
+	});
 
-    socket.on("send_file", function(data){
-ch.send_fileHandler( data, socket );
-    } );
+	socket.on("conf_create", function(data) {
+		ch.conf_createHandler(data, socket);
+	});
 
-    socket.on("removeFriend", function(data){
-	ch.removeFriendHandler( data, socket );
-    } );
-    
+	socket.on("conf_request", function(data) {
+		ch.conf_requestHandler(data, socket);
+	});
+
+	socket.on("conf_response", function(data) {
+		ch.conf_responseHandler(data, socket);
+	});
+
+	socket.on("send_file", function(data) {
+		ch.send_fileHandler(data, socket);
+	});
+
+	socket.on("removeFriend", function(data) {
+		ch.removeFriendHandler(data, socket);
+	});
+	
 });
 
 http_server.listen(9393);
