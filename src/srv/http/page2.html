@@ -21,13 +21,6 @@
 		<script type="text/javascript" src="js/searchGUI.js"></script>
 		<script type="text/javascript" src="js/addFriend.js"></script>
 		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
-		<style>
-			.thumb {
-				height: 75px;
-				border: 1px solid #000;
-				margin: 10px 5px 0 0;
-			}
-		</style>
 	</head>
 	<body>
 	<!-- UPPER BAR -->
@@ -47,7 +40,7 @@
 		<div id="me">
 			<video id="localVideo"></video>
 		</div>
-		<h2>Jamii</h2>
+		<h2 id="title_header">Jamii</h2>
 	</div>
 	<!-- UPPER BAR END-->
 	<!-- CONTENT -->
@@ -120,6 +113,13 @@
 
 		<!-- RWINDOW -->
 		<div id="rWindow">
+
+<!-- FRIEND LIST -->
+			<div id="friendList">
+				<button id="invitation_button" class="option_button" type="submit" ></button>
+				<button id="add_friend" type="submit" class="option_button">+ Add Friend</button>
+			</div>
+			<!-- FRIEND LIST -->
 
 			<!-- OPTIONS -->
 			<div id="options">
@@ -204,12 +204,7 @@
 
 			<!-- FILE SHARE END-->
 
-			<!-- FRIEND LIST -->
-			<div id="friendList">
-				<button id="invitation_button" class="option_button" type="submit" ></button>
-				<button id="add_friend" type="submit" class="option_button">+ Add Friend</button>
-			</div>
-			<!-- FRIEND LIST -->
+			
 
 		</div>
 		<!-- RWINDOW END -->

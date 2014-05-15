@@ -1,3 +1,26 @@
+/*
+ *
+ * Copyright (C) Jamii Developers
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contributors:
+ * -> Mateusz Zajac <matteo.zajac@gmail.com>
+ */
+
+
+
 var socket = null;
 
 function log(data) {
@@ -19,9 +42,9 @@ window.onload = function () {
         log("Get login data");
         var data = {};
 
-        data["login"] ='a';// document.getElementById("login").value;
-    	alert("AA");
-        data["passwd"] ='a';// document.getElementById("passwd").value;
+        data["login"] = document.getElementById("login").value;
+
+        data["passwd"] = document.getElementById("passwd").value;
 
         window.connection.send("login", data);
         <!-- window.connection.registerHandler("loginOK", function(data){ -->
