@@ -197,7 +197,12 @@ var http_static_file_handler = function(request, response) {
 					response.write("<h1>500 Internal server error... Or bad request...</h1>\n");
 					response.end();
 				} else {
-					response.writeHeader(200);
+					headers = {};
+					if (requested_path.endsWith("html")) {
+						headers["Content-type"] = "application/xhtml+xml; charset=utf-8";
+						console.log("[HTTP] Serving html as application/xhtml+xml");
+					}
+					response.writeHeader(200, headers);
 					response.write(file, "binary");
 					response.end();
 				}
