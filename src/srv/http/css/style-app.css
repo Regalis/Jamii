@@ -1,6 +1,7 @@
 body {
 	font-family: sans-serif;
 	margin: 0;
+	padding: 0;
 	min-width: 800px;
 }
 
@@ -19,40 +20,15 @@ body button:hover {
 	background-color: #BCAAD4;
 }
 
-#uBar {
-	height: 100px;
-	position: relative;
+/* TEMPORARY */
+#main_content > div ,
+#aside_content > div {
+	display: none;
 }
 
-#uBar > div {
-	border-right: 1px solid #000;
-	display: inline-block;
-	float: left;
-	height: 100%;
-	list-style-type: none;
-	width: 133px;
-}
+/* SECTION */
 
-#uBar > div img {
-	height: 100%;
-	width: 133px;
-}
-
-#uBar > h2 {
-	position: absolute;
-	right: 20px;
-}
-
-#content {
-	bottom: 40px;
-	display: block;
-	position: fixed;
-	top: 100px;
-	width: 100%;
-}
-
-#lWindow {
-	display: inline-block;
+body > section {
 	height: 100%;
 	text-align: center;
 	position: absolute;
@@ -61,20 +37,55 @@ body button:hover {
 	background-color: #000000;
 }
 
-#rWindow {
+#conference_participants {
+	height: 100px;
+	width: 100%;
+	position: relative;
+	background-color: #FFFFFF;
+	min-width: 804px;
+}
+
+#conference_participants > div {
+	border-right: 1px solid #000;
+	display: inline-block;
+	float: left;
+	height: 100%;
+	width: 133px;
+	background-image: url("../images/no_avatar.jpg");
+	background-size: 100% 100%;
+}
+
+#conference_participants > div img {
+	height: 100%;
+	width: 100%;
+}
+
+/* ASIDE */
+
+body > aside {
 	float: right;
 	width: 300px;
-	display: inline-block;
+	display: block;
 	height: 100%;
 	position: relative;
 }
 
-#rWindow > div {
+#title_header {
 	position: absolute;
-	top: 0;
+	right: 20px;
+}
+
+#aside_content > div {
+	position: absolute;
+	top: 100px ;
 	right: 0;
 	left: 0;
 	bottom: 0;
+}
+
+#account_tools img {
+	width: 32px;
+	height: 32px;
 }
 
 #chat {
@@ -82,17 +93,12 @@ body button:hover {
 }
 
 #chat input {
-	bottom:2px;
-	display:inline-block;
-	position:absolute;
+	bottom: 2px;
+	display: inline-block;
+	position: absolute;
 }
 
-#chat input[type="submit"] {
-
-}
-
-#chat_input
-{
+#chat_input {
   background-color:#FFF;
   border:1px solid #14BA79;
   left:2px;
@@ -136,39 +142,45 @@ body button:hover {
 
 }
 
-#dBar
-{
-  background-color:#64A101;
-  bottom:0;
-  height:40px;
-  position:absolute;
-  width:100%;
+
+#conference_tools {
+	bottom: 0;
+	height: 40px;
+	position: absolute;
+	width: 100%;
 }
 
-#dBar > div:hover {
+#conference_tools > div:hover {
 	background-color: #588D04;
+	/*
+	margin-top: -10px;
+	-moz-transition: margin-top 250ms linear;
+	*/
 }
 
-#dBar > div
-{
-  border-right:1px solid #383838;
-  color:#FFF;
-  display:inline-block;
-  font-size:17px;
-  height:100%;
-  line-height:40px;
-  margin:0;
-  text-align:center;
-  width:13.8%;
+#conference_tools > div {
+	background-color: #64A101;
+	box-shadow: 0 0 0 1px #000000  inset;
+	/*
+	border-right: 1px solid #383838;
+	*/
+	color: #FFF;
+	display: inline-block;
+	font-size: 17px;
+	height: 100%;
+	line-height: 40px;
+	margin: 0;
+	text-align: center;
+	width: 25%;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
-#dBar > div:last-child
-{
-  border-right:none;
+#conference_tools > div:last-child {
+	border-right:none;
 }
 
-#searchForm
-{
+#searchForm {
   color:#FFF;
   margin-top:100px;
 }
