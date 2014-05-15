@@ -1,9 +1,8 @@
 var socket = null;
-/*
+
 function log(data) {
     document.getElementById("status").textContent += data + "\n";
 }
-*/
 window.onload = function () {
     /*
      * TODO: Duplication!
@@ -16,11 +15,14 @@ window.onload = function () {
     window.connection = new ConnectionManager("http://" + host, "9393");
 
     document.getElementsByClassName("login_button")[0].onclick = function () {
+
         log("Get login data");
         var data = {};
 
-        data["login"] = document.getElementById("login").value;
-        data["passwd"] = document.getElementById("passwd").value;
+        data["login"] ='a';// document.getElementById("login").value;
+    	alert("AA");
+        data["passwd"] ='a';// document.getElementById("passwd").value;
+
         window.connection.send("login", data);
         <!-- window.connection.registerHandler("loginOK", function(data){ -->
         <!-- window.location.href = "/page.html"; -->
@@ -28,7 +30,7 @@ window.onload = function () {
         window.connection.registerHandler("loginBAD", function (data) {
             alert(data.what);
         });
-
+			alert(data.login);
 
         return false;
     }
