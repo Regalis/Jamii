@@ -157,6 +157,8 @@ a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+d
 			console.log("Join to conference");
 			window.webrtc.joinRoom("jamiiroom"+data.admin_id);
 			window.is_in_conference = true;
+			clickView();
+
 		} else {
 			//window.connection.send("conf_discard", info);
 			temp["response"]=false;
