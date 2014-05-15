@@ -1,137 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
-        <head>
-		  <link rel="icon" href="images/favicon.png" type="image/png">
-        <meta charset="utf-8" />
-        <meta name="robots" content="noindex, nofollow" />
-        <title>Welcome to Jamii</title>
-        <link rel="stylesheet" href="css/style.css" type="text/css" />
-        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="js/connectionManager.js"></script>
-        <script type="text/javascript">
-                var socket = null;
-                function log(data) {
-                        document.getElementById("status").textContent += data + "\n";
-                }
-                window.onload = function() {
-						/*
-						 * TODO: Duplication!
-						 * Source: srv/http/js/initFunctions.js:31
-						 */
-						var host = window.location.host;
-						if (host.indexOf(':') != -1) {
-							host = host.substring(0, host.indexOf(':'));
-						}
-						window.connection = new ConnectionManager("http://" + host,"9393");
-        
-                        document.getElementsByClassName("login_button")[0].onclick = function() {
-                                log("Get login data");
-                                var data  = {};
 
-                                data ["login"] = document.getElementById("login").value;
-                                data ["passwd"] = document.getElementById("passwd").value;
-                                window.connection.send("login", data);
-                                <!-- window.connection.registerHandler("loginOK", function(data){ -->
-                                <!--         window.location.href = "/page.html"; -->
-                                <!-- }); -->
-                                window.connection.registerHandler("loginBAD", function(data){
-                                        alert( data.what );
-                                });
-                
-                
-                                return false;
-                        }
-                       document.getElementsByClassName("register_button")[0].onclick = function() {
-                                log("Get register data");
-                                var data  = {};
+<head>
+	<link rel="icon" href="images/favicon.png" type="image/png" />
+	<meta charset="utf-8" />
+	<meta name="robots" content="noindex, nofollow" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Josefin+Slab:300' rel='stylesheet' type='text/css' />
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="js/index_page.js"></script>
+	<script type="text/javascript" src="js/connectionManager.js"></script>
+	<title>Welcome to Jamii</title>
+</head>
 
-                                data ["login"] = document.getElementById("loginReg").value;
+<body>
 
-                                data ["first_name"] = document.getElementById("first_name").value;
-                                data ["last_name"] = document.getElementById("last_name").value;
-                                data ["email"] = document.getElementById("email").value;
-                                data ["passwd"] = document.getElementById("passwdReg").value;
+    <h1>Jamii</h1>
+	<button id="swap" onclick="register_pop()">Register</button>
 
-                                window.connection.send("register", data);
+	<form id="login_form">
+		<fieldset>
+			<input id="login" type="text" placeholder="Login" />
+			<input id="passwd" type="password" placeholder="Password" />
+			<button type="submit" class="login_button">Log in</button>
+		</fieldset>
+	</form>
 
-                                window.connection.registerHandler("registerOK", function(data){
-									var registration_div = document.getElementById("signin_form");
-									var registration_form = registration_div.getElementsByTagName("form")[0];
-									var ok_div = document.createElement("div");
-									var text = document.createTextNode("Registration successful!");
-									ok_div.style.display="block";
-									ok_div.style.padding="95px";
-									ok_div.style.margin="-240px auto";
-									ok_div.style.background="#FFFFFF";
-									ok_div.style.width="400px";
-									ok_div.style.position="relative";
-									ok_div.style.zIndex="4";
-									ok_div.style.textAlign="center";
-									ok_div.appendChild(text);
-									registration_div.appendChild(ok_div);
-									setTimeout(function(){ok_div.style.display="none"},3000);
-                                });
-                                return false;
-                        }
+    <form id="registration_form">
+        <fieldset>
+            <input id="loginReg" placeholder="Login" type="text" />
+            <input id="first_name" placeholder="First Name" type="text" />
+            <input id="last_name" placeholder="Last Name" type="text" />
+            <input id="email" placeholder="Email" type="text" />
+            <input id="passwdReg" placeholder="Password" type="password" />
+            <button type="submit" class="register_button">Register</button>
+        </fieldset>
+    </form>
 
-                }
-        </script>
-        </head>
-        <body>
-                <nav>
-                        <h2>Jamii</h2>
-                        <ul>
-                                <li><a>About Jamii</a></li>
-                                <li><a>Features</a></li>
-                                <li><a>Plans</a></li>
-                                <li><a>Gallery</a></li>
-                                <li><a>Help</a></li>
-                        </ul>
-                        <div>
-                                <ul>
-                                        <li><a href="#signin_form">Sign in</a></li>
-                                        <li><a href="#login_form">Log in</a></li>
-                                </ul>
-                        </div>
-                </nav>
-                <section class="top">
-                        <div>
-                                <h1>Welcome to Jamii!</h1>
-                                <p>Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem Lorem ipsum lorem ipsum lorem </p>
-                                <p>Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem Lorem ipsum lorem ipsum lorem </p>
-                                <a href="#signin_form">Sign in</a>
-                                <a href="#login_form">Log in</a>
-                                <pre id="status">Server debug messages here.
-</pre>
-                        </div>
-                        <img src="images/computers.png" alt="responsive" />
-                </section>
-                <section class="features">
-                </section>
-                <div id="login_form" class="popup_form">
-                        <a href="#" class="close"></a>
-                        <form>
-                                <fieldset>
-                                        <legend>Log in to Jamii</legend>
-                                        <label for="login">Login: </label><input id="login" type="text" /><br />
-                                        <label for="passwd">Password: </label><input id="passwd" type="password" /><br /><br />
-										<button type="submit" class="login_button">Log in</button>
-                                </fieldset>
-                        </form>
-                </div>
-                <div id="signin_form" class="popup_form">
-                        <a href="#" class="close"></a>
-                        <form>
-                                <fieldset>
-                                        <legend>Registration form</legend>
-                                        <label for="login">Login: </label><input id="loginReg" type="text" /><br />
-                                        <label for="first_name">First name: </label><input id="first_name" type="text" /><br />
-                                        <label for="last_name">Last name: </label><input id="last_name" type="text" /><br />
-                                        <label for="email">Email: </label><input id="email" type="text" /><br />
-                                        <label for="passwd">Password: </label><input id="passwdReg" type="password" /><br /><br />
-										<button type="submit" class="register_button">Register</button>
-                                </fieldset>
-                        </form>
-                </div>
-        </body>
+    <pre id="status">Server debug messages here.
+	</pre>
+
+</body>
 </html>
+
+

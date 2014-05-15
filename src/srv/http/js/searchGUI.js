@@ -155,7 +155,7 @@ function clickHandler( evt ){
 	if ( node.name == "sendButton" && node.value == "send" ){ 
 		node.value = "sended";
 		alert( 'inviter: ' +window.my_user_object["id"] +"\ninvitee: " +node.parentNode.id );		
-		sendInvitation( node.parentNode.id );
+		sendInvitation( parseInt( node.parentNode.id ) );
 	}	
 	if ( node.name == "prevButton" )
 		drawTableResults( -1 );
@@ -163,24 +163,24 @@ function clickHandler( evt ){
 		drawTableResults( 1 );
 	if ( node.name == "acceptButton" && node.value == "accept" ){
 		alert("accept");
-		node.value = "accepted";
-		//remove from window.user_object.["requests_list"]				
-		var index = window.my_user_object["requests_list"].indexOf( node.parentNode.id );
+		node.value = "accepted";			
+		var index = window.my_user_object["requests_list"].indexOf( parseInt( node.parentNode.id ) );
 		if ( index > -1 ){
 			window.my_user_object["requests_list"].splice( index, 1 );
+			window.flg.updateRequest();
 		}
-		
 		//alert( "inviter"+node.parentNode.id + "invitee"+window.my_user_object["id"] );		
-		window.connection.send( "invitationResponse", {"inviter":node.parentNode.id, "invitee":window.my_user_object["id"], "answer":1} );
+		window.connection.send( "invitationResponse", {"inviter":parseInt(node.parentNode.id), "invitee":window.my_user_object["id"], "answer":1} );
 	
 	}
 	if ( node.name == "rejectButton" && node.value == "reject" ){
-		node.value = "rejected";
-		//remove from window.user_object["requests_list"]		
-		var index = window.my_user_object["requests_list"].indexOf( node.parentNode.id );
-		if ( index > -1 )
+		node.value = "rejected";	
+		var index = window.my_user_object["requests_list"].indexOf( parseInt( node.parentNode.id ) );
+		if ( index > -1 ){
 			window.my_user_object["requests_list"].splice( index, 1 );			
-		window.connection.send( "invitationResponse", {"inviter":node.parentNode.id, "invitee":window.my_user_object["id"], "answer":0} );
+			window.flg.updateRequest();
+		}		
+		window.connection.send( "invitationResponse", {"inviter":parseInt(node.parentNode.id), "invitee":window.my_user_object["id"], "answer":0} );
 	}
 	if ( node.name == "prevButtonRequest" )
 		drawTableRequest( -1 );

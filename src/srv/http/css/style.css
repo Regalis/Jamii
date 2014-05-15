@@ -23,179 +23,72 @@
 body {
 	margin: 0;
 	padding: 0;
-	font-family: sans-serif;
-	position: relative;
-}
-
-body > nav {
-	height: 60px;
-	width: 100%;
-}
-
-body > nav > * {
-	display: inline-block;
-}
-
-body > nav > h2 {
-	margin-left: 20px;
-}
-
-body > nav > div {
-	float: right;
-	margin-right: 20px;
-}
-
-body > nav > div > ul > li > a {
-	display: block;
-	padding: 7px;
-	background-color: #EDEDED;
-	color: #5F5F5F;
-	border-radius: 5px;
-}
-
-body > nav > ul {
-	position: relative;
-	top: 10px;
-}
-
-body > nav ul li {
-	display: inline-block;
-}
-
-body > nav > ul li {
-}
-
-body > nav ul li a {
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: #64A101;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+	background-color: #9b59b6;
 	color: #FFFFFF;
+	text-align : center;
+	font-family: 'Josefin Slab', serif;
+	font-size: 10pt;
 }
 
-body > section.top {
-	height: 500px;
-	width: 100%;
-	background-image: url('../images/top.jpg');
-	background-size: 100% 500px;
-	position: relative;
-}
-
-body > section.top > div {
-	display: inline-block;
-	width: 500px;
-	position: absolute;
-	content: "";
-	top: 50px;
-	margin-left: 50%;
-	left: -600px;
-}
-
-body > section.top img {
-	height: 500px;
-	position: absolute;
-	content: "";
-	top: 70px;
-	margin-right: 50%;
-	right: -650px;
-}
-
-body > section.top > div h1 {
-	font-size: 45px;
-	color: #FFFFFF;
-	text-align: center;
-}
-
-body > section.top > div p {
-	font-size: 15px;
-	color: #FFFFFF;
-}
-/*
-body > section.top > div > a {
-	display: inline-block;
-	padding: 20px;
-	background-color: #EDEDED;
-	margin-top: 20px;
-	color: #5F5F5F;
-	font-size: 30px;
-	font-weight: bold;
-	border-radius: 10px;
-}
-*/
-body > section.top > div > a {
-	display: inline-block;
-	padding: 10px;
-	background-color: #14BA79;
-	margin-top: 20px;
-	color: #FFFFFF;
-	font-size: 17px;
-	font-weight: bold;
-	border-radius: 5px;
-}
-
-body > section.top > div > p.status {
-	display: block;
-	font-size: 20px;
-}
-
-a.close {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	z-index: 2;
-}
-
-div.popup_form {
+#registration_form {
 	display: none;
+}
+
+body > h1 {
+	text-align: center;
+	margin: 50px;
+	font-size: 10em;
+}
+
+fieldset {
+    border: 0;
+}
+
+#swap {
 	position: absolute;
-	background: rgba(0, 0, 0, 0.8);
-	top: 0;
-	left: 0;
+	top: 20px;
+	right: 20px;
 }
 
-div.popup_form:target {
+
+.wrapper {
 	display: block;
-	height: 100%;
-	width: 100%;
+	margin-left: auto;
+	margin-right: auto 
 }
 
-div.popup_form form {
-	color: #000000;
+
+#registration_form, #login_form {
+	text-align: center;
 	position: relative;
-	width: 600px;
-	margin: auto;
-	margin-top: 15%;
-	z-index: 3;
 }
 
-div.popup_form form fieldset {
-	background-color: #FFFFFF;
-	padding: 30px;
-	border: 1px solid #000000;
+body > form {
+	width: 300px;
+	margin: 0 auto;
 }
 
-div.popup_form form fieldset legend {
-	display: inline-block;
-	padding: 10px;
-	background-color: #14BA79;
-	margin-top: 20px;
+fieldset > input, fieldset > button {
+	display: block;
+	margin: 0.25em auto;
+}
+
+input {
+	padding: 5px;
+	font-size: 1.5em;
+	width: 250px;
+}
+
+button {
+	padding: 5px;
+	background-color: #2ecc71;
 	color: #FFFFFF;
-	font-size: 17px;
+	width: 260px;
+	font-size: 1em;
 	font-weight: bold;
 	border-radius: 5px;
 }
 
-div.popup_form form fieldset input {
-	background-color: #FFFFFF;
-	border: 1px solid #A9A9A9;
-	margin-top: 10px;
-	color: #000000;
-}
-
-body > section.features {
-	height : 300px;
+button[type="submit"] {
+	margin-top: 2em;
 }

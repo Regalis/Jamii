@@ -32,8 +32,8 @@ function initMainScreen(){
 	if (host.indexOf(':') != -1) {
 		host = host.substring(0, host.indexOf(':'));
 	}
-    window.connection = new ConnectionManager("http://" + host,"9393");
-
+   window.connection = new ConnectionManager("http://" + host,"9393");
+	window.is_in_conference = false;
 	window.webrtc = new SimpleWebRTC({
 		localVideoEl: 'localVideo',
 		remoteVideosEl: 'remoteVideos',
@@ -156,6 +156,7 @@ a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+d
 			temp["response"]=true;
 			console.log("Join to conference");
 			window.webrtc.joinRoom("jamiiroom"+data.admin_id);
+			window.is_in_conference = true;
 		} else {
 			//window.connection.send("conf_discard", info);
 			temp["response"]=false;
@@ -187,9 +188,17 @@ a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+d
 	fitToContainer(document.getElementById("layer1"));
 
 	clickDiv();
-	clickView();
 
-	var micro = document.getElementById("microphone");
+	hideRWindow();	
+
+
+
+	//document.getElementById("title_header").innerHTML = window.my_user_object["id"];
+
+
+
+
+
 }
 
 function fitToContainer(canvas) {
@@ -208,6 +217,19 @@ function clickDiv() {
 	whiteboard.style.cursor = 'crosshair';
 }
 
+function hideRWindow(){
+	document.getElementById("localVideo").style.visibility = "visible";
+	document.getElementById("chat").style.visibility = "hidden";
+
+	document.getElementById("options").style.visibility = "hidden";
+	document.getElementById("fileshare").style.visibility = "hidden";
+
+	/*var logout = document.getElementById("logout").getElementsByTagName("div");;
+	logout.style.cursor = 'pointer';
+	logout.onclick = function(){
+						window.connection.logout();
+	}*/
+}
 function clickView() {
 	var views = document.getElementById("dBar").getElementsByTagName("div");
 	for (i in views) {
@@ -254,20 +276,26 @@ function drop(ev) {
 	console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
 
 	window.connection.send("conf_request", info);
+
 }
 function dropFirst(ev) {
+	window.is_in_conference = true;
+	
 	ev.preventDefault();
 	var create_conf_data = {
 		"my_id": window.my_user_object["id"],
 		"user_id": ev.dataTransfer.getData("Id"),
 		"visibility": "public"
 	};
+
 	var data = ev.dataTransfer.getData("Login");
 	ev.target.appendChild(document.getElementById(data).cloneNode(true));
 	console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
 	window.connection.send("conf_create", create_conf_data);
 	window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
 	window.conf_admin = window.my_user_object["id"];
+clickView();
+
 }
 
 

@@ -1,33 +1,25 @@
-<html>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
 	<head>
-      <link rel="icon" href="images/favicon.png" type="image/png">
-      <title>
-         Jamii - community
-      </title>
-      <link rel="stylesheet" href="css/style-app.css" type="text/css" />
-
-      <script src="js/latest.js"></script>
-      <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-      <script type="text/javascript" src="js/friendList.js"></script>
-      <script type="text/javascript" src="js/friendListGUI.js"></script>
-      <script type="text/javascript" src="js/connectionManager.js"></script>
-      <script type="text/javascript" src="js/chat.js"></script>
-      <script type="text/javascript" src="js/initFunctions.js"></script>
-      <script type="text/javascript" src="js/options.js"></script>
-      <script type="text/javascript" src="js/whiteboard.js"></script>
-      <script type="text/javascript" src="js/upper_bar.js"></script>
+		<link rel="icon" href="images/favicon.png" type="image/png" />
+		<title>Jamii - community</title>
+		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
+		<script src="js/latest.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="js/friendList.js"></script>
+		<script type="text/javascript" src="js/friendListGUI.js"></script>
+		<script type="text/javascript" src="js/connectionManager.js"></script>
+		<script type="text/javascript" src="js/chat.js"></script>
+		<script type="text/javascript" src="js/initFunctions.js"></script>
+		<script type="text/javascript" src="js/options.js"></script>
+		<script type="text/javascript" src="js/whiteboard.js"></script>
+		<script type="text/javascript" src="js/upper_bar.js"></script>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/sendFile.js"></script>
 		<script type="text/javascript" src="js/searchGUI.js"></script>
 		<script type="text/javascript" src="js/addFriend.js"></script>
 		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
-		<style>
-			.thumb {
-				height: 75px;
-				border: 1px solid #000;
-				margin: 10px 5px 0 0;
-			}
-		</style>
 	</head>
 	<body>
 	<!-- UPPER BAR -->
@@ -39,7 +31,7 @@
 		<div id="user2" ondrop="drop(event)" ondragover="allowDrop(event)" >
 		</div>
 		<div id="user3" ondrop="drop(event)" ondragover="allowDrop(event)" >
-		</div>
+	 </div>
 		<div id="user4" ondrop="drop(event)" ondragover="allowDrop(event)" >
 		</div>
 		<div id="user5" ondrop="drop(event)" ondragover="allowDrop(event)" >
@@ -47,7 +39,7 @@
 		<div id="me">
 			<video id="localVideo"></video>
 		</div>
-		<h2>Jamii</h2>
+		<h2 id="title_header">Jamii</h2>
 	</div>
 	<!-- UPPER BAR END-->
 	<!-- CONTENT -->
@@ -85,7 +77,7 @@
 						<td>
 							<button type="button" onclick="clear_whiteboard()">Clear</button>
 							<input class="color {hash:true}" />
-							<br>
+							<br />
 						</td>
 						<td></td>
 						</tr>
@@ -121,6 +113,13 @@
 		<!-- RWINDOW -->
 		<div id="rWindow">
 
+<!-- FRIEND LIST -->
+			<div id="friendList">
+				<button id="invitation_button" class="option_button" type="submit" ></button>
+				<button id="add_friend" type="submit" class="option_button">+ Add Friend</button>
+			</div>
+			<!-- FRIEND LIST -->
+
 			<!-- OPTIONS -->
 			<div id="options">
 				<form onsubmit="return account_change()">
@@ -141,7 +140,7 @@
 				<form onsubmit="return account_change()">
 					<fieldset>
 						<legend>Set avatar</legend>
-						<input type="file" id="files" name="files[]" multiple />
+						<input type="file" id="files" name="files[]" multiple="multiple" />
 						<button id="avatar_change_button" onclick="avatar_change()">Change</button>
 					</fieldset>
 				</form>
@@ -180,13 +179,12 @@
                   <legend>
                      File share
                   </legend>
-                <input onchange="file_input_handler()" type="file" id="filesToSend" name="files[]" multiple /><br>
+                <input onchange="file_input_handler()" type="file" id="filesToSend" name="files[]" multiple="multiple" /><br />
 
 <div id ="current_file">
 
 </div>
-<button id="file_send_button" type="submit">Send</button><br>
-                  </button>
+<button id="file_send_button" type="submit">Send</button><br />
                </fieldset>
             </form>
           
@@ -197,6 +195,7 @@
 </ul> 
 </div>
 
+
       
          </div>
 
@@ -204,12 +203,7 @@
 
 			<!-- FILE SHARE END-->
 
-			<!-- FRIEND LIST -->
-			<div id="friendList">
-				<button id="invitation_button" class="option_button" type="submit" ></button>
-				<button id="add_friend" type="submit" class="option_button">+ Add Friend</button>
-			</div>
-			<!-- FRIEND LIST -->
+			
 
 		</div>
 		<!-- RWINDOW END -->
