@@ -264,12 +264,6 @@ ch.getUserDataFromIdHandler2( data, socket );
     } );
     //end temp
 
-    // temp
-    socket.on("getUserDataFromId2", function(data){
-ch.getUserDataFromIdHandler2( data, socket );
-    } );
-    // end temp
-
     socket.on("searchFriends", function(data){
 ch.searchFriendsHandler( data, socket );
     } );
@@ -286,7 +280,6 @@ ch.chatHandler( data, socket );
 ch.drawHandler( data, socket );
     } );
 
-    
     socket.on("password_change", function(data){
 ch.password_changeHandler( data, socket );
     } );
@@ -321,6 +314,10 @@ ch.conf_responseHandler( data, socket );
 
     socket.on("send_file", function(data){
 ch.send_fileHandler( data, socket );
+    } );
+
+    socket.on("removeFriend", function(data){
+	ch.removeFriendHandler( data, socket );
     } );
     
 });
