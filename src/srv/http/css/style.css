@@ -27,67 +27,68 @@ body {
 	color: #FFFFFF;
 	text-align : center;
 	font-family: 'Josefin Slab', serif;
-
+	font-size: 10pt;
 }
 
-#registration_form{
-	display:none;
+#registration_form {
+	display: none;
 }
 
-body >h1{
-
-	text-align:center;
-	font-size: 170px;	
-
+body > h1 {
+	text-align: center;
+	margin: 50px;
+	font-size: 10em;
 }
-
-
 
 fieldset {
     border: 0;
+}
 
-
+#swap {
+	position: absolute;
+	top: 20px;
+	right: 20px;
 }
 
 
-
-#topcorner{
-   position:absolute;
-   top:0;
-   right:0;
-  }
-
-
-.wrapper{
-
-	 display: block;
-    margin-left: auto;
-    margin-right: auto 
-
-
+.wrapper {
+	display: block;
+	margin-left: auto;
+	margin-right: auto 
 }
 
 
-#registration_form, #login_form{
-		text-align:center;
-      position: relative;
+#registration_form, #login_form {
+	text-align: center;
+	position: relative;
 }
 
-input{
+body > form {
+	width: 300px;
+	margin: 0 auto;
+}
+
+fieldset > input, fieldset > button {
+	display: block;
+	margin: 0.25em auto;
+}
+
+input {
 	padding: 5px;
-	font-size: 20px;
-	width:250px;
+	font-size: 1.5em;
+	width: 250px;
 }
 
 button {
-	
-display: inline-block;
-padding: 5px;
-background-color: #2ecc71;
-margin-top: 20px;
-color: #FFFFFF;
-width:250px;
-font-size: 17px;
-font-weight: bold;
-border-radius: 5px;
+	padding: 5px;
+	background-color: #2ecc71;
+	color: #FFFFFF;
+	width: 260px;
+	font-size: 1em;
+	font-weight: bold;
+	border-radius: 5px;
+}
+
+button[type="submit"] {
+	margin-top: 2em;
 }
