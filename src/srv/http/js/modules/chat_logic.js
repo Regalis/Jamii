@@ -31,6 +31,7 @@ var ChatLogic = function() {
 	}
 
 	this.outcoming_message_handler = function (data) {
+		//ToDo remove login field from data
 		data ["login"] = window.my_user_object.login;
 		window.connection.send("chat_message", data);
 	}

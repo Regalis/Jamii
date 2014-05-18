@@ -20,21 +20,22 @@
  * 
  */
 
-var FileShareLogic = function() {
 
-	this.init = function() {
-		window.connection.registerHandler("file_incoming", this.file_incoming_handler);
-	}
+var AccountSettingsLogic = function() {
 	
-
-	this.file_incoming_handler = function (data) {
-		signal_incoming_file.emit(data);
+	this.init = function() {
+		window.connection.registerHandler("account_change_response", this.account_change_response_handler);
 	}
 
-	this.file_outcoming_handler = function (data) {
-		window.connection.send("file_outcoming", data);
+	this.account_change_response_handler = function (data) {
+		signal_account_change_response.emit(data);
 	}
 
-	this.signal_incoming_file = new Signal();
+	this.account_change_request_handler = function (data) {
+		data ["login"] = window.my_user_object.login;
+		window.connection.send("chat_message", data);
+	}
+
+	this.signal_account_change_response = new Signal();
 }
 

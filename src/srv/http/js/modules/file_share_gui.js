@@ -20,10 +20,17 @@
  * 
  */
 
-window.FileShareGui = function() {
-	
-	window.FileShareLogic.signal_incoming_file.connect(this.file_incoming_handler);
-	
+var FileShareGui = function() {
+
+		this.init = function() {
+
+			this.logic.signal_incoming_file.connect(this.file_incoming_handler);
+	//	document.getElementById('file_to_send').addEventListener('change', handleFileSelect, false);
+	//	document.getElementById("file_send_button").onSubmit = 	this.outcoming_file_handler;
+	}
+
+
+
 	this.incoming_message_handler = function (data){
 		var ul = document.getElementById("files_list");
 		var li = document.createElement("li");
@@ -35,4 +42,43 @@ window.FileShareGui = function() {
 		li.appendChild(a);
 		ul.appendChild(li);
 	}
+
+	this.outcoming_file_handler = function(evt){	
+		
+	}
+
+	function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+		var data = {};
+
+		var reader = new FileReader();
+		data["reader"] = reader;
+	
+		reader.onload = (function(theFile) {
+		return function(e) {
+			var result = reader.result;
+
+			var temp = JSON.stringify(result);
+			var splited = temp.split(",");
+			temp =  splited[0];
+			temp = temp.replace("\"data:","");
+			var arr = temp.split(";");
+			temp = arr[0];
+			data["file_type"]=arr[0];
+			console.log(splited[1]);
+			data["file'"] = splited[1];
+}
+		})(f);
+
+		// Read in the image file as a data URL.
+		reader.readAsDataURL(f);
+		data["file_name"] = f.name;
+		document.getElementById("current_file").textContent = data["file_name"];
+
+
+		}
+
+	
+
+
 }

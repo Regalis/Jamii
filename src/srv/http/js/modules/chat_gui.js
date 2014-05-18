@@ -23,7 +23,7 @@
 var ChatGui = function() {
 	
 	this.init = function() {
-		window.ChatLogic.signal_incoming_message.connect(this.incoming_message_handler);
+		this.logic.signal_incoming_message.connect(this.incoming_message_handler);
 		document.getElementById("chat").getElementsByTagName("form")[0].onSubmit = 	this.outcoming_message_handler;
 	}
 
