@@ -74,6 +74,7 @@ fieldset > input, fieldset > button {
 }
 
 input {
+	background-color: #ffffff;
 	padding: 5px;
 	font-size: 1.5em;
 	width: 250px;

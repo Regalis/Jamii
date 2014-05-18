@@ -19,8 +19,6 @@
  * -> Mateusz Zajac <matteo.zajac@gmail.com>
  */
 
-
-
 var socket = null;
 
 function log(data) {
@@ -42,56 +40,50 @@ window.onload = function () {
         log("Get login data");
         var data = {};
 
-        data["login"] = document.getElementById("login").value;
+        data["login"] = document.getElementById("login_login").value;
 
-        data["passwd"] = document.getElementById("passwd").value;
+        data["passwd"] = document.getElementById("login_passwd").value;
 
         window.connection.send("login", data);
-        <!-- window.connection.registerHandler("loginOK", function(data){ -->
-        <!-- window.location.href = "/page.html"; -->
-        <!-- }); -->
-        window.connection.registerHandler("loginBAD", function (data) {
-            alert(data.what);
-        });
-			alert(data.login);
 
         return false;
     }
     document.getElementsByClassName("register_button")[0].onclick = function () {
+
         log("Get register data");
         var data = {};
 
-        data["login"] = document.getElementById("loginReg").value;
-
-        data["first_name"] = document.getElementById("first_name").value;
-        data["last_name"] = document.getElementById("last_name").value;
-        data["email"] = document.getElementById("email").value;
-        data["passwd"] = document.getElementById("passwdReg").value;
+        data["login"] = document.getElementById("registration_login").value;
+        data["first_name"] = document.getElementById("registration_first_name").value;
+        data["last_name"] = document.getElementById("registration_last_name").value;
+        data["email"] = document.getElementById("registration_email").value;
+        data["passwd"] = document.getElementById("registration_passwd").value;
 
         window.connection.send("register", data);
 
-        window.connection.registerHandler("registerOK", function (data) {
-         alert("Registration succesfull");
-			document.getElementById("registration_form").style.display="none";
-			document.getElementById("login_form").style.display="block";
-        });
         return false;
     }
 
-}
+    document.getElementById("swap").onclick = function () {
+        if (document.getElementById("swap").value == "Login") {
+				document.getElementById("swap").value = "Register";
+            document.getElementById("registration_form").style.display = "none";
+            document.getElementById("login_form").style.display = "block";
+        } else {
+				document.getElementById("swap").value = "Login";
+            document.getElementById("registration_form").style.display = "block";
+            document.getElementById("login_form").style.display = "none";
+        }
+    }
 
+    window.connection.registerHandler("registerOK", function (data) {
+        alert("Registration succesfull");
+        document.getElementById("registration_form").style.display = "none";
+        document.getElementById("login_form").style.display = "block";
+    });
 
-function register_pop(){
-	if(		document.getElementById("swap").innerHTML=="Login"){
-				document.getElementById("swap").innerHTML="Register";
-	document.getElementById("registration_form").style.display="none";
-	document.getElementById("login_form").style.display="block";
-	}
-else{
-	document.getElementById("swap").innerHTML="Login";
-	document.getElementById("registration_form").style.display="block";
-	document.getElementById("login_form").style.display="none";
-}
-
+    window.connection.registerHandler("loginBAD", function (data) {
+        alert(data.what);
+    });
 
 }

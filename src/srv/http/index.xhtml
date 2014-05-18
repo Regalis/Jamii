@@ -16,29 +16,30 @@
 
 <body>
 
-    <h1>Jamii</h1>
-	<button id="swap" onclick="register_pop()">Register</button>
+	<h1>Jamii</h1>
+	<button id="swap">Register</button>
 
 	<form id="login_form">
 		<fieldset>
-			<input id="login" type="text" placeholder="Login" />
-			<input id="passwd" type="password" placeholder="Password" />
+			<input id="login_login" type="text" placeholder="Login" />
+			<input id="login_passwd" type="password" placeholder="Password" />
 			<button type="submit" class="login_button">Log in</button>
 		</fieldset>
 	</form>
 
     <form id="registration_form">
         <fieldset>
-            <input id="loginReg" placeholder="Login" type="text" />
-            <input id="first_name" placeholder="First Name" type="text" />
-            <input id="last_name" placeholder="Last Name" type="text" />
-            <input id="email" placeholder="Email" type="text" />
-            <input id="passwdReg" placeholder="Password" type="password" />
+            <input id="registration_login" placeholder="Login" type="text" />
+            <input id="registration_first_name" placeholder="First Name" type="text" />
+            <input id="registration_last_name" placeholder="Last Name" type="text" />
+            <input id="registration_email" placeholder="Email" type="text" />
+            <input id="registration_passwd" placeholder="Password" type="password" />
             <button type="submit" class="register_button">Register</button>
         </fieldset>
     </form>
 
-    <pre id="status">Server debug messages here.
+	<pre id="status">
+		Server debug messages here.
 	</pre>
 
 </body>

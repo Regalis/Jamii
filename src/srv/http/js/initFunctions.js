@@ -101,53 +101,9 @@ temp = arr[0];
  */
 
 
-function onResize(){
-
-}
-
-
 window.onload = function () {
 
 	initMainScreen();
-
-/*
-document.getElementById("avatar_snap_button").addEventListener("click", function() {
-	var canvas = document.getElementById("uBar");
-		context = canvas.getContext("2d");
-		alert("AASSA");
-	context.drawImage(video, 0, 0, 640, 480);
-});
-*/
-
-
-	window.connection.registerHandler("chatOK", function (data) {
-		var list = document.getElementById("textList");
-		var entry = document.createElement('li');
-		console.log("got messae from: " + data.login + " : " + data.message);
-		var loginText = data.login + ": ";
-		entry.appendChild(document.createTextNode(loginText));
-		entry.appendChild(document.createTextNode(data.message));
-		list.appendChild(entry);
-	});
-
-	window.connection.registerHandler("new_file", function (data) {
-
-		var ul = document.getElementById("files_list");
-		var li = document.createElement("li");
-
-var a = document.createElement('a');
-
-var linkText = document.createTextNode(data.name);
-a.appendChild(linkText);
-a.title = "data.name";
-a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+data.name;
-
-
-
-		li.appendChild(a);
-		ul.appendChild(li);	
-
-	});
 
 	window.connection.registerHandler("conf_invitation", function (data){
 		var temp ={}
@@ -157,6 +113,8 @@ a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+d
 			console.log("Join to conference");
 			window.webrtc.joinRoom("jamiiroom"+data.admin_id);
 			window.is_in_conference = true;
+			clickView();
+
 		} else {
 			//window.connection.send("conf_discard", info);
 			temp["response"]=false;
@@ -169,19 +127,6 @@ a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+d
 
 	});
 
-	window.connection.registerHandler("password_change_confirmation", function (data) {
-		alert("Password has been changed");
-		document.getElementById("new_password").value="";
-		document.getElementById("confirm_password").value="";
-		document.getElementById("current_password").value="";
-	});
-
-	window.connection.registerHandler("password_change_error", function (data) {
-		alert("Wrong current password, please try again");
-		document.getElementById("new_password").value="";
-		document.getElementById("confirm_password").value="";
-		document.getElementById("current_password").value="";
-	});
 
 	window.connection.registerHandler("drawOK", window.wb.drawHandler);
 
@@ -190,12 +135,6 @@ a.href = "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+d
 	clickDiv();
 
 	hideRWindow();	
-
-
-
-	//document.getElementById("title_header").innerHTML = window.my_user_object["id"];
-
-
 
 
 
@@ -217,19 +156,6 @@ function clickDiv() {
 	whiteboard.style.cursor = 'crosshair';
 }
 
-function hideRWindow(){
-	document.getElementById("localVideo").style.visibility = "visible";
-	document.getElementById("chat").style.visibility = "hidden";
-
-	document.getElementById("options").style.visibility = "hidden";
-	document.getElementById("fileshare").style.visibility = "hidden";
-
-	/*var logout = document.getElementById("logout").getElementsByTagName("div");;
-	logout.style.cursor = 'pointer';
-	logout.onclick = function(){
-						window.connection.logout();
-	}*/
-}
 function clickView() {
 	var views = document.getElementById("dBar").getElementsByTagName("div");
 	for (i in views) {
