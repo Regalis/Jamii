@@ -20,7 +20,7 @@
  * 
  */
 
-window.ChatLogic = function() {
+var ChatLogic = function() {
 	
 	this.init = function() {
 		window.connection.registerHandler("chat_incoming_message", this.incoming_message_handler);
@@ -31,6 +31,7 @@ window.ChatLogic = function() {
 	}
 
 	this.outcoming_message_handler = function (data) {
+		data ["login"] = window.my_user_object.login;
 		window.connection.send("chat_message", data);
 	}
 

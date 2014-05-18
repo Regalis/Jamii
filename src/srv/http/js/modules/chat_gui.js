@@ -20,7 +20,7 @@
  * 
  */
 
-window.ChatGui = function() {
+var ChatGui = function() {
 	
 	this.init = function() {
 		window.ChatLogic.signal_incoming_message.connect(this.incoming_message_handler);
@@ -40,8 +40,9 @@ window.ChatGui = function() {
 	this.outcoming_message_handler = function(){
 		var temp = document.getElementById("chat_input").getAttribute("value");        
 		var data  = {};
-		data ["login"] = window.my_user_object.login;
+
 		data ["message"] = temp;
+		this.signal_outcoming_message.emit(data);
 		document.getElementById("chat_input").form.reset();  
 		var textList = document.getElementById("textList");
 		textList.scrollTop = textList.scrollHeight;
