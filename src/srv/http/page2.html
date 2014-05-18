@@ -2,24 +2,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
 	<head>
+		<script type="text/javascript" src="js/javascript_extras.js"></script>
+		<script type="text/javascript" src="js/connectionManager.js"></script>
+		<script type="text/javascript" src="js/core.js"></script>
+		<script type="text/javascript" src="js/signal.js"></script>
 		<link rel="icon" href="images/favicon.png" type="image/png" />
 		<title>Jamii - community</title>
 		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
 		<script src="js/latest.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="js/friendList.js"></script>
-		<script type="text/javascript" src="js/friendListGUI.js"></script>
-		<script type="text/javascript" src="js/connectionManager.js"></script>
-		<script type="text/javascript" src="js/chat.js"></script>
-		<script type="text/javascript" src="js/initFunctions.js"></script>
-		<script type="text/javascript" src="js/options.js"></script>
-		<script type="text/javascript" src="js/whiteboard.js"></script>
-		<script type="text/javascript" src="js/upper_bar.js"></script>
-		<script type="text/javascript" src="js/search.js"></script>
-		<script type="text/javascript" src="js/sendFile.js"></script>
-		<script type="text/javascript" src="js/searchGUI.js"></script>
-		<script type="text/javascript" src="js/addFriend.js"></script>
-		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
+
 	</head>
 	<body>
 	<!-- UPPER BAR -->
@@ -62,14 +54,6 @@
 								This text is displayed if your browser does not support HTML5 Canvas.
 						</canvas>
 					</div>
-					<script>
-						window.wb = new Whiteboard( document.getElementById("layer1") );
-						window.painter = new Painter(1);
-						window.painter2 = new Painter(2);
-						window.painter.color = "#FF00FF";
-						window.wb.init();
-						document.getElementById("layer1");
-					</script>
 				</div>
 				<div id="panel">
 					<table>
