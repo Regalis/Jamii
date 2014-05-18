@@ -150,7 +150,7 @@ conferenceManager.prototype.share_file = function(user_id, file){
     
     // notify users about new file
     var to_send = { "name":file["name"], "sender":user_id };
-    this.broadcast( user_id, "new_file", to_send );
+    this.broadcast( user_id, "file_incoming", to_send );
     
 }
 

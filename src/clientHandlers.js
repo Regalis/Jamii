@@ -175,7 +175,7 @@ clientHandlers.prototype.chatHandler = function(packet, socket){
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session( session_id );
 
-    this.cfm.broadcast_me_too( user_id, "chatOK", data );
+    this.cfm.broadcast_me_too( user_id, "chat_incoming_message", data );
 }
 
 clientHandlers.prototype.drawHandler = function(packet, socket){
@@ -322,26 +322,26 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 
 
 // handlers for conference management
-clientHandlers.prototype.conf_createHandler = function(packet, socket){
+clientHandlers.prototype.conference_startHandler = function(packet, socket){
     var data = strip_data_object(packet);
     
-    console.log("CONFCREATEHANDLER: " + JSON.stringify( data ) );
+    console.log("CONFCREATEHANDLER: " + JSON.stringify(data));
 
-    var admin_id = Number( data['my_id'] );
-    var first_friend = Number( data['user_id'] );
+    var admin_id = Number(data['my_id']);
+    var first_friend = Number(data['user_id']);
     // @todo: retrieve and use visibilty information
-    this.cfm.create_conference( admin_id );
+    this.cfm.create_conference(admin_id);
     
     // invite first friend
-    var ff_sock = this.cm.get_socket_by_userid( first_friend );
-    var to_send = {"admin_id":admin_id};
-    if( ff_sock != null ){
-	ff_sock.emit("conf_invitation", to_send);
+    var ff_sock = this.cm.get_socket_by_userid(first_friend);
+    var to_send = {"admin_id": admin_id};
+    if (ff_sock != null) {
+		ff_sock.emit("conference_invitation", to_send);
     }
 
 }
 
-clientHandlers.prototype.conf_requestHandler = function(packet, socket){
+clientHandlers.prototype.conference_invitationHandler = function(packet, socket){
     var data = strip_data_object(packet);
     
     var admin_id = Number( data['my_id'] );
@@ -352,44 +352,28 @@ clientHandlers.prototype.conf_requestHandler = function(packet, socket){
     var ff_sock = this.cm.get_socket_by_userid( user_id );
     var to_send = {"admin_id":admin_id};
     if( ff_sock != null ){
-	ff_sock.emit("conf_invitation", to_send);
+		ff_sock.emit("conference_invitation", to_send);
     }
 
 }
 
-clientHandlers.prototype.conf_requestHandler = function(packet, socket){
-    var data = strip_data_object(packet);
-    
-    var admin_id = Number( data['my_id'] );
-    var user_id = Number( data['user_id'] );
-    // @todo: retrieve and use visibilty information
-    
-    // invite friend
-    var ff_sock = this.cm.get_socket_by_userid( user_id );
-    var to_send = {"admin_id":admin_id};
-    if( ff_sock != null ){
-	ff_sock.emit("conf_invitation", to_send);
-    }
-
-}
-
-clientHandlers.prototype.conf_responseHandler = function(packet, socket){
+clientHandlers.prototype.conference_invitation_responseHandlerer = function(packet, socket){
     var data = strip_data_object(packet);
     
     var admin_id = Number( data['admin_id'] );
     var user_id = Number( data['user_id'] );
     var response = data['response'] ;
 
-    if( response ){
-	this.cfm.add_user_to_conf(admin_id, user_id);
-    }else{
+    if(response) {
+		this.cfm.add_user_to_conf(admin_id, user_id);
+    } else{
 	// maybe notify inviter of the refusal
 	
     }    
     // maybe notify inviter of the refusal
-    var sock = this.cm.get_socket_by_userid( admin_id );
+    var sock = this.cm.get_socket_by_userid(admin_id);
     if( sock != null ){
-	sock.emit("conf_response", data);
+		sock.emit("conference_invitation_result", data);
     }
 	
     console.log("conference "+ JSON.stringify(this.cfm.conferences));

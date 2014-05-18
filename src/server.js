@@ -300,16 +300,16 @@ io.sockets.on("connection", function(socket) {
 		ch.invitationResponseHandler(data, socket);
 	});
 
-	socket.on("conf_create", function(data) {
-		ch.conf_createHandler(data, socket);
+	socket.on("conference_start", function(data) {
+		ch.conference_startHandler(data, socket);
 	});
 
-	socket.on("conf_request", function(data) {
-		ch.conf_requestHandler(data, socket);
+	socket.on("conference_invitation", function(data) {
+		ch.conference_invitationtHandler(data, socket);
 	});
 
-	socket.on("conf_response", function(data) {
-		ch.conf_responseHandler(data, socket);
+	socket.on("conference_invitation_response", function(data) {
+		ch.conference_invitation_responseHandler(data, socket);
 	});
 
 	socket.on("send_file", function(data) {
