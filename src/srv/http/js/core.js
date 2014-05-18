@@ -86,6 +86,7 @@ var JamiiCore = function() {
 				logic_mod.gui = gui_mod;
 				logic_mod.init();
 				gui_mod.init();
+				console.log("[I] JamiiCore::load_module: Module '" + module_name + "' initialized");
 			}
 		}
 	}
@@ -119,6 +120,7 @@ var JamiiCore = function() {
 		if (core_modules[name] == undefined)
 			core_modules[name] = {};
 		core_modules[name][type] = obj;
+		console.log("[I] JamiiCore::register_module_object: Registered core module '" + name + "' of type '" + type + "'");
 		return obj;
 	}
 
