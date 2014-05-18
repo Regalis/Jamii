@@ -19,7 +19,10 @@
 * -> Patryk Jaworski <regalis@regalis.com.pl>
 */
 
-var JamiiCore = function(modules_dir = "/js/modules/") {
+var JamiiCore = function() {
+
+	var modules_dir = "/js/modules/";
+
 	/** @brief dictionariy of currently loaded and initialized modules
 	 *
 	 * keys: lowercased module names
