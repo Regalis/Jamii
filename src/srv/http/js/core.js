@@ -50,45 +50,71 @@ var JamiiCore = function() {
 	this.load_module = function(module_name) {
 		console.log("[I] Trying to load module " + module_name);
 		module_name = module_name.toLowerCase();
-		var logic_script = document.createElement("script");
-		var gui_script = document.createElement("script");
-		
-		logic_script.setAttribute("type", "text/javascript");
-		logic_script.setAttribute("src", modules_dir + module_name + "_logic.js");
-		gui_script.setAttribute("type", "text/javascript");
-		gui_script.setAttribute("src", modules_dir + module_name + "_gui.js");
-		document.getElementsByTagName("head")[0].appendChild(logic_script);
-		document.getElementsByTagName("head")[0].appendChild(gui_script);
 
-		var logic_obj = get_module_class_prefix(module_name) + "Logic";	
-		var gui_obj = get_module_class_prefix(module_name) + "Gui";	
+		core_modules[module_name] = {
+			'ready_status': {'logic': false, 'gui': false},
+			'onload_signal': new Signal(),
+			'module_ready_signal': new Signal()
+		};
+		console.log(JSON.stringify(core_modules));
 
-		var error_handler = function() {
-			console.log("[E] JamiiCore::load_module: Error while loading " + this.getAttribute("src"));
+
+		var script_onload_template = function(name, type) {
+			return function() {
+				core_modules[name].onload_signal.emit([name, type]);
+			}
 		}
 
-		gui_script.onerror = error_handler;
-		logic_script.onerror = error_handler;
+		var script_onerror = function() {
+			console.log("[E] JamiiCore::load_module: Unable to load " + this.getAttribute("src"));
+		}
 
-		gui_script.onload = function() {
-			if (window[gui_obj] == undefined) {
-				console.log("[E] JamiiCore::load_module: Class " + gui_obj + " does not exists...");
-				return;
-			}
-			var gui_mod = register_module_object(module_name, "gui", new window[gui_obj]());
-			logic_script.onload = function() {
-				if (window[logic_obj] == undefined) {
-					console.log("[E] JamiiCore::load_module: Class " + logic_obj + " does not exists...");
-					return;
+		var onload_signal_handler = function(data) {
+			name = data[0];
+			type = data[1];
+			console.log("[I] JamiiCore::load_module: Script loaded (" + name + ", " + type + ")");
+			core_modules[name]['ready_status'][type] = true;
+			var postfix = 'Logic';
+			if (type == 'gui')
+				postfix = 'Gui';
+			var module_class_name = get_module_class_prefix(name) + postfix;
+			if (window[module_class_name] != undefined)
+				register_module_object(name, type, new window[module_class_name]());
+
+			if (core_modules[name]['ready_status']['gui'] && core_modules[name]['ready_status']['logic'])
+				core_modules[name]['module_ready_signal'].emit(name);
+		}
+
+		var module_ready_signal_handler = function(name) {
+
+			window.JamiiCore.get_module_logic(name)['gui'] = window.JamiiCore.get_module_gui(name);
+			window.JamiiCore.get_module_gui(name)['logic'] = window.JamiiCore.get_module_logic(name);
+
+			console.log("[I] JamiiCore::load_module: Module ready to initialize (" + name + ")");
+			if (window.JamiiCore.get_module_logic(name)['init'] != undefined) {
+				try {
+					window.JamiiCore.get_module_logic(name).init();
+					console.log("[I] JamiiCore::load_module: Logic of module '" + name + "' initialized");
+				} catch (err) {
+					console.log("[E] Error in init() function inside module " + name + " (logic): " + err);
 				}
-				var logic_mod = register_module_object(module_name, "logic", new window[logic_obj]());
-				gui_mod.logic = logic_mod;
-				logic_mod.gui = gui_mod;
-				logic_mod.init();
-				gui_mod.init();
-				console.log("[I] JamiiCore::load_module: Module '" + module_name + "' initialized");
+			}
+			if (window.JamiiCore.get_module_gui(name)['init'] != undefined) {
+				try {
+					window.JamiiCore.get_module_gui(name).init();
+					console.log("[I] JamiiCore::load_module: Gui of module '" + name + "' initialized");
+				} catch (err) {
+					console.log("[E] Error in init() function inside module " + name + " (gui): " + err);
+				}
 			}
 		}
+
+		core_modules[module_name]['onload_signal'].connect(onload_signal_handler);
+		core_modules[module_name]['module_ready_signal'].connect(module_ready_signal_handler);
+
+		this.append_script(modules_dir + module_name + "_logic.js", script_onload_template(module_name, 'logic'));
+		this.append_script(modules_dir + module_name + "_gui.js", script_onload_template(module_name, 'gui'));
+
 	}
 
 	this.is_module_loaded = function (module_name) {
@@ -110,7 +136,7 @@ var JamiiCore = function() {
 		}
 		window.connection = new ConnectionManager("http://" + host,"9393");
 
-		modules_to_load = ['conferention', 'chat', 'file_share', 'account_settings'];
+		modules_to_load = ['conference', 'chat', 'file_share', 'account_settings'];
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}
@@ -136,6 +162,18 @@ var JamiiCore = function() {
 			}
 		}
 		return module_name.split('_').join('');
+	}
+
+	this.append_script = function(script_src, onload, onerror) {
+		var script = document.createElement("script");
+		if (onload != undefined)
+			script.onload = onload;
+		if (onerror != undefined)
+			script.onerror = onerror;
+		script.setAttribute("type", "text/javascript");
+		script.setAttribute("src", script_src);
+		document.getElementsByTagName("head")[0].appendChild(script);
+		return script;
 	}
 
 }
