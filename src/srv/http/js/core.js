@@ -106,7 +106,7 @@ var JamiiCore = function(modules_dir = "/js/modules/") {
 		}
 		window.connection = new ConnectionManager("http://" + host,"9393");
 
-		modules_to_load = ['conferention', 'chat', 'file_share', 'account_settings'];
+		modules_to_load = ['conference', 'chat', 'file_share', 'account_settings'];
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}
