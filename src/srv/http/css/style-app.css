@@ -3,28 +3,22 @@ body {
 	margin: 0;
 	padding: 0;
 	min-width: 800px;
+	overflow-y: hidden;
 }
 
-body input[type="submit"],
-body button {
-	background-color:#64A101;
-	color: #FFFFFF;
-	padding: 4px;
-	border-radius: 3px;
-	border: none;
-	cursor: pointer;
-}
-
-body input[type="submit"]:hover,
-body button:hover {
-	background-color: #BCAAD4;
-}
 
 /* TEMPORARY */
-#main_content > div ,
 #aside_content > div {
 	display: none;
 }
+
+#video_view,
+#search_friend,
+#account_settings,
+#invitations {
+	display: none;
+}
+
 
 /* SECTION */
 
@@ -34,7 +28,8 @@ body > section {
 	position: absolute;
 	left: 0;
 	right: 300px;
-	background-color: #000000;
+	background-color: #191919;
+	min-width: 450px;
 }
 
 #conference_participants {
@@ -58,6 +53,47 @@ body > section {
 #conference_participants > div img {
 	height: 100%;
 	width: 100%;
+}
+
+/* MAIN CONTENT */
+
+#main_content {
+	position: relative;
+	margin-bottom: 40px;
+	overflow-y: auto;
+	height: 100%;
+}
+
+/* CONFERENCE_TOOLS (bottom strip) */
+
+#conference_tools {
+	bottom: 0;
+	height: 40px;
+	position: absolute;
+	width: 100%;
+	font-weight: bold;
+	font-variant: small-caps;
+	text-shadow: 1px 1px 2px #000000;
+}
+
+#conference_tools > div:hover {
+	background-color: #588D04;
+}
+
+#conference_tools > div {
+	background-color: #64A101;
+	color: #FFF;
+	display: inline-block;
+	font-size: 17px;
+	height: 100%;
+	line-height: 40px;
+	margin: 0;
+	text-align: center;
+	width: 25%;
+}
+
+#conference_tools > div:last-child {
+	border-right:none;
 }
 
 /* ASIDE */
@@ -88,6 +124,8 @@ body > aside {
 	height: 32px;
 }
 
+/* CHAT */
+
 #chat {
 	background-color: #D9EFEE;
 }
@@ -117,124 +155,8 @@ body > aside {
   right:2px;
 }
 
-#textList {
-	background-color:#D9EFEE;
-	list-style-type:none;
-	margin:0;
-	overflow:auto;
-	word-wrap:break-word;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 30px;
-	right: 0;
-	padding: 0;
-}
+/* FRIENDLIST */
 
-#textList li {
-	padding:10px;
-	display: block;
-	background-color: #BDDBD8;
-}
-
-#textList li:nth-child(2n) {
-	background-color: #D9EFEE;
-
-}
-
-
-#conference_tools {
-	bottom: 0;
-	height: 40px;
-	position: absolute;
-	width: 100%;
-}
-
-#conference_tools > div:hover {
-	background-color: #588D04;
-	/*
-	margin-top: -10px;
-	-moz-transition: margin-top 250ms linear;
-	*/
-}
-
-#conference_tools > div {
-	background-color: #64A101;
-	box-shadow: 0 0 0 1px #000000  inset;
-	/*
-	border-right: 1px solid #383838;
-	*/
-	color: #FFF;
-	display: inline-block;
-	font-size: 17px;
-	height: 100%;
-	line-height: 40px;
-	margin: 0;
-	text-align: center;
-	width: 25%;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
-
-#conference_tools > div:last-child {
-	border-right:none;
-}
-
-#searchForm {
-  color:#FFF;
-  margin-top:100px;
-}
-
-div.popup_form form {
-	color: #000000;
-	position: relative;
-	width: 400px;
-	margin: auto;
-	z-index: 3;
-}
-
-div.popup_form form fieldset {
-	background-color: #FFFFFF;
-	padding: 30px;
-	border: 1px solid #000000;
-}
-
-div.popup_form form fieldset legend {
-	display: inline-block;
-	padding: 10px;
-	background-color: #14BA79;
-	margin-top: 20px;
-	color: #FFFFFF;
-	font-size: 17px;
-	font-weight: bold;
-	border-radius: 5px;
-}
-
-div.popup_form form fieldset input {
-	background-color: #FFFFFF;
-	border: 1px solid #A9A9A9;
-	margin-top: 10px;
-	color: #000000;
-}
-
-#tableResults {
-	width: 80%;
-	height:100%;
-	border-spacing: 1px;
-}
-
-#tableResults tr:nth-child(2n) {
-	background-color: #3A3A3A;
-}
-
-#tableResults tr {
-	background-color: #2D2D2D;
-	height: 40px;
-}
-
-#tableResults tr:first-child {
-	background-color: #14BA79;
-}
 
 #friendList { //main
 	background-color: #FFFFFF;
@@ -283,19 +205,10 @@ div.popup_form form fieldset input {
 	background-color: #119F68;
 }
 
-button.option_button {
-	background-color: #14BA79;
-	border: none;
-	color: #FFF;
-	font-weight: 700;
-	height: 40px;
-	width: 100%;
-	position: absolute;
-	z-index: 1;
-	cursor: pointer;
-	border-radius: 0;
-	box-shadow: none;
+#friend_list li:nth-child(2n) {
+  background-color:#D9EFEE;
 }
+
 
 #friend_list li img
 {
@@ -306,50 +219,218 @@ button.option_button {
   margin-top:2px;
   width:36px;
 }
+#textList {
+	background-color:#D9EFEE;
+	list-style-type:none;
+	margin:0;
+	overflow:auto;
+	word-wrap:break-word;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 30px;
+	right: 0;
+	padding: 0;
+}
 
-#options form,#fileshare form {
+#textList li {
+	padding:10px;
+	display: block;
+	background-color: #BDDBD8;
+}
+
+#textList li:nth-child(2n) {
+	background-color: #D9EFEE;
+
+}
+
+/* SEARCH_FORM */
+
+#searchForm {
+  color:#FFF;
+  margin-top:100px;
+}
+
+div.popup_form form {
+	color: #000000;
+	position: relative;
+	width: 400px;
+	margin: auto;
+	z-index: 3;
+}
+
+div.popup_form form fieldset {
+	background-color: #FFFFFF;
+	padding: 30px;
+	border: 1px solid #000000;
+}
+
+div.popup_form form fieldset legend {
+	display: inline-block;
+	padding: 10px;
+	background-color: #14BA79;
+	margin-top: 20px;
+	color: #FFFFFF;
+	font-size: 17px;
+	font-weight: bold;
+	border-radius: 5px;
+}
+
+div.popup_form form fieldset input {
+	background-color: #FFFFFF;
+	border: 1px solid #A9A9A9;
+	margin-top: 10px;
+	color: #000000;
+}
+
+/* TABLE RESULTS */
+
+#tableResults {
+	width: 80%;
+	height:100%;
+	border-spacing: 1px;
+}
+
+#tableResults tr:nth-child(2n) {
+	background-color: #3A3A3A;
+}
+
+#tableResults tr {
+	background-color: #2D2D2D;
+	height: 40px;
+}
+
+#tableResults tr:first-child {
+	background-color: #14BA79;
+}
+
+/* OPTIONS */
+
+#account_settings {
 	width: 100%;
+	height: 100%;
+	background-color: inherit;
+	padding: 0;
+}
+
+#account_settings > form {
+	width: 100%;
+	height: 100%;
+	margin: auto;
+}
+
+#account_settings > form > fieldset {
+	background-color: #E4E4E4;
+	width: 100%;
+	height: 100%;
 	margin: 0;
-}
-
-#options form fieldset,
-#fileshare form fieldset {
-	background-color:#FFF;
-	width: 100%;
+	padding: 0;
 	border: none;
-	padding: none;
+	font-size: 14px;
 }
 
-#options form fieldset legend ,
-#fileshare form fieldset legend {
+#account_settings > form > fieldset > legend {
 	text-align: center;
 	width: 100%;
-	background-color:#14BA79;
-	color:#FFF;
-	font-weight:700;
-	padding:10px;
-	margin: 0;
-	margin-left: -12px;
+	background-color: #14BA79;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 18px;
+	display: block;
+	padding: 10px 0 10px 0;
+	font-variant: small-caps;
+	text-shadow: 1px 1px 2px #000000;
 }
 
-#options form input {
-	background-color:#FFF;
-	border:1px solid #14BA79;
-	border-radius:2px;
-	margin: 2px;
-	padding: 2px;
-	width: 270px;
+#account_settings div#user_avatar {
+	width: 150px;
+	height: 150px;
+	border: 1px solid #9E9E9E;
+	margin-bottom: 10px;
+	display: inline-block;
+	float: left;
 }
 
-#options form input[type="file"] {
+#account_settings form > fieldset > fieldset {
+	display: inline-block;
+	font-size: 14px;
+	margin: 10px;
+	padding: 30px;
+	border: none;
+	background-color: #FFFFFF;
+	border-radius: 10px;
+	vertical-align: top;
+}
+
+#account_settings #set_avatar {
+	width: 250px;
+}
+
+#account_settings #set_avatar input[type="file"] {
 	border: none;
 }
 
-#options form button {
-	float:right;
-	margin-right: 27px;
-	margin-top: 5px;
+#account_settings #set_account_info {
+	width: 350px;
 }
+
+#account_settings #set_welcome {
+	width: 250px;
+}
+
+#account_settings #set_welcome textarea {
+	background-color: #FFFFFF;
+	border: 1px solid #9E9E9E;
+	width: 300px;
+	height: 70px;
+}
+
+#account_settings #set_password {
+	width: 200px;
+}
+
+#account_settings #set_password input {
+	margin: 1px;
+}
+
+#account_settings form > fieldset > fieldset > legend {
+	background-color: #64A101;
+	padding: 5px;
+	color: #FFFFFF;
+	font-variant: small-caps;
+	border-radius: 3px;
+	margin-left: 20px;
+}
+
+#account_settings form > fieldset > fieldset > div {
+	margin: 2px;
+	text-align: left;
+}
+
+#account_settings form > fieldset > fieldset > div label {
+	display: inline-block;
+	text-align: right;
+	width: 80px;
+}
+
+#account_settings #set_password input,
+#account_settings #set_account_info input {
+	background-color: #FFFFFF;
+	border: 1px solid #9E9E9E;
+	border-radius: 2px;
+	padding: 3px;
+	width: 250px;
+}
+
+#account_settings > input[type="reset"],
+#account_settings > input[type="submit"] {
+	border: 1px solid #9E9E9E;
+	border-radius: 2px;
+	padding: 3px;
+}
+
+
+/* FILESHARE */
 
 #fileshare input {
 	width:100px;
@@ -361,13 +442,28 @@ button.option_button {
   margin-right:10px;
 }
 
-#whiteboard
-{
-  background-color: #D9EFEE;;
-  height:100%;
-  position:absolute;
-  visibility:hidden;
-  width:100%;
+/* BOARD */
+
+#board {
+	height:100%;
+	width:100%;
+}
+
+#board .wrapper {
+	width: 100%;
+}
+
+#board #canvasesdiv {
+	position: relative;
+	width: 100%;
+	height: 400px;
+}
+
+#board #canvasesdiv canvas {
+	position: absolute;
+	background-color: #1B6731;
+	left: 0px;
+	top: 0px;
 }
 
 #progress_bar
@@ -398,10 +494,6 @@ button.option_button {
 #remoteVideos video,#localVideo
 {
   height:100px;
-}
-
-#friend_list li:nth-child(2n) {
-  background-color:#D9EFEE;
 }
 
 #panel input { //whiteboard
