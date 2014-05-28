@@ -122,7 +122,7 @@ var JamiiCore = function() {
 
 	}
 
-	this.get_logged_user_data = function() {
+	this.get_current_user_data = function() {
 		return current_user_data;
 	}
 
