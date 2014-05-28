@@ -72,7 +72,7 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
 	} else {
 		user_obj.id = -1;
 	}
-    socket.emit("yourData", user_obj);
+    socket.emit("whoAmI_answer", user_obj);
 }
 
 

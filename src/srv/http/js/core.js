@@ -29,6 +29,7 @@ var JamiiCore = function() {
 	 * values: {"logic": ModuleLogic, "gui": ModuleGui}
 	 */
 	var core_modules = {};
+	var current_user_data = undefined;
 	
 	/**
 	 * @brief Load specific Jamii module into current page
@@ -98,6 +99,8 @@ var JamiiCore = function() {
 				} catch (err) {
 					console.log("[E] Error in init() function inside module " + name + " (logic): " + err);
 				}
+			} else {
+				console.log("[W] JamiCore::load_module: missing constructor for logic module (" + name + ")");
 			}
 			if (window.JamiiCore.get_module_gui(name)['init'] != undefined) {
 				try {
@@ -106,6 +109,8 @@ var JamiiCore = function() {
 				} catch (err) {
 					console.log("[E] Error in init() function inside module " + name + " (gui): " + err);
 				}
+			} else {
+				console.log("[W] JamiCore::load_module: missing constructor for gui module (" + name + ")");
 			}
 		}
 
@@ -115,6 +120,15 @@ var JamiiCore = function() {
 		this.append_script(modules_dir + module_name + "_logic.js", script_onload_template(module_name, 'logic'));
 		this.append_script(modules_dir + module_name + "_gui.js", script_onload_template(module_name, 'gui'));
 
+	}
+
+	this.get_logged_user_data = function() {
+		return current_user_data;
+	}
+
+	this.request_current_user_data = function() {
+		current_user_data = undefined;
+		window.connection.send("whoAmI", {});
 	}
 
 	this.is_module_loaded = function (module_name) {
@@ -135,6 +149,9 @@ var JamiiCore = function() {
 			host = host.substring(0, host.indexOf(':'));
 		}
 		window.connection = new ConnectionManager("http://" + host,"9393");
+
+		window.connection.registerHandler("whoAmI_answer", current_user_data_handler); 
+		this.request_current_user_data();
 
 		modules_to_load = ['conference', 'chat', 'file_share', 'account_settings'];
 		for (i in modules_to_load) {
@@ -162,6 +179,11 @@ var JamiiCore = function() {
 			}
 		}
 		return module_name.split('_').join('');
+	}
+
+	var current_user_data_handler = function(data) {
+		console.log("[I] JamiiCore::current_user_data_handler: Got current user data!");
+		current_user_data = data;
 	}
 
 	this.append_script = function(script_src, onload, onerror) {
