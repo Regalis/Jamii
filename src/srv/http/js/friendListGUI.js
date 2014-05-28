@@ -54,6 +54,8 @@ FriendListGUI.prototype.createTable = function(){
     for (var i=0; i<this.fl.n_friends; i++){
 
 	var li=document.createElement('li');
+
+ 
 	li.setAttribute('id', this.fl.getFriendLogin(i)); 
  	li.setAttribute('draggable','true');	
 	li.setAttribute('data-id', this.fl.getFriendId(i));

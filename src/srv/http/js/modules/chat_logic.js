@@ -23,6 +23,7 @@
 var ChatLogic = function() {
 	
 	this.init = function() {
+		this.gui.signal_outcoming_message.connect(this.outcoming_message_handler);
 		window.connection.registerHandler("chat_incoming_message", this.incoming_message_handler);
 	}
 
@@ -31,7 +32,7 @@ var ChatLogic = function() {
 	}
 
 	this.outcoming_message_handler = function (data) {
-		//ToDo remove login field from data
+		//TODO remove login field from data
 		data ["login"] = window.my_user_object.login;
 		window.connection.send("chat_message", data);
 	}

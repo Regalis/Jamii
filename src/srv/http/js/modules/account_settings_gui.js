@@ -21,7 +21,9 @@
  */
 
 var AccountSettingsGui = function() {
-	
+	this.init = function() {
+		
+	}
 }
 
 	window.connection.registerHandler("password_change_confirmation", function (data) {

@@ -153,7 +153,7 @@ var JamiiCore = function() {
 		window.connection.registerHandler("whoAmI_answer", current_user_data_handler); 
 		this.request_current_user_data();
 
-		modules_to_load = ['conference', 'chat', 'file_share', 'account_settings'];
+		modules_to_load = ['conference', 'chat', 'file_share', 'account_settings', 'friend_list'];
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}
