@@ -159,7 +159,7 @@ clientHandlers.prototype.get_users_dataHandler = function(packet, socket){
     
     var udb_local = this.udb;
 
-    data["list"].forEach(function(id) {
+    data.forEach(function(id) {
 		var user = udb_local.read_user_data(id).strip_object();
 		// TODO: control if user exists in database
 		// TODO: append status information to the useer object
