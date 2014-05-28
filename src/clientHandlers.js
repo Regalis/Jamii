@@ -48,9 +48,9 @@ clientHandlers.prototype.loginHandler =  function(data, socket){
 //	console.log("cliients"	+ clients);
 //	console.log("cliients"	+ sessions);
     } else if(ret == -1) { // no such user
-	socket.emit("loginBAD", {"what": "Wrong user or password"});
+		socket.emit("loginBAD", {"what": "Wrong user or password"});
     } else if(ret == -2) { // login OK
-	socket.emit("loginBAD", {"what": "Wrong user or password"});	
+		socket.emit("loginBAD", {"what": "Wrong user or password"});	
     }
     
 }
@@ -68,7 +68,7 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
 	if (user_id != undefined) {
 		// fix the change of socket for client
 		this.cm.update_session_socket(session_id, socket);
-		user_obj = this.udb.read_user_data(user_id).strip_object() ;
+		user_obj = this.udb.read_user_data(user_id).strip_object();
 	} else {
 		user_obj.id = -1;
 	}
@@ -95,11 +95,11 @@ clientHandlers.prototype.registerHandler = function(packet, socket){
     // TODO: validate user data...
     
     try {
-	var id = this.udb.register_new_user(new_user);
-	console.log("New user successfully registerd with id: " + id.toString());
-	socket.emit("registerOK", {'login': new_user['_login']});
+		var id = this.udb.register_new_user(new_user);
+		console.log("New user successfully registerd with id: " + id.toString());
+		socket.emit("registerOK", {'login': new_user['_login']});
     } catch (e) {
-	console.log("Unable to register new user: " + e);
+		console.log("Unable to register new user: " + e);
     }
 
 }
@@ -146,7 +146,7 @@ clientHandlers.prototype.searchFriendsHandler = function(packet, socket){
     
 }
 
-clientHandlers.prototype.getFriendsDataHandler = function(packet, socket){
+clientHandlers.prototype.get_users_dataHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
     
@@ -160,13 +160,13 @@ clientHandlers.prototype.getFriendsDataHandler = function(packet, socket){
     var udb_local = this.udb;
 
     data["list"].forEach(function(id) {
-	var user = udb_local.read_user_data(id).strip_object();
-	// TODO: control if user exists in database
-	// TODO: append status information to the useer object
-	response["user_data_list"].push(user);
+		var user = udb_local.read_user_data(id).strip_object();
+		// TODO: control if user exists in database
+		// TODO: append status information to the useer object
+		response["user_data_list"].push(user);
     });
     
-    socket.emit("friendsData", response);
+    socket.emit("users_data_response", response);
     
 }
 

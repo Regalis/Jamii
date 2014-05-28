@@ -268,8 +268,8 @@ io.sockets.on("connection", function(socket) {
 		ch.searchFriendsHandler(data, socket);
 	});
 
-	socket.on("getFriendsData", function(data) {
-		ch.getFriendsDataHandler(data, socket);
+	socket.on("get_users_data", function(data) {
+		ch.get_users_dataHandler(data, socket);
 	});
 
 	socket.on("chat", function(data) {
