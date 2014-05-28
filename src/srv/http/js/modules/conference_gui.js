@@ -25,28 +25,30 @@ var ConferenceGui = function() {
 
 	this.init = function() {
 
+		document.getElementById("user1").ondrop = this.dropFirst;
+		this.logic.signal_incoming_invitation.connect(this.invitation_incoming_handler);
 		this.logic.signal_invitation.connect(this.invitation_handler);
 		this.logic.signal_invitation_result.connect(this.invitation_result_handler);
 	}
 
 
-	this.start = function(ev) {
-	ev.preventDefault();
-	var create_conf_data = {
-		"my_id": window.my_user_object["id"],
-		"user_id": ev.dataTransfer.getData("Id")
-	};
+	this.invitation_incoming_handler = function(data) {
 
-	var data = ev.dataTransfer.getData("Login");
-	ev.target.appendChild(document.getElementById(data).cloneNode(true));
-	console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
+		var temp ={}
+		if (confirm('Are you sure you want to join ' +data.admin_id+ ' conference')) {
+			//window.connection.send("conf_accept", info);
+			data["response"]=true;
+			console.log("Join to conference");
+		//	window.webrtc.joinRoom("jamiiroom"+data.admin_id);
 
-	signal_start.emit(create_conf_data);
-	
-	}
+		} else {
+			//window.connection.send("conf_discard", info);
+			data["response"]=false;
+			console.log("Refuse conference invitation");
+		}
 
-	this.invitation_handler = function(data) {
-		
+		window.JamiiCore.get_module_gui("conference").signal_response_conference.emit(data);
+		return false;
 	}
 
 	this.invitation_result_handler = function(data) {
@@ -54,6 +56,17 @@ var ConferenceGui = function() {
 	}
 
 	this.signal_start = new Signal();
+
+
+	this.dropFirst = function(ev) {
+
+		window.JamiiCore.get_module_gui("conference").signal_new_conference_request.emit(ev);
+		return false;
+	}
+
+	this.signal_response_conference = new Signal();
+	this.signal_new_conference_request = new Signal();
+	this.signal_response_conference = new Signal();
 }	
 
 

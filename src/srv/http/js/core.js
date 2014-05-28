@@ -184,7 +184,7 @@ var JamiiCore = function() {
 	var current_user_data_handler = function(data) {
 		console.log("[I] JamiiCore::current_user_data_handler: Got current user data!");
 		current_user_data = data;
-		this.signal_user_data_available.emit();
+		window.JamiiCore.signal_user_data_available.emit();
 	}
 
 	this.append_script = function(script_src, onload, onerror) {

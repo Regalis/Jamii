@@ -357,7 +357,8 @@ clientHandlers.prototype.conference_invitationHandler = function(packet, socket)
 
 }
 
-clientHandlers.prototype.conference_invitation_responseHandlerer = function(packet, socket){
+clientHandlers.prototype.conference_invitation_responseHandler = function(packet, socket){
+		console.log("CONINV_RESP_INTRO");
     var data = strip_data_object(packet);
     
     var admin_id = Number( data['admin_id'] );

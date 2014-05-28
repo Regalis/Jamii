@@ -27,16 +27,16 @@ var FriendListGui = function(){
 	this.init = function() {
 		this.logic.signal_new_friend.connect(this.new_friend_handler);
 		//TODO jakie id dla ul dla friendlisty
-		/*friends_table = document.getElementById("");
+		friends_table = document.getElementById("friend_list");
 		//TODO nazwa buttona add_friend
-		document.getElementById("").onSubmit = this.show_search_handler;
+		//document.getElementById("").onSubmit = this.show_search_handler;
 		//TODO nazwa buttona search_friend
-		document.getElementById("").onSubmit = this.search_friend_handler;
-*/
+		//document.getElementById("").onSubmit = this.search_friend_handler;
+
 	}
 
 	this.new_friend_handler = function (data){
-			
+			//alert("GUI");
 		var li = document.createElement('li');
 		//TODO czy id ma byc login?!
 		li.setAttribute('id', data["login"]); 
@@ -52,7 +52,7 @@ var FriendListGui = function(){
 		//TODO set style in CSS
 		var img = '<img src="images/x.png" style="float:right;height:10px;width:10px;"';
 
-		li.value= image_entry + this.fl.getFriendLogin(i) + img;
+		li.textContent= data["login"];
 	}
 
 	this.show_search_handler = function(){
@@ -73,5 +73,56 @@ var FriendListGui = function(){
 	}
 	
 	this.signal_search_friend = new Signal();
+
+
+
 	
+}
+
+
+function drag(ev) {
+	ev.dataTransfer.setData("Login", ev.target.id);
+	ev.dataTransfer.setData("Id", ev.target.getAttribute("data-id"));
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function allowDrop(ev) {
+	ev.preventDefault();
+}
+
+function drop(ev) {
+	alert("ASAA");
+	ev.preventDefault();
+	var data = ev.dataTransfer.getData("Login");
+	var info = {
+		"my_id": window.my_user_object["id"],
+		"user_id": ev.dataTransfer.getData("Id"),
+	}
+	ev.target.appendChild(document.getElementById(data).cloneNode(true));
+	console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
+
+	window.connection.send("conf_request", info);
+
 }

@@ -25,27 +25,37 @@ var FriendListLogic = function() {
 	var friend_list = {};
 
 	this.init = function() {
-		window.connection.registerHandler("friend_data", this.friend_data_handler);
+
+		window.connection.registerHandler("users_data_response", this.users_data_response_handler);
 		this.gui.signal_search_friend.connect(this.search_friend_handler);
+					//alert("BEFAFDAS");
+		window.JamiiCore.signal_user_data_available.connect(function(){
+			window.connection.send("get_users_data", window.JamiiCore.get_current_user_data()["friends_list"]);
+		});
+
+
+
 	}
 		
-	this.friend_data_handler = function (data) {
+	this.users_data_response_handler = function (data) {
 
-			var user_info = {};
-			user_info["id"] = data["id"];	
-			user_info["first_name"] =data["first_name"];
-			user_info["last_name"] = data["last_name"];
-			user_info["login"] = data["login"];
-			user_info["avatar"] = data["avatar"];
-			
-			friend_list[user_info["id"]] = user_info;
-			
-			signal_incoming_message.emit(data);
+		var list = data["user_data_list"];
+			for(var i=0; i<list.length; i++){
+				var user_info = {};
+				user_info["id"] = list[i]["id"];	
+				user_info["first_name"] = list[i]["first_name"];
+				user_info["last_name"] = list[i]["last_name"];
+				user_info["login"] = list[i]["login"];
+				user_info["avatar"] = list[i]["avatar"];
 
-			console.log("userinfo: " + JSON.stringify(user_info) )
+				friend_list[user_info["id"]] = user_info;
+
+				window.JamiiCore.get_module_logic("friend_list").signal_new_friend.emit(user_info);
+
+			}
+
 	}
 	
-
 	this.search_friend_handler = function(data) {
 		window.connection.send("searchFriends", data);
 	}

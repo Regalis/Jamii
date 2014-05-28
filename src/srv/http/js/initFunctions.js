@@ -134,7 +134,21 @@ function drop(ev) {
 function dropFirst(ev) {
 	
 
+	window.is_in_conference = true;
 
+ev.preventDefault();
+var create_conf_data = {
+"my_id": window.my_user_object["id"],
+"user_id": ev.dataTransfer.getData("Id"),
+"visibility": "public"
+};
+
+var data = ev.dataTransfer.getData("Login");
+ev.target.appendChild(document.getElementById(data).cloneNode(true));
+console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
+window.connection.send("conf_create", create_conf_data);
+window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
+window.conf_admin = window.my_user_object["id"];
 }
 
 

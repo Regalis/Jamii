@@ -25,14 +25,40 @@ var ConferenceLogic = function (){
 	this.init = function() {
 
 		this.gui.signal_start.connect(this.start_handler);
+		this.gui.signal_new_conference_request.connect(this.new_conference_request_handler);
+		this.gui.signal_response_conference.connect(this.new_response_conference_handler);
 		window.connection.registerHandler("conference_invitation", this.invitation_handler);
 		window.connection.registerHandler("conference_invitation_result", this.invitation_result_handler);
 
 	}
-	
 
+	this.new_response_conference_handler = function(data){
+		data["user_id"] = window.JamiiCore.get_current_user_data()['id'];
+		alert(JSON.stringify(data));
+		//data["admin_id"]=data.admin_id;
+		window.connection.send("conference_invitation_response", data);	
+
+	}
+	this.new_conference_request_handler = function(ev) {
+		ev.preventDefault();
+		var create_conf_data = {
+		"my_id": window.JamiiCore.get_current_user_data()["id"],
+		"user_id": ev.dataTransfer.getData("Id"),
+		"visibility": "public"
+		};
+
+		var data = ev.dataTransfer.getData("Login");
+		ev.target.appendChild(document.getElementById(data).cloneNode(true));
+		console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
+		window.connection.send("conference_start", create_conf_data);
+
+		//window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
+
+	}
+
+	//OK
 	this.invitation_handler = function (data) {
-		signal_incoming_invitation.emit(data);
+		window.JamiiCore.get_module_logic("conference").signal_incoming_invitation.emit(data);
 	}
 
 	this.invitation_result_handler = function (data) {
@@ -44,7 +70,7 @@ var ConferenceLogic = function (){
 	}
 
 	this.start_handler = function (data) {
-		window.webrtc.joinRoom("jamiiroom"+data["my_id"] );
+		//window.webrtc.joinRoom("jamiiroom"+data["my_id"] );
 		window.connection.send("conference_start", data);
 	}
 
@@ -53,7 +79,7 @@ var ConferenceLogic = function (){
 	}
 	
 
-	this.signal_invitation = new Signal();
+	this.signal_incoming_invitation = new Signal();
 	this.signal_invitation_result = new Signal();
 
 }
