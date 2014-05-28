@@ -184,6 +184,7 @@ var JamiiCore = function() {
 	var current_user_data_handler = function(data) {
 		console.log("[I] JamiiCore::current_user_data_handler: Got current user data!");
 		current_user_data = data;
+		this.signal_user_data_available.emit();
 	}
 
 	this.append_script = function(script_src, onload, onerror) {
@@ -197,6 +198,8 @@ var JamiiCore = function() {
 		document.getElementsByTagName("head")[0].appendChild(script);
 		return script;
 	}
+
+	this.signal_user_data_available = new Signal();
 
 }
 
