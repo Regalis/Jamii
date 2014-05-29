@@ -25,7 +25,6 @@ var FriendListLogic = function() {
 	var friend_list = {};
 
 	this.init = function() {
-
 		window.connection.registerHandler("users_data_response", this.users_data_response_handler);
 		this.gui.signal_search_friend.connect(this.search_friend_handler);
 					//alert("BEFAFDAS");

@@ -36,7 +36,7 @@ var FriendListGui = function(){
 	}
 
 	this.new_friend_handler = function (data){
-			//alert("GUI");
+
 		var li = document.createElement('li');
 		//TODO czy id ma byc login?!
 		li.setAttribute('id', data["login"]); 
@@ -45,17 +45,30 @@ var FriendListGui = function(){
 		li.setAttribute('ondragstart','drag(event)'); 
 
 		friends_table.appendChild(li);
+		
+		var div_login = document.createElement('div');		
+		div_login.textContent=data["login"];
+		
 		var image_entry = document.createElement("img");
 		image_entry.setAttribute('draggable', 'false');
 		image_entry.setAttribute('src',"data:image/gif;base64," + data["avatar"] );
-
-		//var image_entry = "<img draggable=\"false\" src=\"data:image/gif;base64,"+
-		//	 data["avatar"] + "\" />";
-	
+		
+		
+		
 		//TODO set style in CSS
-		var img = '<img src="images/x.png" style="float:right;height:10px;width:10px;"';
+		//var img1 = '<img src="images/x.png" style="float:right;height:10px;width:10px;" />';
 
-		li.textContent=image_entry.value + data["login"];
+		var x_img = document.createElement("img");
+		//x_img.setAttribute('draggable', 'false');
+		x_img.setAttribute('src', "images/x.png" );
+		x_img.style="float:right;height:10px;width:10px;";
+
+
+		li.appendChild( image_entry );
+		li.appendChild( x_img );
+		li.appendChild( div_login  );
+				
+		//li.innerHTML=image_entry + data["login"];
 	}
 
 	this.show_search_handler = function(){
@@ -84,27 +97,6 @@ function drag(ev) {
 	ev.dataTransfer.setData("Login", ev.target.id);
 	ev.dataTransfer.setData("Id", ev.target.getAttribute("data-id"));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function allowDrop(ev) {
