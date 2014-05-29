@@ -17,6 +17,7 @@
  *
  * Contributors:
  *  -> Mateusz Zajac<matteo.zajac@gmail.com>
+ *  -> Mateusz Folwarski<mateusz.folwarski@uj.edu.pl>
  * 
  */
 
@@ -27,7 +28,9 @@ var FriendListLogic = function() {
 	this.init = function() {
 
 		window.connection.registerHandler("users_data_response", this.users_data_response_handler);
+
 		this.gui.signal_search_friend.connect(this.search_friend_handler);
+
 		window.JamiiCore.signal_user_data_available.connect(function(){
 			window.JamiiCore.get_module_logic("friend_list").signal_current_invitations.emit(window.JamiiCore.get_current_user_data()["requests_list"]);
 			window.connection.send("get_users_data", window.JamiiCore.get_current_user_data()["friends_list"]);
@@ -56,6 +59,7 @@ var FriendListLogic = function() {
 	this.search_friend_handler = function(data) {
 		
 		window.connection.send("searchFriends", data);
+	
 	}
 
 		

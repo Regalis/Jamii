@@ -17,6 +17,7 @@
  *
  * Contributors:
  *  -> Mateusz Zajac<matteo.zajac@gmail.com>
+ *  -> Mateusz Folwarski<mateusz.folwarski@uj.edu.pl>
  * 
  */
 
@@ -30,7 +31,7 @@ var FriendListGui = function(){
 		//TODO jakie id dla ul dla friendlisty
 		friends_table = document.getElementById("friend_list");
 		//TODO nazwa buttona add_friend
-		//document.getElementById("").onSubmit = this.show_search_handler;
+		document.getElementById("add_friend").onclick = this.show_search_handler;
 		//TODO nazwa buttona search_friend
 		//document.getElementById("").onSubmit = this.search_friend_handler;
 
@@ -50,6 +51,7 @@ var FriendListGui = function(){
 	 	li.setAttribute('draggable','true');	
 		li.setAttribute('data-id', data["id"]);
 		li.setAttribute('ondragstart','drag(event)'); 
+		
 
 		friends_table.appendChild(li);
 		
@@ -65,14 +67,14 @@ var FriendListGui = function(){
 		x_img.style="float:right;height:10px;width:10px;";
 
 		li.appendChild( image_entry );
-		li.appendChild( x_img );
-		li.appendChild( div_login  );
+		li.appendChild(x_img);
+		li.appendChild(div_login);
 				
 	}
 
 	this.show_search_handler = function(){
 		//AFTER ADD FRIEND 
-
+		
 		//TODO show form for searching friendsData
 		return false;
 	}
@@ -104,8 +106,7 @@ function allowDrop(ev) {
 	ev.preventDefault();
 }
 
-function drop(ev) {
-	alert("ASAA");
+function drop(
 	ev.preventDefault();
 	var data = ev.dataTransfer.getData("Login");
 	var info = {
