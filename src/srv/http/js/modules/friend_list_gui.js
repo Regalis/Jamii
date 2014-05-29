@@ -45,14 +45,17 @@ var FriendListGui = function(){
 		li.setAttribute('ondragstart','drag(event)'); 
 
 		friends_table.appendChild(li);
+		var image_entry = document.createElement("img");
+		image_entry.setAttribute('draggable', 'false');
+		image_entry.setAttribute('src',"data:image/gif;base64," + data["avatar"] );
 
-		var image_entry = "<img draggable=\"false\" src=\"data:image/gif;base64,"+
-			 data["avatar"] + "\" />";
+		//var image_entry = "<img draggable=\"false\" src=\"data:image/gif;base64,"+
+		//	 data["avatar"] + "\" />";
 	
 		//TODO set style in CSS
 		var img = '<img src="images/x.png" style="float:right;height:10px;width:10px;"';
 
-		li.textContent= data["login"];
+		li.textContent=image_entry.value + data["login"];
 	}
 
 	this.show_search_handler = function(){
@@ -74,16 +77,12 @@ var FriendListGui = function(){
 	
 	this.signal_search_friend = new Signal();
 
-
-
-	
 }
 
 
 function drag(ev) {
 	ev.dataTransfer.setData("Login", ev.target.id);
 	ev.dataTransfer.setData("Id", ev.target.getAttribute("data-id"));
-
 }
 
 
