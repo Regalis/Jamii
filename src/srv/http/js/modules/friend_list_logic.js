@@ -28,13 +28,10 @@ var FriendListLogic = function() {
 
 		window.connection.registerHandler("users_data_response", this.users_data_response_handler);
 		this.gui.signal_search_friend.connect(this.search_friend_handler);
-					//alert("BEFAFDAS");
 		window.JamiiCore.signal_user_data_available.connect(function(){
+			window.JamiiCore.get_module_logic("friend_list").signal_current_invitations.emit(window.JamiiCore.get_current_user_data()["requests_list"]);
 			window.connection.send("get_users_data", window.JamiiCore.get_current_user_data()["friends_list"]);
 		});
-
-
-
 	}
 		
 	this.users_data_response_handler = function (data) {
@@ -57,8 +54,11 @@ var FriendListLogic = function() {
 	}
 	
 	this.search_friend_handler = function(data) {
+		
 		window.connection.send("searchFriends", data);
 	}
 
+		
+	this.signal_current_invitations = new Signal();
 	this.signal_new_friend = new Signal();
 }

@@ -26,6 +26,7 @@ var FriendListGui = function(){
 
 	this.init = function() {
 		this.logic.signal_new_friend.connect(this.new_friend_handler);
+		this.logic.signal_current_invitations.connect(this.current_invitations_handler);
 		//TODO jakie id dla ul dla friendlisty
 		friends_table = document.getElementById("friend_list");
 		//TODO nazwa buttona add_friend
@@ -35,8 +36,14 @@ var FriendListGui = function(){
 
 	}
 
+	this.current_invitations_handler = function (data){
+		var len = data.length;
+		var invitatations_bar = document.getElementById("invitation_button");
+		invitatations_bar.textContent = "Invitations: " + len;
+	}
+
 	this.new_friend_handler = function (data){
-		//alert("GUI");
+
 		var li = document.createElement('li');
 		//TODO czy id ma byc login?!
 		li.setAttribute('id', data["login"]); 
@@ -45,24 +52,26 @@ var FriendListGui = function(){
 		li.setAttribute('ondragstart','drag(event)'); 
 
 		friends_table.appendChild(li);
+		
+		var div_login = document.createElement('div');		
+		div_login.textContent=data["login"];
+		
 		var image_entry = document.createElement("img");
 		image_entry.setAttribute('draggable', 'false');
-	//	image_entry.setAttribute('src',"images/x.png");
+		image_entry.src = 'data:image/gif;base64,' + data["avatar"];	
+		
+		var x_img = document.createElement("img");
+		x_img.src = "images/x.png";
+		x_img.style="float:right;height:10px;width:10px;";
 
-		image_entry.setAttribute('src',"data:image/gif;base64," + data["avatar"].substring(0,data["avatar"].length-1));
-
-	
-		//TODO set style in CSS
-
-		var x = document.createElement("div");
-		x.textContent=data["login"];
-		//temp.appendChild(x);
-		var img = '<img src="images/x.png" style="float:right;height:10px;width:10px;"';
-		li.appendChild(image_entry);
-		li.appendChild(x);
+		li.appendChild( image_entry );
+		li.appendChild( x_img );
+		li.appendChild( div_login  );
+				
 	}
 
 	this.show_search_handler = function(){
+		//AFTER ADD FRIEND 
 
 		//TODO show form for searching friendsData
 		return false;
@@ -70,6 +79,7 @@ var FriendListGui = function(){
 	
 	this.search_friend_handler = function(){
 		//TODO set UNIQUE names for inputs
+		//TODO validate
 		var data = {};
 		data ["login"] = document.getElementById("login").value;
 		data ["first_name"] = document.getElementById("first_name").value;
@@ -88,27 +98,6 @@ function drag(ev) {
 	ev.dataTransfer.setData("Login", ev.target.id);
 	ev.dataTransfer.setData("Id", ev.target.getAttribute("data-id"));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function allowDrop(ev) {
