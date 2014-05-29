@@ -106,7 +106,7 @@ function allowDrop(ev) {
 	ev.preventDefault();
 }
 
-function drop(
+function drop(ev) {
 	ev.preventDefault();
 	var data = ev.dataTransfer.getData("Login");
 	var info = {
