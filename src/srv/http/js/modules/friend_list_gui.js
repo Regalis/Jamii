@@ -36,7 +36,7 @@ var FriendListGui = function(){
 	}
 
 	this.new_friend_handler = function (data){
-			//alert("GUI");
+		//alert("GUI");
 		var li = document.createElement('li');
 		//TODO czy id ma byc login?!
 		li.setAttribute('id', data["login"]); 
@@ -47,15 +47,19 @@ var FriendListGui = function(){
 		friends_table.appendChild(li);
 		var image_entry = document.createElement("img");
 		image_entry.setAttribute('draggable', 'false');
-		image_entry.setAttribute('src',"data:image/gif;base64," + data["avatar"] );
+	//	image_entry.setAttribute('src',"images/x.png");
 
-		//var image_entry = "<img draggable=\"false\" src=\"data:image/gif;base64,"+
-		//	 data["avatar"] + "\" />";
+		image_entry.setAttribute('src',"data:image/gif;base64," + data["avatar"].substring(0,data["avatar"].length-1));
+
 	
 		//TODO set style in CSS
-		var img = '<img src="images/x.png" style="float:right;height:10px;width:10px;"';
 
-		li.textContent=image_entry.value + data["login"];
+		var x = document.createElement("div");
+		x.textContent=data["login"];
+		//temp.appendChild(x);
+		var img = '<img src="images/x.png" style="float:right;height:10px;width:10px;"';
+		li.appendChild(image_entry);
+		li.appendChild(x);
 	}
 
 	this.show_search_handler = function(){
