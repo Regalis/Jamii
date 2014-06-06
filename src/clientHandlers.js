@@ -420,4 +420,49 @@ clientHandlers.prototype.removeFriendHandler = function(packet, socket){
     
 }
 
+clientHandlers.prototype.remindPasswordHandler = function(packet, socket){
+	var data = strip_data_object(packet);
+
+	var user_id = data['mail'];
+	var nodemailer = require("nodemailer");
+
+    var generated_password  = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 13; i++ )
+        generated_password  += possible.charAt(Math.floor(Math.random() * possible.length));
+	var user = this.udb.findUser('email',data['mail']);
+
+	console.log(JSON.stringify(user));
+	// create reusable transport method (opens pool of SMTP connections)
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+		service: "Gmail",
+		auth: {
+		user: "jamiicommunity@gmail.com",
+		pass: "jurekmartyna"
+		}
+	});
+
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+		from: "Jamii ✔ <jamiicommunity@gmail.com>", // sender address
+		to: ""+data['mail']+"", // list of receivers
+		
+		subject: "Hello ✔", // Subject line
+		text: "Hi, log in with this password: "+ generated_password+" and change it in settings. Jamii Team:)", // plaintext body
+		html:"Hi "+user["_login"]+", log in with this password: <b>"+ generated_password+"</b> and change it in settings. <br>Jamii Team:)" // html body
+	}
+
+	// send mail with defined transport object
+	smtpTransport.sendMail(mailOptions, function(error, response){
+		if(error){
+		console.log(error);
+		}else{
+		console.log("Message sent: " + response.message);
+		}
+		smtpTransport.close(); // shut down the connection pool, no more messages
+	});
+
+}
+
 module.exports.clientHandlers = clientHandlers;
