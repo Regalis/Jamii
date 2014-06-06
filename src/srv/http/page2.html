@@ -7,14 +7,25 @@
 		<script type="text/javascript" src="js/connectionManager.js"></script>
 		<script type="text/javascript" src="js/core.js"></script>
 		<script type="text/javascript" src="js/whiteboard.js"></script>
+		<script type="text/javascript" src="js/stackedWidget.js"></script>
 		<link rel="icon" href="images/favicon.png" type="image/png" />
 		<title>Jamii - community</title>
 		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
 		<script src="js/latest.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
+		<script type="text/javascript">
+		  function widget_init(){ 
+		  window.stack = new StackedWidget();
+		  window.stack.add_widget( "friend_list", "friend_list_button");
+		  window.stack.add_widget( "chat", "chat_button");
+	          window.stack.add_widget( "file_share", "file_share_button");
+		  window.stack.set_default( "friend_list" );
+		  return false;
+		  }
+		</script>
 	</head>
-	<body>
+	<body onload="widget_init()">
 
 	<section>
 		<!-- CONFERENCE PARTICIPANTS -->
