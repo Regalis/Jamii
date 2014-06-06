@@ -23,21 +23,44 @@
 
 var StackedWidget = function(){
     
-    this.widgets= [];
+    this.widgets = [];
+    this.button = [];
     this.count = 0;
-    this.current = -1;
+    this.current = -1; 
+    this.default_index = 0;
     
 }
 
-StackedWidget.prototype.add_widget_by_name = function( widget_name ){
+StackedWidget.prototype.toggle = function( index ){
+    if( this.current == index ){ // if visible, show default
+	this.set_current_widget_by_index( this.default_index );
+    }else{ // if hidden, show
+	this.set_current_widget_by_index( index );
+    }
+}
+
+StackedWidget.prototype.add_widget = function( widget_name, button_name){
     
     var widget = document.getElementById( widget_name );
+    var button = document.getElementById( button_name );
     this.widgets.push( widget );
+    this.buttons.push( button );
+
+    // setup button
+    button.setAttribute( onclick, this.toggle( this.count ) );
+
     this.count++;
     widget.style.display = "none";
-    this.set_current_widget_by_index[ this.count-1 ]
+    this.set_current_widget_by_index[ this.count-1 ];
     return this.count-1;
 
+}
+
+StackedWidget.prototype.set_default( index ){
+    if( index >= this.count ){
+	return;
+    }
+    this.default_index = index;
 }
 
 StackedWidget.prototype.set_current_widget_by_name = function( widget_name ){
