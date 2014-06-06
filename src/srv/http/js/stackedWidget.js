@@ -24,14 +24,36 @@
 var StackedWidget = function(){
     
     this.widgets = [];
-    this.button = [];
+    this.buttons = [];
     this.count = 0;
     this.current = -1; 
     this.default_index = 0;
     
 }
 
-StackedWidget.prototype.toggle = function( index ){
+StackedWidget.prototype.index_by_button_name = function( button_name ){
+    if( this.count < 1 ) return;
+    for(var i=0;i<this.count;i++){
+	if( this.buttons[i].getAttribute('id') == button_name ){
+	    return i;
+	}
+    }
+}
+
+StackedWidget.prototype.index_by_widget_name = function( widget_name ){
+    if( this.count < 1 ) return;
+    for(var i=0;i<this.count;i++){
+	if( this.widgets[i].getAttribute('id') == widget_name ){
+	    return i;
+	}
+    }
+}
+
+
+StackedWidget.prototype.toggle = function( name ){
+    console.log(name);
+    var index = this.index_by_button_name( name );
+
     if( this.current == index ){ // if visible, show default
 	this.set_current_widget_by_index( this.default_index );
     }else{ // if hidden, show
@@ -46,9 +68,10 @@ StackedWidget.prototype.add_widget = function( widget_name, button_name){
     this.widgets.push( widget );
     this.buttons.push( button );
 
-    // setup button
-    button.setAttribute( onclick, this.toggle( this.count ) );
-
+    button.onclick = function(){
+    	window.stack.toggle( this.id );
+    }
+    
     this.count++;
     widget.style.display = "none";
     this.set_current_widget_by_index[ this.count-1 ];
@@ -56,7 +79,10 @@ StackedWidget.prototype.add_widget = function( widget_name, button_name){
 
 }
 
-StackedWidget.prototype.set_default( index ){
+StackedWidget.prototype.set_default = function( widget_name ){
+    
+    var index = this.index_by_widget_name( widget_name );
+
     if( index >= this.count ){
 	return;
     }
