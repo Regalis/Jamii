@@ -27,7 +27,7 @@ var ConferenceGui = function() {
 
 		document.getElementById("user1").ondrop = this.dropFirst;
 		this.logic.signal_incoming_invitation.connect(this.invitation_incoming_handler);
-		this.logic.signal_invitation.connect(this.invitation_handler);
+		//this.logic.signal_invitation.connect(this.invitation_handler);
 		this.logic.signal_invitation_result.connect(this.invitation_result_handler);
 	}
 
