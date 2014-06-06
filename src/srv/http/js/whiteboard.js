@@ -105,8 +105,8 @@ ctx.lineTo(point.x,point.y);
 Whiteboard.prototype.getPos = function(evt){
     var rect = this.canvas.getBoundingClientRect();
     var pt = new Point();
-    pt.x = evt.clientX - rect.left;
-    pt.y = evt.clientY - rect.top;
+    pt.x = (evt.clientX - rect.left) / (rect.right-rect.left)*this.canvas.width;
+    pt.y = (evt.clientY - rect.top)  / (rect.bottom-rect.top)*this.canvas.height;
     return pt;
 }
 
