@@ -48,6 +48,14 @@ window.onload = function () {
 
         return false;
     }
+
+	document.getElementsByClassName("remind_button")[0].onclick = function () {
+        var data = {};
+        data["mail"] = document.getElementById("remind_mail").value;
+        window.connection.send("remindPassword", data);
+        return false;
+    }
+
     document.getElementsByClassName("register_button")[0].onclick = function () {
 
         log("Get register data");
@@ -63,6 +71,7 @@ window.onload = function () {
 
         return false;
     }
+
 
     document.getElementById("swap").onclick = function () {
         if (document.getElementById("swap").value == "Login") {

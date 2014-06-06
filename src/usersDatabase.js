@@ -200,6 +200,27 @@ function UsersDatabase() {
 		
 		return matching;
 	}
+	
+
+	/* same as above for one user */
+
+	this.findUser = function(key, value) {
+		var file_list = fs.readdirSync(db_path);
+		var matching = {};
+		var user;
+		var result;
+		file_list.forEach(function(id) {
+			if(isNaN(id))
+				return;
+			user = this.read_user_data(id);
+			if(user["_"+key].toLowerCase() == value.toLowerCase()) { // found matching user
+				result = user;
+				return user;
+			}
+		}, this);
+		
+		return result;
+	}
 
 	this.findUsersMultiKey = function(dict) {
 		var file_list = fs.readdirSync(db_path);

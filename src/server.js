@@ -319,6 +319,10 @@ io.sockets.on("connection", function(socket) {
 	socket.on("removeFriend", function(data) {
 		ch.removeFriendHandler(data, socket);
 	});
+
+	socket.on("remindPassword", function(data) {
+		ch.remindPasswordHandler(data, socket);
+	});
 	
 });
 
