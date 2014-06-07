@@ -29,7 +29,7 @@ var FriendListGui = function(){
 		this.logic.signal_new_friend.connect(this.new_friend_handler);
 		this.logic.signal_current_invitations.connect(this.current_invitations_handler);
 		//TODO jakie id dla ul dla friendlisty
-		friends_table = document.getElementById("friend_list");
+		friends_table = document.getElementById("friend_list_ul");
 		//TODO nazwa buttona add_friend
 		document.getElementById("add_friend").onclick = this.show_search_handler;
 		//TODO nazwa buttona search_friend

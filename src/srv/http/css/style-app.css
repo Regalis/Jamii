@@ -9,19 +9,24 @@ body {
 
 /* TEMPORARY */
 #chat,
-#file_share {
+#friend_list
+/*
+#file_share
+*/
+{
 	display: none;
 }
 
 #video_view,
 #search_friend,
 #account_settings,
+/*
 #board,
+*/
 #search_results,
 #invitations {
 	display: none;
 }
-
 
 /* SECTION */
 
@@ -81,6 +86,7 @@ body > section {
 
 #conference_tools > div:hover {
 	background-color: #588D04;
+	cursor: pointer;
 }
 
 #conference_tools > div {
@@ -125,6 +131,10 @@ body > aside {
 #account_tools img {
 	width: 32px;
 	height: 32px;
+}
+
+#account_tools img:hover {
+	cursor: pointer;
 }
 
 /* CHAT */
@@ -319,6 +329,7 @@ div.popup_form form fieldset input {
 	height: 100%;
 	background-color: inherit;
 	padding: 0;
+	min-height: 700px;
 }
 
 #account_settings > form {
@@ -440,16 +451,41 @@ div.popup_form form fieldset input {
 
 /* FILESHARE */
 
-#fileshare input {
+#file_share {
+	background-color: #C5CDE0;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+}
+
+#file_share form {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+}
+
+#file_share form fieldset {
+	border: none;
+	width: 296px;
+	padding: 0;
+	height: 100%;
+	margin: 0;
+
+}
+
+#file_share form fieldset legend {
+	background-color: #64A101;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-variant: small-caps;
+	color: #FFFFFF;
+}
+
+#file_share input {
 	width:100px;
 }
-
-#file_share_button
-{
-  float:right;
-  margin-right:10px;
-}
-
 
 /* BOARD */
 
