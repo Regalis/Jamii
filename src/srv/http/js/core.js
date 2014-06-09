@@ -67,7 +67,7 @@ var JamiiCore = function() {
 		}
 
 		var script_onerror = function() {
-			console.log("[E] JamiiCore::load_module: Unable to load " + this.getAttribute("src"));
+			console.error("[E] JamiiCore::load_module: Unable to load " + this.getAttribute("src"));
 		}
 
 		var onload_signal_handler = function(data) {
@@ -97,20 +97,20 @@ var JamiiCore = function() {
 					window.JamiiCore.get_module_logic(name).init();
 					console.log("[I] JamiiCore::load_module: Logic of module '" + name + "' initialized");
 				} catch (err) {
-					console.log("[E] Error in init() function inside module " + name + " (logic): " + err);
+					console.error("[E] Error in init() function inside module " + name + " (logic): " + err);
 				}
 			} else {
-				console.log("[W] JamiCore::load_module: missing constructor for logic module (" + name + ")");
+				console.warn("[W] JamiCore::load_module: missing constructor for logic module (" + name + ")");
 			}
 			if (window.JamiiCore.get_module_gui(name)['init'] != undefined) {
 				try {
 					window.JamiiCore.get_module_gui(name).init();
 					console.log("[I] JamiiCore::load_module: Gui of module '" + name + "' initialized");
 				} catch (err) {
-					console.log("[E] Error in init() function inside module " + name + " (gui): " + err);
+					console.error("[E] Error in init() function inside module " + name + " (gui): " + err);
 				}
 			} else {
-				console.log("[W] JamiCore::load_module: missing constructor for gui module (" + name + ")");
+				console.warn("[W] JamiCore::load_module: missing constructor for gui module (" + name + ")");
 			}
 		}
 
