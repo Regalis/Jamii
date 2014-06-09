@@ -49,7 +49,7 @@ var JamiiCore = function() {
 	 * @return none;
 	 */
 	this.load_module = function(module_name) {
-		console.log("[I] Trying to load module " + module_name);
+		console.info("[I] Trying to load module " + module_name);
 		module_name = module_name.toLowerCase();
 
 		core_modules[module_name] = {
@@ -57,8 +57,6 @@ var JamiiCore = function() {
 			'onload_signal': new Signal(),
 			'module_ready_signal': new Signal()
 		};
-		console.log(JSON.stringify(core_modules));
-
 
 		var script_onload_template = function(name, type) {
 			return function() {
@@ -73,7 +71,7 @@ var JamiiCore = function() {
 		var onload_signal_handler = function(data) {
 			name = data[0];
 			type = data[1];
-			console.log("[I] JamiiCore::load_module: Script loaded (" + name + ", " + type + ")");
+			console.info("[I] JamiiCore::load_module: Script loaded (" + name + ", " + type + ")");
 			core_modules[name]['ready_status'][type] = true;
 			var postfix = 'Logic';
 			if (type == 'gui')
@@ -91,11 +89,11 @@ var JamiiCore = function() {
 			window.JamiiCore.get_module_logic(name)['gui'] = window.JamiiCore.get_module_gui(name);
 			window.JamiiCore.get_module_gui(name)['logic'] = window.JamiiCore.get_module_logic(name);
 
-			console.log("[I] JamiiCore::load_module: Module ready to initialize (" + name + ")");
+			console.info("[I] JamiiCore::load_module: Module ready to initialize (" + name + ")");
 			if (window.JamiiCore.get_module_logic(name)['init'] != undefined) {
 				try {
 					window.JamiiCore.get_module_logic(name).init();
-					console.log("[I] JamiiCore::load_module: Logic of module '" + name + "' initialized");
+					console.info("[I] JamiiCore::load_module: Logic of module '" + name + "' initialized");
 				} catch (err) {
 					console.error("[E] Error in init() function inside module " + name + " (logic): " + err);
 				}
@@ -105,7 +103,7 @@ var JamiiCore = function() {
 			if (window.JamiiCore.get_module_gui(name)['init'] != undefined) {
 				try {
 					window.JamiiCore.get_module_gui(name).init();
-					console.log("[I] JamiiCore::load_module: Gui of module '" + name + "' initialized");
+					console.info("[I] JamiiCore::load_module: Gui of module '" + name + "' initialized");
 				} catch (err) {
 					console.error("[E] Error in init() function inside module " + name + " (gui): " + err);
 				}
@@ -164,7 +162,7 @@ var JamiiCore = function() {
 		if (core_modules[name] == undefined)
 			core_modules[name] = {};
 		core_modules[name][type] = obj;
-		console.log("[I] JamiiCore::register_module_object: Registered core module '" + name + "' of type '" + type + "'");
+		console.info("[I] JamiiCore::register_module_object: Registered core module '" + name + "' of type '" + type + "'");
 		return obj;
 	}
 
@@ -183,7 +181,7 @@ var JamiiCore = function() {
 	}
 
 	var current_user_data_handler = function(data) {
-		console.log("[I] JamiiCore::current_user_data_handler: Got current user data!");
+		console.info("[I] JamiiCore::current_user_data_handler: Got current user data!");
 		current_user_data = data;
 		window.JamiiCore.signal_user_data_available.emit();
 	}
