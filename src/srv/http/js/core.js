@@ -157,6 +157,7 @@ var JamiiCore = function() {
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}
+
 	}
 
 	var register_module_object = function(name, type, obj) {
