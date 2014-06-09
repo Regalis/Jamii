@@ -16,17 +16,24 @@
 
 		<script type="text/javascript">
 		  function widget_init(){ 
-		  window.stack = new StackedWidget();
-		  window.stack.add_widget( "friend_list", "friend_list_button");
-		  window.stack.add_widget( "chat", "chat_button");
-	          window.stack.add_widget( "file_share", "file_share_button");
-		  window.stack.set_default( "friend_list" );
-
-		  return false;
+		  /*
+			  window.stack_section = new StackedWidget();
+			  window.stack_section.add_widget( "friend_list", "friend_list_button");
+			  window.stack_section.add_widget( "chat", "chat_button");
+			  window.stack_section.add_widget( "file_share", "file_share_button");
+			  window.stack_section.set_default( "friend_list" );
+			  window.stack_aside = new StackedWidget();
+			  window.stack_aside.add_widget( "account_settings", "settings_button");
+			  window.stack_aside.add_widget( "board", "board_button");
+			  window.stack_aside.add_widget( "search_friend", "add_friend");
+			  window.stack_aside.add_widget( "invitations", "invitation_button");
+			  window.stack_aside.set_default( "video_view" );
+			  return false;
+			  */
 		  }
 		</script>
 	</head>
-	<body onload="widget_init()">
+	<body>
 
 	<section>
 		<!-- CONFERENCE PARTICIPANTS -->
@@ -135,10 +142,11 @@
 		</div>
 		<!-- CONFERENCE TOOLS -->
 		<div id="conference_tools">
-			<div id="chat_button">Chat</div>
-			<div id="friend_list_button">Friends List</div>
-			<div id="board_button">Board</div>
-			<div id="file_share_button">File Share</div>
+			<div id="chat_button">Chat
+			</div><div id="friend_list_button">Friends List
+			</div><div id="board_button">Board
+			</div><div id="file_share_button">File Share
+			</div>
 		</div>
 	</section>
 
@@ -156,7 +164,7 @@
 			<!-- FRIEND LIST -->
 			<div id="friend_list">
 				<button id="invitation_button" class="option_button" type="submit" ></button>
-				<ul id="friend_list_ul"><li>aaa</li></ul>
+				<ul id="friend_list_ul"></ul>
 				<button id="add_friend" type="submit" class="option_button">+ Add Friend</button>
 			</div>
 			<!-- CHAT -->
