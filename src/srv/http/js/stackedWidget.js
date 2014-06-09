@@ -90,6 +90,7 @@ StackedWidget.prototype.set_default = function( widget_name ){
 	return;
     }
     this.default_index = index;
+    this.set_current_widget_by_index[ this.default_index ];
 }
 
 StackedWidget.prototype.set_current_widget_by_name = function( widget_name ){
