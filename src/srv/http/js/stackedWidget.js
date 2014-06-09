@@ -51,7 +51,6 @@ StackedWidget.prototype.index_by_widget_name = function( widget_name ){
 
 
 StackedWidget.prototype.toggle = function( name ){
-    console.log(name);
     var index = this.index_by_button_name( name );
 
     if( this.current == index ){ // if visible, show default
@@ -62,7 +61,7 @@ StackedWidget.prototype.toggle = function( name ){
 }
 
 StackedWidget.prototype.add_widget = function( widget_name, button_name){
-    
+    console.log("adding widget: " + widget_name + " as " + this.count  );
     var widget = document.getElementById( widget_name );
     var button = document.getElementById( button_name );
     this.widgets.push( widget );
@@ -71,13 +70,12 @@ StackedWidget.prototype.add_widget = function( widget_name, button_name){
     button.mother_stack = this;
 
     button.onclick = function(){
-    	// window.stack.toggle( this.id );
     	this.mother_stack.toggle( this.id );
-    }
-    
+    };
+
     this.count++;
     widget.style.display = "none";
-    this.set_current_widget_by_index[ this.count-1 ];
+    this.set_current_widget_by_index( this.count-1 );
     return this.count-1;
 
 }
@@ -90,7 +88,7 @@ StackedWidget.prototype.set_default = function( widget_name ){
 	return;
     }
     this.default_index = index;
-    this.set_current_widget_by_index[ this.default_index ];
+    this.set_current_widget_by_index( this.default_index );
 }
 
 StackedWidget.prototype.set_current_widget_by_name = function( widget_name ){
@@ -103,6 +101,7 @@ StackedWidget.prototype.set_current_widget_by_name = function( widget_name ){
 }
 
 StackedWidget.prototype.set_current_widget_by_index = function( widget_index ){
+    console.log("Changing current " + this.current + " for " + widget_index);
     if( this.count < 1 ) return;
     if( this.current >=0 ){
 	this.widgets[ this.current ].style.display = "none";
