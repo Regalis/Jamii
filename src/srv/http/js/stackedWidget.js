@@ -68,8 +68,11 @@ StackedWidget.prototype.add_widget = function( widget_name, button_name){
     this.widgets.push( widget );
     this.buttons.push( button );
 
+    button.mother_stack = this;
+
     button.onclick = function(){
-    	window.stack.toggle( this.id );
+    	// window.stack.toggle( this.id );
+    	this.mother_stack.toggle( this.id );
     }
     
     this.count++;
