@@ -16,12 +16,19 @@
 
 		<script type="text/javascript">
 		  function widget_init(){ 
-		  window.stack = new StackedWidget();
-		  window.stack.add_widget( "friend_list", "friend_list_button");
-		  window.stack.add_widget( "chat", "chat_button");
-	          window.stack.add_widget( "file_share", "file_share_button");
-		  window.stack.set_default( "friend_list" );
+		  window.right_stack = new StackedWidget();
+		  window.right_stack.add_widget( "friend_list", "friend_list_button");
+		  window.right_stack.add_widget( "chat", "chat_button");
+	          window.right_stack.add_widget( "file_share", "file_share_button");
+		  window.right_stack.set_default( "friend_list" );
 
+		  window.main_stack = new StackedWidget();
+		  // @todo: assign video_view to a better button that camera_button which is probably for sth else
+		  window.main_stack.add_widget( "video_view", "camera_button" );
+		  window.main_stack.add_widget( "search_friend", "add_friend" );
+		  window.main_stack.add_widget( "board", "board_button" );
+		  window.main_stack.add_widget( "account_settings", "settings_button");
+		  window.main_stack.set_default( "video_view" );
 		  return false;
 		  }
 		</script>
