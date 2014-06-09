@@ -89,11 +89,9 @@ body > section {
 	font-size: 17px;
 	height: 100%;
 	line-height: 40px;
-	margin: 0;
+	margin-left:-6px;
 	text-align: center;
-
-	/*TODO change this value to find error in conference_toolsdiv*/
-	width: 24.57%;
+	width: 25%;
 }
 
 #conference_tools > div:last-child {
@@ -447,8 +445,8 @@ div.popup_form form fieldset input {
 
 #file_share_button
 {
- /* float:right;
-  margin-right:10px;
+  float:right;
+ /* margin-right:10px;
 */
 }
 
