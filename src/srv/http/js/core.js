@@ -149,12 +149,13 @@ var JamiiCore = function() {
 		window.connection = new ConnectionManager("http://" + host,"9393");
 
 		window.connection.registerHandler("whoAmI_answer", current_user_data_handler); 
-		this.request_current_user_data();
 
-		modules_to_load = ['conference', 'chat', 'file_share', 'account_settings', 'friend_list'];
+		modules_to_load = ['friend_list', 'conference', 'chat', 'file_share', 'account_settings'];
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}
+
+		this.request_current_user_data();
 
 	}
 
