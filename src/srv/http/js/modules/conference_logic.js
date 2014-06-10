@@ -62,7 +62,7 @@ var ConferenceLogic = function (){
 	}
 
 	this.invitation_result_handler = function (data) {
-		signal_result_invitation.emit(data);
+		signal_invitation_result.emit(data);
 	}
 
 	this.invitation_outcoming_handler = function (data) {
