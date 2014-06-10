@@ -35,6 +35,10 @@ var FriendListLogic = function() {
 			window.JamiiCore.get_module_logic("friend_list").signal_current_invitations.emit(window.JamiiCore.get_current_user_data()["requests_list"]);
 			window.connection.send("get_users_data", window.JamiiCore.get_current_user_data()["friends_list"]);
 		});
+
+	    window.JamiiCore.request_current_user_data();
+
+	    
 	}
 		
 	this.users_data_response_handler = function (data) {

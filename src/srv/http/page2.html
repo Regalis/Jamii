@@ -7,36 +7,14 @@
 		<script type="text/javascript" src="js/connectionManager.js"></script>
 		<script type="text/javascript" src="js/core.js"></script>
 		<script type="text/javascript" src="js/whiteboard.js"></script>
-		<script type="text/javascript" src="js/stackedWidget.js"></script>
 		<link rel="icon" href="images/favicon.png" type="image/png" />
 		<title>Jamii - community</title>
 		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
 		<script src="js/latest.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
-		<script type="text/javascript">
-		  function widget_init(){ 
-
-		  window.right_stack = new StackedWidget();
-		  window.right_stack.add_widget( "friend_list", "friend_list_button");
-		  window.right_stack.add_widget( "chat", "chat_button");
-	          window.right_stack.add_widget( "file_share", "file_share_button");
-		  window.right_stack.set_default( "friend_list" );
-
-		  window.main_stack = new StackedWidget();
-		  // @todo: assign video_view to a better button that camera_button which is probably for sth else
-		  window.main_stack.add_widget( "video_view", "camera_button" );
-		  window.main_stack.add_widget( "search_friend", "add_friend" );
-		  window.main_stack.add_widget( "board", "board_button" );
-		  window.main_stack.add_widget( "account_settings", "settings_button");
-		  window.main_stack.add_widget( "invitations", "invitation_button");
-		  window.main_stack.set_default( "video_view" );
-		  return false;
-
-		  }
-		</script>
 	</head>
-	<body onload ="widget_init();">
+	<body>
 
 	<section>
 		<!-- CONFERENCE PARTICIPANTS -->
