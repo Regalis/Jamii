@@ -26,6 +26,8 @@ var ConferenceGui = function() {
 	this.init = function() {
 
 		document.getElementById("user1").ondrop = this.dropFirst;
+	    document.getElementById("user1").ondragover = this.allowDrop;
+	    console.log("setting dropfirst");
 		this.logic.signal_incoming_invitation.connect(this.invitation_incoming_handler);
 		//this.logic.signal_invitation.connect(this.invitation_handler);
 		this.logic.signal_invitation_result.connect(this.invitation_result_handler);
@@ -59,10 +61,14 @@ var ConferenceGui = function() {
 
 
 	this.dropFirst = function(ev) {
-
+	    console.log("New conf");
 		window.JamiiCore.get_module_gui("conference").signal_new_conference_request.emit(ev);
 		return false;
 	}
+
+    this.allowDrop = function(ev) {
+	ev.preventDefault();
+    }
 
 	this.signal_response_conference = new Signal();
 	this.signal_new_conference_request = new Signal();
