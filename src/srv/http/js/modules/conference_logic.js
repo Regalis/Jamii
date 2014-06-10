@@ -62,7 +62,7 @@ var ConferenceLogic = function (){
 	}
 
 	this.invitation_result_handler = function (data) {
-		signal_result_invitation.emit(data);
+	    window.JamiiCore.get_module_logic("conference").signal_incoming_invitation.emit(data);
 	}
 
 	this.invitation_outcoming_handler = function (data) {
