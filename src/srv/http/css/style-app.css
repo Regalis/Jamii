@@ -8,25 +8,19 @@ body {
 
 
 /* TEMPORARY */
-#chat,
-#friend_list
-/*
-#file_share
-*/
-{
-	display: none;
-}
 
-#video_view,
-#search_friend,
-#account_settings,
-/*
-#board,
-*/
-#search_results,
-#invitations {
-	display: none;
-}
+/* #chat, */
+/* #friend_list { */
+/* 	display: none; */
+/* } */
+
+/* #video_view, */
+/* #search_friend, */
+/* #account_settings, */
+/* #board, */
+/* #invitations { */
+/* 	display: none; */
+/* } */
 
 /* SECTION */
 
