@@ -31,7 +31,8 @@ var FriendListGui = function(){
 		//TODO jakie id dla ul dla friendlisty
 		friends_table = document.getElementById("friend_list_ul");
 		//TODO nazwa buttona add_friend
-		document.getElementById("add_friend").onclick = this.show_search_handler;
+	    //not needed, handled by stackedWidget now
+//		document.getElementById("add_friend").onclick = this.show_search_handler;
 		//TODO nazwa buttona search_friend
 		//document.getElementById("").onSubmit = this.search_friend_handler;
 
