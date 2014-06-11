@@ -272,8 +272,8 @@ io.sockets.on("connection", function(socket) {
 		ch.get_users_dataHandler(data, socket);
 	});
 
-	socket.on("chat", function(data) {
-		ch.chatHandler(data, socket);
+	socket.on("chat_message", function(data) {
+		ch.chat_messageHandler(data, socket);
 	});
 
 	socket.on("draw", function(data) {

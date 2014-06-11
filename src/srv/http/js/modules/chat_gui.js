@@ -20,12 +20,19 @@
  * 
  */
 
+
 var ChatGui = function() {
 	
-	this.init = function() {
-		this.logic.signal_incoming_message.connect(this.incoming_message_handler);
-		document.getElementById("chat").getElementsByTagName("form")[0].onSubmit = 	this.outcoming_message_handler;
+    this.init = function() {
+	this.logic.signal_incoming_message.connect(this.incoming_message_handler);
+	
+	document.getElementById("chat").getElementsByTagName("form")[0].onsubmit = function(e){
+	    e = e || window.event;
+	    e.preventDefault();
+	    window.JamiiCore.get_module_gui("chat").outcoming_message_handler();
 	}
+
+    }
 
 	this.incoming_message_handler = function (data){
 		var list = document.getElementById("textList");
@@ -37,19 +44,19 @@ var ChatGui = function() {
 		list.appendChild(entry);
 	}
 	
-	this.outcoming_message_handler = function(){
-		var temp = document.getElementById("chat_input").getAttribute("value");        
-		var data  = {};
-
-		data ["message"] = temp;
-		this.signal_outcoming_message.emit(data);
-		document.getElementById("chat_input").form.reset();  
-		var textList = document.getElementById("textList");
-		textList.scrollTop = textList.scrollHeight;
-		return false;
-	}
+    this.outcoming_message_handler = function(){
+	var temp = document.getElementById("chat_input").value;        
+	var data  = {};
 	
-	this.signal_outcoming_message = new Signal();
+	data ["message"] = temp;
+	this.signal_outcoming_message.emit(data);
+	document.getElementById("chat_input").form.reset();  
+	var textList = document.getElementById("textList");
+	textList.scrollTop = textList.scrollHeight;
+	return false;
+    }
+	
+    this.signal_outcoming_message = new Signal();
 
 }
 
