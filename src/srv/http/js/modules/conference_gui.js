@@ -61,6 +61,7 @@ var ConferenceGui = function() {
 
 
 	this.dropFirst = function(ev) {
+		//alert("TROLOLO");
 		window.JamiiCore.get_module_gui("conference").signal_new_conference_request.emit(ev);
 		return false;
 	}

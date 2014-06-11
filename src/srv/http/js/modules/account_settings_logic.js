@@ -33,7 +33,16 @@ var AccountSettingsLogic = function() {
 	}
 
 	this.account_change_request_handler = function (data) {
-		alert(JSON.stringify(data));
+
+		if (data ["confirm"] == data ["new"]) {
+			var pass = {
+		      "current": data ["current"],
+		      "new": data ["new"]
+		   };
+			window.connection.send("password_change", pass);
+		} else {
+		   alert("Your new passwords don't match");
+		}
 	}
 
 	this.signal_account_change_response = new Signal();
