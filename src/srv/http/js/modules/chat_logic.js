@@ -28,12 +28,12 @@ var ChatLogic = function() {
 	}
 
 	this.incoming_message_handler = function (data) {
-		signal_incoming_message.emit(data);
+		window.JamiiCore.get_module_logic("chat").signal_incoming_message.emit(data);
 	}
 
 	this.outcoming_message_handler = function (data) {
 		//TODO remove login field from data
-		data ["login"] = window.my_user_object.login;
+		data ["login"] = window.JamiiCore.get_current_user_data()["login"];
 		window.connection.send("chat_message", data);
 	}
 

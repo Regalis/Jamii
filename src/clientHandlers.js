@@ -170,7 +170,7 @@ clientHandlers.prototype.get_users_dataHandler = function(packet, socket){
     
 }
 
-clientHandlers.prototype.chatHandler = function(packet, socket){
+clientHandlers.prototype.chat_messageHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session( session_id );
