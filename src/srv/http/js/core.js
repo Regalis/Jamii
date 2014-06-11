@@ -151,10 +151,18 @@ var JamiiCore = function() {
 		window.connection.registerHandler("whoAmI_answer", current_user_data_handler); 
 
 		modules_to_load = ['friend_list', 'conference', 'chat', 'file_share', 'account_settings', 'stacks'];
+		
+		this.append_script("js/latest.js",function(){
+			window.webrtc = new SimpleWebRTC({
+				localVideoEl: 'localVideo',
+				remoteVideosEl: 'remoteVideos',
+				autoRequestMedia: true
+			});
+		
+		});
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}
-
 		// this.request_current_user_data();
 
 	}

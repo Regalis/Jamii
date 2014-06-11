@@ -51,7 +51,7 @@ var ConferenceLogic = function (){
 		ev.target.appendChild(document.getElementById(data).cloneNode(true));
 		console.log("Dodano pierwszego: my_id " + create_conf_data["my_id"] + " user id " + create_conf_data["user_id"]);
 		window.connection.send("conference_start", create_conf_data);
-
+		window.webrtc.joinRoom("jamiiroom");
 		//window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
 
 	}
@@ -63,18 +63,21 @@ var ConferenceLogic = function (){
 
 	this.invitation_result_handler = function (data) {
 
+
 	}
 
 	this.invitation_outcoming_handler = function (data) {
+
 		window.connection.send("conference_invitation_response", data);
 	}
 
 	this.start_handler = function (data) {
-		//window.webrtc.joinRoom("jamiiroom"+data["my_id"] );
+
 		window.connection.send("conference_start", data);
 	}
 
 	this.invitation_conference_handler = function (data) {
+
 		window.connection.send("conference_invitation", data);
 	}
 	

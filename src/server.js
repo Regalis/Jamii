@@ -199,6 +199,7 @@ var http_static_file_handler = function(request, response) {
 				} else {
 					headers = {};
 					if (requested_path.endsWith("html")) {
+						headers["Content-type"] = "text/html; charset=utf-8";
 						headers["Content-type"] = "application/xhtml+xml; charset=utf-8";
 						console.log("[HTTP] Serving html as application/xhtml+xml");
 					}

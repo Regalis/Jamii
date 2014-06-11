@@ -41,7 +41,7 @@ var ConferenceGui = function() {
 			//window.connection.send("conf_accept", info);
 			data["response"]=true;
 			console.log("Join to conference");
-		//	window.webrtc.joinRoom("jamiiroom"+data.admin_id);
+				webrtc.joinRoom('jamiiroom');
 
 		} else {
 			//window.connection.send("conf_discard", info);
@@ -61,7 +61,10 @@ var ConferenceGui = function() {
 
 
 	this.dropFirst = function(ev) {
-		//alert("TROLOLO");
+	window.webrtc.on('readyToCall', function () {
+alert("READY TO CALL");
+				webrtc.joinRoom('jamiiroom');
+			});
 		window.JamiiCore.get_module_gui("conference").signal_new_conference_request.emit(ev);
 		return false;
 	}

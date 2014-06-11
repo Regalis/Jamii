@@ -533,7 +533,7 @@ div.popup_form form fieldset input {
 
 #remoteVideos video,#localVideo
 {
-  height:100px;
+	height:100px;
 }
 
 #panel input { //whiteboard
