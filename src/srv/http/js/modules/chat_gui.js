@@ -24,7 +24,7 @@ var ChatGui = function() {
 	
 	this.init = function() {
 		this.logic.signal_incoming_message.connect(this.incoming_message_handler);
-		document.getElementById("chat").getElementsByTagName("form")[0].onSubmit = 	this.outcoming_message_handler;
+		document.getElementById("chat").getElementsByTagName("form")[0].onSubmit = this.outcoming_message_handler;
 	}
 
 	this.incoming_message_handler = function (data){
@@ -35,9 +35,11 @@ var ChatGui = function() {
 		entry.appendChild(document.createTextNode(loginText));
 		entry.appendChild(document.createTextNode(data.message));
 		list.appendChild(entry);
+		return false;
 	}
 	
 	this.outcoming_message_handler = function(){
+		alert("DASDAS");
 		var temp = document.getElementById("chat_input").getAttribute("value");        
 		var data  = {};
 
