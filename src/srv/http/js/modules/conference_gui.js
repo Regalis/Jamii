@@ -25,8 +25,18 @@ var ConferenceGui = function() {
 
 	this.init = function() {
 
-		document.getElementById("user1").ondrop = this.dropFirst;
-	    document.getElementById("user1").ondragover = this.allowDrop;
+	    var user_divs = document.getElementsByClassName("user_div");
+	    for(var i=0;i<user_divs.length;i++){
+		if( user_divs[i].id == "user1" ){
+		    user_divs[i].ondrop = this.dropFirst;
+		}else{
+		    user_divs[i].ondrop = this.drop;
+		}
+		user_divs[i].ondragover = this.allowDrop;
+	    }
+
+	    //document.getElementById("user1").ondrop = this.dropFirst;
+	    //document.getElementById("user1").ondragover = this.allowDrop;
 	    console.log("setting dropfirst");
 		this.logic.signal_incoming_invitation.connect(this.invitation_incoming_handler);
 		//this.logic.signal_invitation.connect(this.invitation_handler);
@@ -41,6 +51,7 @@ var ConferenceGui = function() {
 			//window.connection.send("conf_accept", info);
 			data["response"]=true;
 			console.log("Join to conference");
+		    window.JamiiCore.get_module_logic("conference").is_admin = false;
 		//	window.webrtc.joinRoom("jamiiroom"+data.admin_id);
 
 		} else {
@@ -65,13 +76,18 @@ var ConferenceGui = function() {
 		return false;
 	}
 
+    this.drop = function(ev) {
+	var cg = window.JamiiCore.get_module_gui("conference");
+	cg.signal_invite_to_conference.emit( ev );
+    }
+    
     this.allowDrop = function(ev) {
 	ev.preventDefault();
     }
 
 	this.signal_response_conference = new Signal();
 	this.signal_new_conference_request = new Signal();
-	this.signal_response_conference = new Signal();
+    this.signal_invite_to_conference = new Signal();
 }	
 
 
