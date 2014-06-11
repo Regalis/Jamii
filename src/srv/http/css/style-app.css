@@ -70,7 +70,6 @@ body > section {
 #main_content {
 	position: relative;
 	margin-bottom: 40px;
-	overflow-y: auto;
 	height: 100%;
 }
 
@@ -149,6 +148,16 @@ body > aside {
 	background-color: #D9EFEE;
 }
 
+#chat div.chat_label {
+	background-color: #009E58;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-variant: small-caps;
+	color: #FFFFFF;
+}
+
 #chat input {
 	bottom: 2px;
 	display: inline-block;
@@ -156,22 +165,11 @@ body > aside {
 }
 
 #chat_input {
-  background-color:#FFF;
-  border:1px solid #14BA79;
-  left:2px;
-  width:236px;
-}
-
-#send {
-  background-color:#14BA79;
-  border:none;
-  border-radius:3px;
-  color:#FFF;
-  display:inline-block;
-  font-size:16px;
-  font-weight:700;
-  padding:3px;
-  right:2px;
+	background-color: #FFF;
+	border: 1px solid #14BA79;
+	left: 2px;
+	width: 292px;
+	height: 35px;
 }
 
 #textList {
@@ -275,29 +273,36 @@ body > aside {
 
 /* SEARCH_FORM */
 
+#search_friend {
+	background-color: #E4E4E4;
+	height: 100%;
+	width: 100%;
+}
+
 #search_friend form {
-	color: #000000;
-	position: relative;
-	width: 400px;
-	margin: auto;
-	z-index: 3;
+	height: 100%;
+	width: 100%;
 }
 
 #search_friend form fieldset {
 	background-color: #FFFFFF;
-	padding: 30px;
-	border: 1px solid #000000;
+	width: 350px;
+	margin: auto;
+	border: none;
+	font-size: 14px;
+	text-align: right;
+	padding: 20px;
 }
 
-#search_friend form fieldset legend {
-	display: inline-block;
-	padding: 10px;
+#search_friend > form > div {
+	text-align: center;
+	width: 100%;
 	background-color: #14BA79;
-	margin-top: 20px;
 	color: #FFFFFF;
-	font-size: 17px;
-	font-weight: bold;
-	border-radius: 5px;
+	font-size: 16px;
+	display: block;
+	padding: 10px 0 10px 0;
+	font-variant: small-caps;
 }
 
 #search_friend form fieldset input {
@@ -307,29 +312,45 @@ body > aside {
 	color: #000000;
 }
 
-/* SEARCH_RESULTS */
+#search_friend form fieldset input[type="submit"] {
+	padding: 5px 10px;
+	background-color: #64A101;
+	border: none;
+	color: #FFFFFF;
+	font-variant: small-caps;
+	font-size: 15px;
+	border-radius: 3px;
+}
 
-#search_results table {
+/* SEARCH_RESULTS */
+/* INVITATIONS */
+
+#search_results table,
+#invitations table {
 	width: 100%;
 	margin-bottom: 10px;
 	color: #FFFFFF;
 	font-variant: small-caps;
 }
 
-#search_results table thead {
+#search_results table thead,
+#invitations table thead {
 	background-color: #009E58; 
 }
 
-#search_results tbody tr:nth-child(2n) {
+#search_results tbody tr:nth-child(2n),
+#invitations tbody tr:nth-child(2n) {
 	background-color: #3A3A3A;
 }
 
-#search_results tbody tr {
+#search_results tbody tr,
+#invitations tbody tr {
 	background-color: #2D2D2D;
 	height: 40px;
 }
 
-#search_results button {
+#search_results button,
+#invitations button {
 	padding: 5px 10px;
 	background-color: #64A101;
 	border: none;
@@ -347,108 +368,57 @@ body > aside {
 	height: 100%;
 	background-color: inherit;
 	padding: 0;
-	min-height: 700px;
 }
 
 #account_settings > form {
+	background-color: #E4E4E4;
 	width: 100%;
 	height: 100%;
 	margin: auto;
 }
 
 #account_settings > form > fieldset {
-	background-color: #E4E4E4;
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
+	background-color: #FFFFFF;
+	width: 400px;
+	margin: auto;
 	border: none;
 	font-size: 14px;
+	text-align: right;
+	padding: 20px;
 }
 
-#account_settings > form > fieldset > legend {
+#account_settings > form > div {
 	text-align: center;
 	width: 100%;
 	background-color: #14BA79;
 	color: #FFFFFF;
-	font-weight: bold;
-	font-size: 18px;
+	font-size: 16px;
 	display: block;
 	padding: 10px 0 10px 0;
 	font-variant: small-caps;
-	text-shadow: 1px 1px 2px #000000;
 }
 
-#account_settings div#user_avatar {
-	width: 150px;
-	height: 150px;
-	border: 1px solid #9E9E9E;
-	margin-bottom: 10px;
-	display: inline-block;
-	float: left;
-}
-
-#account_settings form > fieldset > fieldset {
-	display: inline-block;
-	font-size: 14px;
-	margin: 10px;
-	padding: 30px;
-	border: none;
+#account_settings form input[type="text"], 
+#account_settings form input[type="password"] {
+	float: right;
+	border: 1px solid #696969;
 	background-color: #FFFFFF;
-	border-radius: 10px;
-	vertical-align: top;
-}
-
-#account_settings #set_avatar {
-	width: 250px;
+	margin-bottom: 3px;
+	padding: 2px;
+	border-radius: 2px;
 }
 
 #account_settings #set_avatar input[type="file"] {
 	border: none;
 }
 
-#account_settings #set_account_info {
-	width: 350px;
+#account_settings #user_avatar {
+	width: 150px;
+	height: 150px;
+	border: 1px solid #696969;
+	float: left;
 }
 
-#account_settings #set_welcome {
-	width: 250px;
-}
-
-#account_settings #set_welcome textarea {
-	background-color: #FFFFFF;
-	border: 1px solid #9E9E9E;
-	width: 300px;
-	height: 70px;
-}
-
-#account_settings #set_password {
-	width: 200px;
-}
-
-#account_settings #set_password input {
-	margin: 1px;
-}
-
-#account_settings form > fieldset > fieldset > legend {
-	background-color: #64A101;
-	padding: 5px;
-	color: #FFFFFF;
-	font-variant: small-caps;
-	border-radius: 3px;
-	margin-left: 20px;
-}
-
-#account_settings form > fieldset > fieldset > div {
-	margin: 2px;
-	text-align: left;
-}
-
-#account_settings form > fieldset > fieldset > div label {
-	display: inline-block;
-	text-align: right;
-	width: 80px;
-}
 
 #account_settings #set_password input,
 #account_settings #set_account_info input {
@@ -459,18 +429,23 @@ body > aside {
 	width: 250px;
 }
 
-#account_settings > input[type="reset"],
-#account_settings > input[type="submit"] {
-	border: 1px solid #9E9E9E;
-	border-radius: 2px;
-	padding: 3px;
+#account_settings input[type="reset"],
+#account_settings input[type="submit"] {
+	padding: 5px 10px;
+	background-color: #64A101;
+	border: none;
+	color: #FFFFFF;
+	font-variant: small-caps;
+	font-size: 15px;
+	border-radius: 3px;
+	margin-top: 10px;
 }
 
 
 /* FILESHARE */
 
 #file_share {
-	background-color: #C5CDE0;
+	background-color: #D9EFEE;
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -492,7 +467,7 @@ body > aside {
 }
 
 #file_share form fieldset legend {
-	background-color: #64A101;
+	background-color: #009E58;
 	width: 100%;
 	height: 40px;
 	line-height: 40px;
