@@ -22,9 +22,42 @@
 
 var AccountSettingsGui = function() {
 	this.init = function() {
-		
+		document.getElementById("account_settings").getElementsByTagName("form")[0].onsubmit = function(e){
+			e = e || window.event;
+			e.preventDefault();
+			window.JamiiCore.get_module_gui("account_settings").change_settings_handler();
+		}
 	}
+
+	this.change_settings_handler = function (){
+
+		console.log("password_change()");
+		var data  = {};
+
+		data ["current"] = document.getElementById("current_password").value;
+		data ["new"] = document.getElementById("new_password").value;
+		data ["confirm"] = document.getElementById("confirm_password").value;
+		
+		this.signal_settings_change.emit(data);
+/*
+		if (confirm_pasword == new_password) {
+		   var current_password = document.getElementById("current_password").value;
+		   var data = {
+		      "current": current_password,
+		      "new": new_password
+		   };
+			window.connection.send("password_change", data);
+		} else {
+		   alert("Your new passwords don't match");
+		}
+*/
+		return false;
+	}
+
+	this.signal_settings_change = new Signal();
+
 }
+/*------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!------------------------*/
 
 	window.connection.registerHandler("password_change_confirmation", function (data) {
 		alert("Password has been changed");

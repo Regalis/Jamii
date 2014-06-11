@@ -24,6 +24,7 @@
 var AccountSettingsLogic = function() {
 	
 	this.init = function() {
+		this.gui.signal_settings_change.connect(this.account_change_request_handler);
 		window.connection.registerHandler("account_change_response", this.account_change_response_handler);
 	}
 
@@ -32,8 +33,7 @@ var AccountSettingsLogic = function() {
 	}
 
 	this.account_change_request_handler = function (data) {
-		data ["login"] = window.my_user_object.login;
-		window.connection.send("chat_message", data);
+		alert(JSON.stringify(data));
 	}
 
 	this.signal_account_change_response = new Signal();

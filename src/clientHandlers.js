@@ -140,7 +140,9 @@ clientHandlers.prototype.getUserDataFromIdHandler2 = function(packet, socket){
 // end temporary
 
 clientHandlers.prototype.searchFriendsHandler = function(packet, socket){
+	
     var data = strip_data_object( packet );
+    console.log("Search handler: " + JSON.stringify(data));
     var results = this.udb.findUsersMultiKey(data);
     socket.emit("matchingUsers", {'list': Object.keys(results)});	
     

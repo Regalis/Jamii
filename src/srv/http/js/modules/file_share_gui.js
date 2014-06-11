@@ -22,11 +22,17 @@
 
 var FileShareGui = function() {
 
-		this.init = function() {
+	this.init = function() {
 
-			this.logic.signal_incoming_file.connect(this.file_incoming_handler);
-	//	document.getElementById('file_to_send').addEventListener('change', handleFileSelect, false);
-	//	document.getElementById("file_send_button").onSubmit = 	this.outcoming_file_handler;
+		this.logic.signal_incoming_file.connect(this.file_incoming_handler);
+//	document.getElementById('file_to_send').addEventListener('change', handleFileSelect, false);
+//	document.getElementById("file_send_button").onSubmit = 	this.outcoming_file_handler;
+
+		document.getElementById("file_share").getElementsByTagName("form")[0].onsubmit = function(e){
+			e = e || window.event;
+			e.preventDefault();
+			window.JamiiCore.get_module_gui("file_share").outcoming_file_handler();
+		}
 	}
 
 
@@ -44,7 +50,9 @@ var FileShareGui = function() {
 	}
 
 	this.outcoming_file_handler = function(evt){	
-		
+		alert("AAA");
+		document.getElementById("current_file").innetHTML = "ASAASA";
+		alert("AAA");
 	}
 
 	function handleFileSelect(evt) {

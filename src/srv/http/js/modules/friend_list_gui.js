@@ -26,6 +26,7 @@ var FriendListGui = function(){
 	var friends_table;
 
 	this.init = function() {
+
 		this.logic.signal_new_friend.connect(this.new_friend_handler);
 		this.logic.signal_current_invitations.connect(this.current_invitations_handler);
 		//TODO jakie id dla ul dla friendlisty
@@ -34,7 +35,14 @@ var FriendListGui = function(){
 	    //not needed, handled by stackedWidget now
 //		document.getElementById("add_friend").onclick = this.show_search_handler;
 		//TODO nazwa buttona search_friend
-		//document.getElementById("").onSubmit = this.search_friend_handler;
+
+
+		document.getElementById("search_friend").getElementsByTagName("form")[0].onsubmit = function(e){''
+			e = e || window.event;
+			e.preventDefault();
+
+			window.JamiiCore.get_module_gui("friend_list").search_friend_handler();
+		}
 
 	}
 
@@ -73,13 +81,7 @@ var FriendListGui = function(){
 				
 	}
 
-	this.show_search_handler = function(){
-		//AFTER ADD FRIEND 
-		
-		//TODO show form for searching friendsData
-		return false;
-	}
-	
+
 	this.search_friend_handler = function(){
 		//TODO set UNIQUE names for inputs
 		//TODO validate
@@ -88,7 +90,7 @@ var FriendListGui = function(){
 		data ["first_name"] = document.getElementById("first_name").value;
 		data ["last_name"] = document.getElementById("last_name").value;
 		data ["email"] = document.getElementById("email").value;
-		signal_search_friend.emit(data);
+		window.JamiiCore.get_module_gui("friend_list").signal_search_friend.emit(data);
 		return false;
 	}
 	
