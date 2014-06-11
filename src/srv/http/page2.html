@@ -94,8 +94,8 @@
 			<!-- VIDEO VIEW -->
 			<div id="video_view"></div>
 			<!-- SEARCH FRIEND -->
-			<div id="search_friend" class="popup_form">
-				<form>
+			<div id="search_friend">
+				<form id="search_friend_form">
 					<fieldset>
 						<legend>Search Friend</legend>
 						<label for="login">Login: </label>
@@ -116,7 +116,21 @@
 			</div>
 			<!-- SEARCH RESULTS-->
 			<div id="search_results">
-				<table id="table_results"/>
+				<table id="search_results_table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Login</th>
+							<th>First name</th>
+							<th>Last name</th>
+							<th>E-mail</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<button id="search_results_next_button" type="submit">Next</button>
+				<button id="search_results_prev_button" type="submit">Prev</button>
 			</div>
 			<!-- INVITATIONS-->
 			<div id="invitations"></div>
