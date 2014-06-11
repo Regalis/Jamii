@@ -6,13 +6,12 @@
 		<script type="text/javascript" src="js/javascript_extras.js"></script>
 		<script type="text/javascript" src="js/connectionManager.js"></script>
 		<script type="text/javascript" src="js/core.js"></script>
-		<script type="text/javascript" src="js/whiteboard.js"></script>
 		<link rel="icon" href="images/favicon.png" type="image/png" />
 		<title>Jamii - community</title>
 		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
 		<script src="js/latest.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
+		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
 	</head>
 	<body>
 
@@ -88,8 +87,8 @@
 						</canvas>
 					</div>
 				</div>
-				<button type="button">Clear</button>
-				<input class="color {hash:true}" />
+				<button id="clear_board_button" type="button">Clear</button>
+				<input id="color_picker" class="color {hash:true}" />
 			</div>
 			<!-- VIDEO VIEW -->
 			<div id="video_view"></div>
