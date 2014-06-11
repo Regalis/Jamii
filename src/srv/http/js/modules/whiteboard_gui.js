@@ -64,6 +64,14 @@ var WhiteboardGui = function(){
 	    
 	}
 
+	document.getElementById("thickness_picker").onchange = function(){
+	    var wbl = window.JamiiCore.get_module_logic("whiteboard");
+	    wbl.update_thickness( document.getElementById("thickness_picker").value );
+	    
+	}
+
+
+
     }
     
 	

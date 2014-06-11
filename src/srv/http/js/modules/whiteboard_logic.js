@@ -138,6 +138,10 @@ var WhiteboardLogic = function() {
     this.update_color = function( color ) {
 	this.painter.set_color( color );
     }
+
+    this.update_thickness = function( thickness ) {
+	this.painter.thickness = thickness;
+    }
     
 
     this.canvas = document.getElementById("layer1");
