@@ -449,21 +449,18 @@ var jscolor = {
 				styleElement.style.backgroundImage = "none";
 				styleElement.style.backgroundColor =
 					'#'+this.toString();
-				window.painter.color = 	'#'+this.toString();
 				styleElement.style.color =
 					0.213 * this.rgb[0] +
 					0.715 * this.rgb[1] +
 					0.072 * this.rgb[2]
 					< 0.5 ? '#FFF' : '#000';
 			}
-			
 			if(!(flags & leavePad) && isPickerOwner()) {
 				redrawPad();
 			}
 			if(!(flags & leaveSld) && isPickerOwner()) {
 				redrawSld();
 			}
-
 		};
 
 

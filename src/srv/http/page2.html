@@ -6,26 +6,25 @@
 		<script type="text/javascript" src="js/javascript_extras.js"></script>
 		<script type="text/javascript" src="js/connectionManager.js"></script>
 		<script type="text/javascript" src="js/core.js"></script>
-		<script type="text/javascript" src="js/whiteboard.js"></script>
 		<link rel="icon" href="images/favicon.png" type="image/png" />
 		<title>Jamii - community</title>
 		<link rel="stylesheet" href="css/style-app.css" type="text/css" />
 		<script src="js/latest.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
+		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
 	</head>
 	<body>
 
 	<section>
 		<!-- CONFERENCE PARTICIPANTS -->
 		<div id="conference_participants">
-			<div id="user1">
+			<div id="user1" class="user_div">
 				<div id="remoteVideos"></div>
 			</div>
-			<div id="user2"></div>
-			<div id="user3"></div>
-			<div id="user4"></div>
-			<div id="user5"></div>
+			<div id="user2" class="user_div"></div>
+			<div id="user3" class="user_div"></div>
+			<div id="user4" class="user_div"></div>
+			<div id="user5" class="user_div"></div>
 			<div id="me">
 				<video id="localVideo"></video>
 			</div>
@@ -88,8 +87,9 @@
 						</canvas>
 					</div>
 				</div>
-				<button type="button">Clear</button>
-				<input class="color {hash:true}" />
+				<button id="clear_board_button" type="button">Clear</button>
+				<input id="color_picker" class="color {hash:true}" />
+				Thickness: <input id="thickness_picker" type="number" name="thickness" min="1" max="5" value="2" />
 			</div>
 			<!-- VIDEO VIEW -->
 			<div id="video_view"></div>

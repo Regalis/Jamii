@@ -150,7 +150,8 @@ var JamiiCore = function() {
 
 		window.connection.registerHandler("whoAmI_answer", current_user_data_handler); 
 
-		modules_to_load = ['friend_list', 'conference', 'chat', 'file_share', 'account_settings', 'stacks'];
+
+		modules_to_load = ['friend_list', 'conference', 'chat', 'file_share', 'account_settings', 'whiteboard', 'stacks'];
 		
 		this.append_script("js/latest.js",function(){
 			window.webrtc = new SimpleWebRTC({
@@ -160,6 +161,7 @@ var JamiiCore = function() {
 			});
 		
 		});
+
 		for (i in modules_to_load) {
 			this.load_module(modules_to_load[i]);
 		}

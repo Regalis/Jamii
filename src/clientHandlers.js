@@ -431,11 +431,12 @@ clientHandlers.prototype.remindPasswordHandler = function(packet, socket){
     var generated_password  = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for( var i=0; i < 13; i++ )
+    for( var i=0; i < 5; i++ )
         generated_password  += possible.charAt(Math.floor(Math.random() * possible.length));
-	var user = this.udb.findUser('email',data['mail']);
-
-	console.log(JSON.stringify(user));
+	var user_obj = this.udb.findUser('email',data['mail']);
+	user_obj["_password"] = this.udb.get_password_hash(user_obj,generated_password);
+	this.udb.save_user_data(user_obj);
+	console.log(JSON.stringify(user_obj));
 	// create reusable transport method (opens pool of SMTP connections)
 	var smtpTransport = nodemailer.createTransport("SMTP",{
 		service: "Gmail",
@@ -452,7 +453,7 @@ clientHandlers.prototype.remindPasswordHandler = function(packet, socket){
 		
 		subject: "Hello ✔", // Subject line
 		text: "Hi, log in with this password: "+ generated_password+" and change it in settings. Jamii Team:)", // plaintext body
-		html:"Hi "+user["_login"]+", log in with this password: <b>"+ generated_password+"</b> and change it in settings. <br>Jamii Team:)" // html body
+		html:"Hi "+user_obj["_login"]+", log in with this password: <b>"+ generated_password+"</b> and change it in settings. <br>Jamii Team:)" // html body
 	}
 
 	// send mail with defined transport object
