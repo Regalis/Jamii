@@ -38,7 +38,7 @@ var ConferenceLogic = function (){
 
 	this.new_response_conference_handler = function(data){
 		data["user_id"] = window.JamiiCore.get_current_user_data()['id'];
-		alert(JSON.stringify(data));
+
 		//data["admin_id"]=data.admin_id;
 		window.connection.send("conference_invitation_response", data);	
 	    // someone invited you, you're not admin

@@ -38,9 +38,7 @@ var StacksLogic = function() {
 	window.main_stack.add_widget( "account_settings", "settings_button");
 	window.main_stack.add_widget( "invitations", "invitation_button");
 	window.main_stack.set_default( "video_view" );
-	document.getElementById("logout_button").onclick = function(){
-		window.connection.logout();
-	}
+	
     }
 
 }

@@ -36,6 +36,7 @@ var FriendListGui = function(){
 //		document.getElementById("add_friend").onclick = this.show_search_handler;
 		//TODO nazwa buttona search_friend
 
+		
 
 		document.getElementById("search_friend").getElementsByTagName("form")[0].onsubmit = function(e){''
 			e = e || window.event;

@@ -78,7 +78,7 @@ var ConferenceGui = function() {
 
 	this.dropFirst = function(ev) {
 	window.webrtc.on('readyToCall', function () {
-alert("READY TO CALL");
+
 				webrtc.joinRoom('jamiiroom');
 			});
 		window.JamiiCore.get_module_gui("conference").signal_new_conference_request.emit(ev);

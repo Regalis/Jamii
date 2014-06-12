@@ -22,6 +22,11 @@
 var StacksGui = function() {
 	
 	this.init = function() {
+		document.getElementById("logout_button").onclick = function(){
+			window.connection.send("logout");
+			window.connection.logout();
+		}
+
 	}
 
 }
