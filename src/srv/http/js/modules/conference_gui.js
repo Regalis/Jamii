@@ -52,7 +52,6 @@ var ConferenceGui = function() {
 			data["response"]=true;
 			console.log("Join to conference");
 
-				webrtc.joinRoom('jamiiroom');
 				document.getElementById("conference_tools").style.visibility = "visible";
 
 		    window.JamiiCore.get_module_logic("conference").is_admin = false;

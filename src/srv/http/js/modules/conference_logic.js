@@ -38,12 +38,21 @@ var ConferenceLogic = function (){
 
 	this.new_response_conference_handler = function(data){
 		data["user_id"] = window.JamiiCore.get_current_user_data()['id'];
-
+		webrtc.joinRoom('jamiiroom');
 		//data["admin_id"]=data.admin_id;
 		window.connection.send("conference_invitation_response", data);	
 	    // someone invited you, you're not admin
 
 	}
+
+	this.join_to_conference(conference_id){
+		var data {};
+		data["user_id"] = window.JamiiCore.get_current_user_data()['id'];
+		data["conf_id"] = conference_id;
+		webrtc.joinRoom('jamiiroom');
+		window.connection.send("conference_join", data);	
+	}
+
 	this.new_conference_request_handler = function(ev) {
 		ev.preventDefault();
 		var create_conf_data = {
@@ -74,9 +83,9 @@ var ConferenceLogic = function (){
 
 	    console.log("invitation_result");
 	    if( data["response"] == true ){
-		this.is_in_conf = true;
-		this.is_admin = false;
-		console.log("is_admin "+ this.is_admin);	    
+			this.is_in_conf = true;
+			this.is_admin = false;
+			console.log("is_admin "+ this.is_admin);	    
 	    }
 	    console.log("is_in"+ this.is_in_conf);
 
