@@ -34,42 +34,18 @@
 			<!-- OPTIONS -->
 			<div id="account_settings">
 				<form>
+				<div>Account settings</div>
 					<fieldset>
-						<legend>Account settings</legend>
-						<fieldset id="set_avatar">
-							<legend>Set avatar</legend>
-							<div id="user_avatar"></div>
-							<input type="file" id="files" name="files[]" multiple="multiple" />
-						</fieldset>
-						<fieldset id="set_account_info">
-							<legend>Account info</legend>
-							<div>
-								<label for="login_settings">Login:</label>
-								<input id="login_settings" placeholder="Login" type="text" />
-							</div>
-							<div>
-								<label for="first_name_settings">First name:</label>
-								<input id="first_name_settings" placeholder="First name" type="text" />
-							</div>
-							<div>
-								<label for="last_name_settings">Last name:</label>
-								<input id="last_name_settings" placeholder="Last name" type="text" />
-							</div>
-							<div>
-								<label for="email_settings">E-mail:</label>
-								<input id="email_settings" placeholder="E-mail" type="text" />
-							</div>
-						</fieldset>
-						<fieldset id="set_welcome">
-							<legend>Set welcome text</legend>
-							<textarea></textarea>
-						</fieldset>
-						<fieldset id="set_password">
-							<legend>Change password</legend>
-							<input id="current_password" placeholder="Current password" type="password" />
-							<input id="new_password" placeholder="New password" type="password" />
-							<input id="confirm_password" placeholder="Confirm password" type="password" />
-						</fieldset>
+						<div id="user_avatar"></div>
+						<input id="login_settings" placeholder="Login" type="text" />
+						<input id="first_name_settings" placeholder="First name" type="text" />
+						<input id="last_name_settings" placeholder="Last name" type="text" />
+						<input id="email_settings" placeholder="E-mail" type="text" />
+						<br/>
+						<input id="current_password" placeholder="Current password" type="password" />
+						<input id="new_password" placeholder="New password" type="password" />
+						<input id="confirm_password" placeholder="Confirm password" type="password" />
+						<input type="file" id="files" name="files[]" multiple="multiple" />
 						<div>
 							<input id="save_account_info" type="submit" value="Save" />
 							<input id="reset_account_info" type="reset" value="Reset" />
@@ -94,10 +70,10 @@
 			<!-- VIDEO VIEW -->
 			<div id="video_view"></div>
 			<!-- SEARCH FRIEND -->
-			<div id="search_friend" class="popup_form">
-				<form>
+			<div id="search_friend">
+				<form id="search_friend_form">
+					<div>Search Friend</div>
 					<fieldset>
-						<legend>Search Friend</legend>
 						<label for="login">Login: </label>
 						<input id="login" type="text" class="valid" /><br />
 
@@ -116,10 +92,42 @@
 			</div>
 			<!-- SEARCH RESULTS-->
 			<div id="search_results">
-				<table id="table_results"/>
+				<table id="search_results_table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Login</th>
+							<th>First name</th>
+							<th>Last name</th>
+							<th>E-mail</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<button id="search_results_next_button" type="submit">Next</button>
+				<button id="search_results_prev_button" type="submit">Prev</button>
 			</div>
 			<!-- INVITATIONS-->
-			<div id="invitations"></div>
+			<div id="invitations">
+				<table id="invitations_table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Login</th>
+							<th>First name</th>
+							<th>Last name</th>
+							<th>E-mail</th>
+							<th>Accept</th>
+							<th>Deny</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<button id="invitations_next_button" type="submit">Next</button>
+				<button id="invitations_prev_button" type="submit">Prev</button>
+			</div>
 		</div>
 		<!-- CONFERENCE TOOLS -->
 		<div id="conference_tools">
@@ -151,10 +159,11 @@
 			</div>
 			<!-- CHAT -->
 			<div id="chat">
+				<div class="chat_label">Chat</div>
 				<form>
 					<ul id="textList"></ul>
 					<input id="chat_input" type="text" autocomplete="off" name="chat_input"/>
-					<input id="send" class="send_button" type="submit" value="Send" />
+
 				</form>
 			</div>
 			<!-- FILE SHARE -->

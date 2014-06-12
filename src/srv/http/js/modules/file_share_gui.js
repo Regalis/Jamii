@@ -97,7 +97,7 @@ var FileShareGui = function() {
    				for( var i=0; i < 5; i++ )
 				      ran += possible.charAt(Math.floor(Math.random() * possible.length));
 
-					afa["file_name"] = "file"+ran;
+					afa["file_name"] = "file"+ran+".jpg";
 					afa["file_type"]=arr[0];
 					console.log(splited[1]);
 					afa["file"] = splited[1];

@@ -67,14 +67,16 @@ var FriendListGui = function(){
 		
 		var div_login = document.createElement('div');		
 		div_login.textContent=data["login"];
+		div_login.setAttribute('class', 'nick');
 		
 		var image_entry = document.createElement("img");
 		image_entry.setAttribute('draggable', 'false');
+		image_entry.setAttribute('class', 'avatar');
 		image_entry.src = 'data:image/gif;base64,' + data["avatar"];	
 		
 		var x_img = document.createElement("img");
 		x_img.src = "images/x.png";
-		x_img.style="float:right;height:10px;width:10px;";
+		x_img.setAttribute('class', 'close');
 
 		li.appendChild( image_entry );
 		li.appendChild(x_img);
@@ -112,12 +114,18 @@ function allowDrop(ev) {
 
 function drop(ev) {
 	ev.preventDefault();
+	alert("dziala");
 	var data = ev.dataTransfer.getData("Login");
 	var info = {
 		"my_id": window.my_user_object["id"],
 		"user_id": ev.dataTransfer.getData("Id"),
 	}
-	ev.target.appendChild(document.getElementById(data).cloneNode(true));
+	var dropped = createElement("div");
+	var original = document.getElementById(data);
+	alert(original.getAttribute("id"));
+	dropped.innerHTML = original.innerHTML;
+	dropped.setAttribute("id", original.getAttribute("id"));
+	ev.target.appendChild(dropped);
 	console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
 
 	window.connection.send("conf_request", info);
