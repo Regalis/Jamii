@@ -17,7 +17,7 @@
  *
  * Contributors:
  *  -> Mateusz Zajac<matteo.zajac@gmail.com>
- * 
+ *
  */
 
 var FileShareGui = function() {
@@ -50,13 +50,14 @@ var FileShareGui = function() {
 		//a.appendChild(linkText);
 		a.setAttribute("title", "data.name");
 		a.setAttribute("href", "http://"+(window.location.host)+"/get_file/"+data["admin"]+"/"+data["name"]);
+		a.setAttribute("target", "_blank");
 		li.appendChild(a);
 		ul.appendChild(li);
 
 	}
 
-	this.outcoming_file_handler = function(){	
-		
+	this.outcoming_file_handler = function(){
+
 	}
 
 
@@ -68,7 +69,7 @@ var FileShareGui = function() {
 
 
 	function handleFileSelect(evt) {
-		
+
 		var files = evt.target.files; // FileList object
 		var data = {};
 		for (var i = 0, f; f = files[i]; i++) {
@@ -80,7 +81,7 @@ var FileShareGui = function() {
 
 				return function(e) {
 					var result = reader.result;
-					
+					alert("1");
 
 					var temp = JSON.stringify(result);
 					var splited = temp.split(",");
@@ -89,11 +90,18 @@ var FileShareGui = function() {
 					var arr = temp.split(";");
 					temp = arr[0];
 					afa ={};
-					afa["file_name"] = "somefile";
+               //reader.readAsDataURL(f);
+ 					var ran  = "";
+					var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+   				for( var i=0; i < 5; i++ )
+				      ran += possible.charAt(Math.floor(Math.random() * possible.length));
+
+					afa["file_name"] = "file"+ran;
 					afa["file_type"]=arr[0];
 					console.log(splited[1]);
 					afa["file"] = splited[1];
-
+					alert(JSON.stringify(afa))
 					window.JamiiCore.get_module_gui("file_share").signal_outcoming_file.emit(afa);
 				}
 

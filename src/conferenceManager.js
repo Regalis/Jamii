@@ -149,7 +149,7 @@ conferenceManager.prototype.share_file = function(user_id, file){
     conf.files.push( file );
     
     // notify users about new file
-    var to_send = { "name":file["file_name"], "admin":conf.admin };
+    var to_send = { "name":file["file_name"], "admin":conf.admin, "file":file["file"] };
     this.broadcast( user_id, "file_incoming", to_send );
     console.log("share_file");
     
