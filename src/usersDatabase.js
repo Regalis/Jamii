@@ -308,6 +308,7 @@ function User() {
 		}
 		return tmp;
 	}
+	
 }
 
 module.exports.User = User;

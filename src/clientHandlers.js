@@ -90,7 +90,27 @@ clientHandlers.prototype.registerHandler = function(packet, socket){
     new_user["_first_name"] = data["first_name"];
     new_user["_last_name"] = data["last_name"];
     new_user["_password"] = data["passwd"];
-    new_user["_registration_date"] = Date.now();
+	
+	var fs = require('fs');
+
+	function base64_encode(file) {
+		 var bitmap = fs.readFileSync(file);
+		 return new Buffer(bitmap).toString('base64');
+	}
+
+	function base64_decode(base64str, file) {
+		 var bitmap = new Buffer(base64str, 'base64');
+		 // write buffer to file
+		 fs.writeFileSync(file, bitmap);
+		 console.log('******** File created from base64 encoded string ********');
+	}
+	var base64str = base64_encode('tux.png');
+	
+	console.log(base64str);
+						var splited = base64str.split(",");
+	new_user["_avatar"]= base64str;
+
+	new_user["_registration_date"] = Date.now();
     
     // TODO: validate user data...
     
