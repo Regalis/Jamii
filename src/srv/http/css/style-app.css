@@ -72,6 +72,7 @@ body > section {
 	bottom: 0;
 	height: 40px;
 	position: absolute;
+	visibility: hidden;
 	width: 100%;
 	font-weight: bold;
 	font-variant: small-caps;

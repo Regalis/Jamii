@@ -145,12 +145,13 @@ conferenceManager.prototype.get_conf_by_user = function(user_id){
 
 conferenceManager.prototype.share_file = function(user_id, file){
     var conf = this.get_conf_by_user( user_id );
-    file["sender"] = user_id;
+
     conf.files.push( file );
     
     // notify users about new file
-    var to_send = { "name":file["name"], "sender":user_id };
+    var to_send = { "name":file["file_name"], "admin":conf.admin };
     this.broadcast( user_id, "file_incoming", to_send );
+    console.log("share_file");
     
 }
 

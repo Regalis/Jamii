@@ -42,7 +42,7 @@ var ConferenceGui = function() {
 			data["response"]=true;
 			console.log("Join to conference");
 				webrtc.joinRoom('jamiiroom');
-
+				document.getElementById("conference_tools").style.visibility = "visible";
 		} else {
 			//window.connection.send("conf_discard", info);
 			data["response"]=false;
@@ -66,6 +66,7 @@ alert("READY TO CALL");
 				webrtc.joinRoom('jamiiroom');
 			});
 		window.JamiiCore.get_module_gui("conference").signal_new_conference_request.emit(ev);
+				document.getElementById("conference_tools").style.visibility = "visible";
 		return false;
 	}
 

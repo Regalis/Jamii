@@ -24,15 +24,19 @@ var FileShareLogic = function() {
 
 	this.init = function() {
 		window.connection.registerHandler("file_incoming", this.file_incoming_handler);
+		this.gui.signal_outcoming_file.connect(this.file_outcoming_handler);
 	}
 	
 
 	this.file_incoming_handler = function (data) {
-		signal_incoming_file.emit(data);
+				alert("icoming");
+		alert(JSON.stringify(data));
+		window.JamiiCore.get_module_logic("file_share").signal_incoming_file.emit(data);
 	}
 
 	this.file_outcoming_handler = function (data) {
-		window.connection.send("file_outcoming", data);
+		alert("outcoming");
+		window.connection.send("send_file", data);
 	}
 
 	this.signal_incoming_file = new Signal();

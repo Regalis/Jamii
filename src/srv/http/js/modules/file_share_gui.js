@@ -33,60 +33,85 @@ var FileShareGui = function() {
 			e.preventDefault();
 			window.JamiiCore.get_module_gui("file_share").outcoming_file_handler();
 		}
+		document.getElementById("file_to_send").addEventListener("change",handleFileSelect, false);
+
 	}
 
 
 
-	this.incoming_message_handler = function (data){
+	this.file_incoming_handler = function (data){
+
 		var ul = document.getElementById("files_list");
 		var li = document.createElement("li");
 		var a = document.createElement('a');
-		var linkText = document.createTextNode(data.name);
-		a.appendChild(linkText);
+
+		//var linkText = document.createTextNode(data.name);
+		a.textContent=data["name"];
+		//a.appendChild(linkText);
 		a.setAttribute("title", "data.name");
-		a.setAttribute("href", "http://"+(window.location.host)+"/get_file/"+(window.conf_admin)+"/"+data.name);
+		a.setAttribute("href", "http://"+(window.location.host)+"/get_file/"+data["admin"]+"/"+data["name"]);
 		li.appendChild(a);
 		ul.appendChild(li);
+
 	}
 
-	this.outcoming_file_handler = function(evt){	
-		alert("AAA");
-		document.getElementById("current_file").innetHTML = "ASAASA";
-		alert("AAA");
+	this.outcoming_file_handler = function(){	
+		
 	}
+
+
+
+
+
+
+
+
 
 	function handleFileSelect(evt) {
+		
 		var files = evt.target.files; // FileList object
 		var data = {};
-
-		var reader = new FileReader();
-		data["reader"] = reader;
-	
-		reader.onload = (function(theFile) {
-		return function(e) {
-			var result = reader.result;
-
-			var temp = JSON.stringify(result);
-			var splited = temp.split(",");
-			temp =  splited[0];
-			temp = temp.replace("\"data:","");
-			var arr = temp.split(";");
-			temp = arr[0];
-			data["file_type"]=arr[0];
-			console.log(splited[1]);
-			data["file'"] = splited[1];
-}
-		})(f);
-
-		// Read in the image file as a data URL.
-		reader.readAsDataURL(f);
-		data["file_name"] = f.name;
-		document.getElementById("current_file").textContent = data["file_name"];
+		for (var i = 0, f; f = files[i]; i++) {
+			var reader = new FileReader();
 
 
+
+			reader.onload = (function(theFile) {
+
+				return function(e) {
+					var result = reader.result;
+					
+
+					var temp = JSON.stringify(result);
+					var splited = temp.split(",");
+					temp =  splited[0];
+					temp = temp.replace("\"data:","");
+					var arr = temp.split(";");
+					temp = arr[0];
+					afa ={};
+					afa["file_name"] = "somefile";
+					afa["file_type"]=arr[0];
+					console.log(splited[1]);
+					afa["file"] = splited[1];
+
+					window.JamiiCore.get_module_gui("file_share").signal_outcoming_file.emit(afa);
+				}
+
+			})(f);
+
+
+			reader.readAsDataURL(f);
+
+			data["file_name"] = f.name;
 		}
 
-	
+		document.getElementById("current_file").textContent = data["file_name"];
+
+	///window.connection.send("send_file", data);
+
+	}
+
+	this.signal_outcoming_file = new Signal();
 
 
 }
