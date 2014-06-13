@@ -149,9 +149,8 @@ conferenceManager.prototype.share_file = function(user_id, file){
     conf.files.push( file );
     
     // notify users about new file
-    var to_send = { "name":file["file_name"], "admin":conf.admin, "file":file["file"] };
+    var to_send = { "name":file["file_name"], "admin":conf.admin};
     this.broadcast( user_id, "file_incoming", to_send );
-    console.log("share_file");
     
 }
 
@@ -176,7 +175,7 @@ conferenceManager.prototype.file_exists = function(conference_id, file_name) {
 	if (conf == null)
 		return false;
 	for (file_obj in conf.files) {
-		if (conf.files[file_obj]["name"] == file_name)
+		if (conf.files[file_obj]["file_name"] == file_name)
 			return true;
 	}
 	return false;
@@ -191,8 +190,8 @@ conferenceManager.prototype.get_file = function(conference_id, file_name) {
 	if (conf == null)
 		return null;
 	for (file_obj in conf.files) {
-		if (conf.files[file_obj]["name"] == file_name)
-			return conf.files[file_obj]["content"];
+		if (conf.files[file_obj]["file_name"] == file_name)
+			return conf.files[file_obj]["file"];
 	}
 	/* This shouldn't happen */
 	console.log("[LOGIC_ERROR] conferenceManager.get_file()");

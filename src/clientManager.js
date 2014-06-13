@@ -51,13 +51,13 @@ clientManager.prototype.get_socket_by_userid = function( user_id ){
     var session_id = -1;
 
     for( var sid in this.clients ){
-	if( this.clients[sid] == user_id ){
-	    session_id = sid;
-	}
+		if( this.clients[sid] == user_id ){
+			session_id = sid;
+		}
     }
 
     if( session_id  == -1 ){
-	return null;
+		return null;
     }
 
     return this.sessions[ session_id ];
