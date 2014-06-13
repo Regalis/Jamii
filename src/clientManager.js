@@ -97,8 +97,14 @@ clientManager.prototype.user_login = function( data ){
 
 	This function is necessary to allow for restoring an interrrupted session. If the client reconnects during an already open session, his socket on the server might have changed. This function, called from clientHandlers.whoAmIHandler (which is the first handler called after re-connection) updates the socket information of this client.
 */
-clientManager.prototype.update_session_socket = function(session_id, socket_object) {
+clientManager.prototype.update_session_socket = function(session_id, socket_object, conf_manager) {
     this.sessions[session_id] = socket_object;
+    // retrieve socket.io room after reconnection with new socket
+    var user_id = this.get_user_by_session( session_id );
+    var conf = conf_manager.get_conf_by_user( user_id );
+    if( conf != undefined ){ // only idf user was in conference
+	socket_object.join( conf.room_name );
+    }
 }
 
 module.exports.clientManager = clientManager;

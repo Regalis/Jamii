@@ -67,7 +67,7 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
 
 	if (user_id != undefined) {
 		// fix the change of socket for client
-		this.cm.update_session_socket(session_id, socket);
+		this.cm.update_session_socket(session_id, socket, this.cfm);
 		user_obj = this.udb.read_user_data(user_id).strip_object();
 	} else {
 		user_obj.id = -1;
