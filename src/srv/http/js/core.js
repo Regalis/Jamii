@@ -89,11 +89,14 @@ var JamiiCore = function() {
 			window.JamiiCore.get_module_logic(name)['gui'] = window.JamiiCore.get_module_gui(name);
 			window.JamiiCore.get_module_gui(name)['logic'] = window.JamiiCore.get_module_logic(name);
 
+			var initialized_constructors = 0;
+
 			console.info("[I] JamiiCore::load_module: Module ready to initialize (" + name + ")");
 			if (window.JamiiCore.get_module_logic(name)['init'] != undefined) {
 				try {
 					window.JamiiCore.get_module_logic(name).init();
 					console.info("[I] JamiiCore::load_module: Logic of module '" + name + "' initialized");
+					initialized_constructors++;
 				} catch (err) {
 					console.error("[E] Error in init() function inside module " + name + " (logic): " + err);
 				}
@@ -104,12 +107,16 @@ var JamiiCore = function() {
 				try {
 					window.JamiiCore.get_module_gui(name).init();
 					console.info("[I] JamiiCore::load_module: Gui of module '" + name + "' initialized");
+					initialized_constructors++;
 				} catch (err) {
 					console.error("[E] Error in init() function inside module " + name + " (gui): " + err);
 				}
 			} else {
 				console.warn("[W] JamiCore::load_module: missing constructor for gui module (" + name + ")");
 			}
+
+			if (initialized_constructors == 2)
+				window.JamiiCore.signal_module_ready.emit(name);
 		}
 
 		core_modules[module_name]['onload_signal'].connect(onload_signal_handler);
@@ -210,6 +217,7 @@ var JamiiCore = function() {
 	}
 
 	this.signal_user_data_available = new Signal();
+	this.signal_module_ready = new Signal();
 
 }
 

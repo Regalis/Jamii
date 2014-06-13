@@ -26,11 +26,10 @@ var ConferenceLogic = function (){
     this.is_admin = true;
 
 	this.init = function() {
-
 		this.gui.signal_start.connect(this.start_handler);
 		this.gui.signal_new_conference_request.connect(this.new_conference_request_handler);
 		this.gui.signal_response_conference.connect(this.new_response_conference_handler);
-	        this.gui.signal_invite_to_conference.connect(this.invite_to_conference_handler);
+		this.gui.signal_invite_to_conference.connect(this.invite_to_conference_handler);
 		window.connection.registerHandler("conference_invitation", this.invitation_handler);
 		window.connection.registerHandler("conference_invitation_result", this.invitation_result_handler);
 
@@ -47,9 +46,9 @@ var ConferenceLogic = function (){
 	this.new_conference_request_handler = function(ev) {
 		ev.preventDefault();
 		var create_conf_data = {
-		"my_id": window.JamiiCore.get_current_user_data()["id"],
-		"user_id": ev.dataTransfer.getData("Id"),
-		"visibility": "public"
+			"my_id": window.JamiiCore.get_current_user_data()["id"],
+			"user_id": ev.dataTransfer.getData("Id"),
+			"visibility": "public"
 		};
 
 		var data = ev.dataTransfer.getData("Login");
@@ -104,33 +103,33 @@ var ConferenceLogic = function (){
 	}
 
     this.invite_to_conference_handler = function (ev) {
-	ev.preventDefault();
+		ev.preventDefault();
 
-	// do not invite if you are not admin
-	if( this.is_admin == false ){
-	    alert("You're no admin. Can't invite users");
-	    return false;
-	}
+		// do not invite if you are not admin
+		if( this.is_admin == false ){
+			alert("You're no admin. Can't invite users");
+			return false;
+		}
 
-	// do not invite next until conference is started
-	if( this.is_in_conf == false ){
-	    alert("You can not invite more friends before starting conference. Invite the first friend.");
-	    return false;
-	}
+		// do not invite next until conference is started
+		if( this.is_in_conf == false ){
+			alert("You can not invite more friends before starting conference. Invite the first friend.");
+			return false;
+		}
 
-	var data = {
-	    "my_id": window.JamiiCore.get_current_user_data()["id"],
-	    "user_id": ev.dataTransfer.getData("Id"),
-	}
+		var data = {
+			"my_id": window.JamiiCore.get_current_user_data()["id"],
+			"user_id": ev.dataTransfer.getData("Id"),
+		}
 
-	var login = ev.dataTransfer.getData("Login");
-	ev.target.appendChild(document.getElementById(login).cloneNode(true));
-	console.log("Dodano kolejnego: my_id " + data["my_id"] + " user id " + data["user_id"]);
-	
-	// ev.target.appendChild(document.getElementById(data).cloneNode(true));
-	// console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
-	
-	window.connection.send("conf_invitation", data);
+		var login = ev.dataTransfer.getData("Login");
+		ev.target.appendChild(document.getElementById(login).cloneNode(true));
+		console.log("Dodano kolejnego: my_id " + data["my_id"] + " user id " + data["user_id"]);
+		
+		// ev.target.appendChild(document.getElementById(data).cloneNode(true));
+		// console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
+		
+		window.connection.send("conf_invitation", data);
     }
 
 	this.signal_incoming_invitation = new Signal();

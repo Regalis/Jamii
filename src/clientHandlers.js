@@ -72,6 +72,8 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
 	} else {
 		user_obj.id = -1;
 	}
+
+	user_obj['conference'] = cm.get_conf_by_user(user_id);	
     socket.emit("whoAmI_answer", user_obj);
 }
 

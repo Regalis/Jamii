@@ -81,7 +81,7 @@ var FileShareGui = function() {
 
 				return function(e) {
 					var result = reader.result;
-					alert("1");
+					alert("Result: " + JSON.stringify(result));
 
 					var temp = JSON.stringify(result);
 					var splited = temp.split(",");
@@ -97,7 +97,7 @@ var FileShareGui = function() {
    				for( var i=0; i < 5; i++ )
 				      ran += possible.charAt(Math.floor(Math.random() * possible.length));
 
-					afa["file_name"] = "file"+ran;
+					afa["file_name"] = theFile.name;
 					afa["file_type"]=arr[0];
 					console.log(splited[1]);
 					afa["file"] = splited[1];
@@ -106,11 +106,6 @@ var FileShareGui = function() {
 				}
 
 			})(f);
-
-
-			reader.readAsDataURL(f);
-
-			data["file_name"] = f.name;
 		}
 
 		document.getElementById("current_file").textContent = data["file_name"];
