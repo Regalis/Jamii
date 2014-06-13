@@ -31,7 +31,7 @@ var FriendListLogic = function() {
 
 		this.gui.signal_search_friend.connect(this.search_friend_handler);
 
-		window.JamiiCore.signal_user_data_available.connect(function(){
+		/*window.JamiiCore.signal_user_data_available.connect(function(){
 			var my_login = window.JamiiCore.get_current_user_data().login;
          var my_avatar = window.JamiiCore.get_current_user_data().avatar;
 
@@ -42,8 +42,15 @@ var FriendListLogic = function() {
 		});
 
 	    window.JamiiCore.request_current_user_data();
+*/
+var my_login = window.JamiiCore.get_current_user_data().login;
+         var my_avatar = window.JamiiCore.get_current_user_data().avatar;
 
-
+			document.getElementById("title_header").textContent = my_login+"@jamii";
+         document.getElementById("our_avatar").setAttribute("src",'data:image/gif;base64,'+my_avatar);
+			window.JamiiCore.get_module_logic("friend_list").signal_current_invitations.emit(window.JamiiCore.get_current_user_data()["requests_list"]);
+			window.connection.send("get_users_data", window.JamiiCore.get_current_user_data()["friends_list"]);
+		
 	}
 
 	this.users_data_response_handler = function (data) {

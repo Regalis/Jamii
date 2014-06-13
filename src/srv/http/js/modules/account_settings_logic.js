@@ -26,12 +26,14 @@ var AccountSettingsLogic = function() {
 	this.init = function() {
 		this.gui.signal_settings_change.connect(this.account_change_request_handler);
 		window.connection.registerHandler("account_change_response", this.account_change_response_handler);
-      window.JamiiCore.signal_user_data_available.connect(function(){
+  /*    window.JamiiCore.signal_user_data_available.connect(function(){
          var user = window.JamiiCore.get_current_user_data();
 			window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
       });
+*/
 
-		window.JamiiCore.request_current_user_data();
+    var user = window.JamiiCore.get_current_user_data();
+			window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
 	}
 
 	this.account_change_response_handler = function (data) {
