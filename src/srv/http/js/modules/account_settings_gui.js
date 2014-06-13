@@ -38,8 +38,8 @@ var AccountSettingsGui = function() {
          document.getElementById('last_name_settings').value =  user.last_name;
          document.getElementById('email_settings').value =  user.email;
          document.getElementById("avatar_settings").setAttribute("src",'data:image/gif;base64,'+user.avatar);
-         document.getElementById("avatar_settings").style.width = '150px';
-         document.getElementById("avatar_settings").style.height = '150px';
+         document.getElementById("avatar_settings").style.width = '200px';
+         document.getElementById("avatar_settings").style.height = '200px';
       });
 	}
 
