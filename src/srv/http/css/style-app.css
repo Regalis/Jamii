@@ -362,7 +362,7 @@ body > aside {
 
 #search_results table thead,
 #invitations table thead {
-	background-color: #009E58; 
+	background-color: #009E58;
 }
 
 #search_results tbody tr:nth-child(2n),
@@ -425,7 +425,7 @@ body > aside {
 	font-variant: small-caps;
 }
 
-#account_settings form input[type="text"], 
+#account_settings form input[type="text"],
 #account_settings form input[type="password"] {
 	float: right;
 	border: 1px solid #696969;
@@ -566,6 +566,7 @@ body > aside {
 #remoteVideos video,#localVideo
 {
 	height:100px;
+	float:right;
 }
 
 #panel input { //whiteboard

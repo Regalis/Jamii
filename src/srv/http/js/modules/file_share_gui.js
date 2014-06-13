@@ -101,6 +101,7 @@ var FileShareGui = function() {
 					afa["file_type"]=arr[0];
 					console.log(splited[1]);
 					afa["file"] = splited[1];
+					alert(JSON.stringify(theFile));
 					alert(JSON.stringify(afa))
 					window.JamiiCore.get_module_gui("file_share").signal_outcoming_file.emit(afa);
 				}

@@ -1,6 +1,6 @@
 usersDatabase = require('./usersDatabase.js');
 
-/** 
+/**
 	Function to retreieve data object from object received by a socket
 	Could do some additional checking for session ID if necesary.
 
@@ -19,7 +19,7 @@ var  strip_data_object = function(cargo) {
 /**
    @class
    Constructor of clientHandlers class
-   
+
    @param cm clientManager object to be accesed by the handlers
    @param udb usersDatabase object
    @param cfm conferenceManager object
@@ -33,7 +33,7 @@ var clientHandlers = function(cm, udb, cfm){
 
 
 clientHandlers.prototype.loginHandler =  function(data, socket){
-    
+
     console.log("Got login data from client");
     var ret = this.cm.user_login(strip_data_object(data));
     if (ret >= 0) { // login OK
@@ -50,9 +50,9 @@ clientHandlers.prototype.loginHandler =  function(data, socket){
     } else if(ret == -1) { // no such user
 		socket.emit("loginBAD", {"what": "Wrong user or password"});
     } else if(ret == -2) { // login OK
-		socket.emit("loginBAD", {"what": "Wrong user or password"});	
+		socket.emit("loginBAD", {"what": "Wrong user or password"});
     }
-    
+
 }
 
 
@@ -62,7 +62,7 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session(session_id);
 	console.log("userId: " + user_id);
-	
+
 	var user_obj = new usersDatabase.User();
 
 	if (user_id != undefined) {
@@ -79,10 +79,10 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
 clientHandlers.prototype.registerHandler = function(packet, socket){
 
     console.info("Got register packet: " + packet);
-    console.log(packet);	
-    
+    console.log(packet);
+
     data = strip_data_object( packet );
-    
+
     var User = require("./usersDatabase.js").User;
     var new_user = new User();
     new_user["_email"] = data["email"];
@@ -90,7 +90,7 @@ clientHandlers.prototype.registerHandler = function(packet, socket){
     new_user["_first_name"] = data["first_name"];
     new_user["_last_name"] = data["last_name"];
     new_user["_password"] = data["passwd"];
-	
+
 	var fs = require('fs');
 
 	function base64_encode(file) {
@@ -105,15 +105,15 @@ clientHandlers.prototype.registerHandler = function(packet, socket){
 		 console.log('******** File created from base64 encoded string ********');
 	}
 	var base64str = base64_encode('tux.png');
-	
+
 	console.log(base64str);
 						var splited = base64str.split(",");
 	new_user["_avatar"]= base64str;
 
 	new_user["_registration_date"] = Date.now();
-    
+
     // TODO: validate user data...
-    
+
     try {
 		var id = this.udb.register_new_user(new_user);
 		console.log("New user successfully registerd with id: " + id.toString());
@@ -126,7 +126,7 @@ clientHandlers.prototype.registerHandler = function(packet, socket){
 
 
 clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
-    
+
     var data = strip_data_object( packet );
     if (!isNaN(data["id"])) {
 	var user_data;
@@ -136,14 +136,14 @@ clientHandlers.prototype.getUserDataFromIdHandler = function(packet, socket){
 	    var response = user_data.strip_object();
 	    response["id"] = data["id"];
 	    socket.emit("userDataFromId", response);
-	} catch (e) {} 
+	} catch (e) {}
     };
-    
+
 }
 
 // for friend adding  - temporary
 clientHandlers.prototype.getUserDataFromIdHandler2 = function(packet, socket){
-    
+
     var data = strip_data_object( packet );
     if (!isNaN(data["id"])) {
 	var user_data;
@@ -153,32 +153,32 @@ clientHandlers.prototype.getUserDataFromIdHandler2 = function(packet, socket){
 	    var response = user_data.strip_object();
 	    response["id"] = data["id"];
 	    socket.emit("userDataFromId2", response);
-	} catch (e) {} 
+	} catch (e) {}
     }
-    
+
 }
 // end temporary
 
 clientHandlers.prototype.searchFriendsHandler = function(packet, socket){
-	
+
     var data = strip_data_object( packet );
     console.log("Search handler: " + JSON.stringify(data));
     var results = this.udb.findUsersMultiKey(data);
-    socket.emit("matchingUsers", {'list': Object.keys(results)});	
-    
+    socket.emit("matchingUsers", {'list': Object.keys(results)});
+
 }
 
 clientHandlers.prototype.get_users_dataHandler = function(packet, socket){
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
-    
+
     console.log(data);
-    
+
     var response = {};
     response["user_data_list"] = [];
-    
+
     console.info("asked for friends data: " + data["list"]);
-    
+
     var udb_local = this.udb;
 
     data.forEach(function(id) {
@@ -187,9 +187,9 @@ clientHandlers.prototype.get_users_dataHandler = function(packet, socket){
 		// TODO: append status information to the useer object
 		response["user_data_list"].push(user);
     });
-    
+
     socket.emit("users_data_response", response);
-    
+
 }
 
 clientHandlers.prototype.chat_messageHandler = function(packet, socket){
@@ -239,8 +239,8 @@ clientHandlers.prototype.account_changeHandler = function(packet, socket){
     var user_id = this.cm.get_user_by_session(session_id);
 
     var user_obj = this.udb.read_user_data(user_id);
-    
-    // check data for validity and change if possible                                                                         
+
+    // check data for validity and change if possible
     if( data["last"] != "" ){
 	user_obj["_last_name"] = data["last"];
     }
@@ -253,14 +253,14 @@ clientHandlers.prototype.account_changeHandler = function(packet, socket){
     if( data["email"] != "" ){
 	user_obj["_email"] = data["email"];
     }
-    
+
     this.udb.save_user_data( user_obj );
-    
+
 }
 
 
 clientHandlers.prototype.avatar_changeHandler = function(packet, socket){
-    
+
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session( session_id );
@@ -291,7 +291,7 @@ clientHandlers.prototype.sendInvitationHandler = function(packet, socket){
     // step 2 - pass the request to the invitee client and store in requests list
     var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
     invitee_obj['_requests_list'].push( Number(inviter_id) ); // store request
-    this.udb.save_user_data( invitee_obj );    
+    this.udb.save_user_data( invitee_obj );
     // pass the invitation packet
     if( invitee_socket != null ){
 	invitee_socket.emit("sendInvitation", data);
@@ -328,32 +328,32 @@ clientHandlers.prototype.invitationResponseHandler = function(packet, socket){
 	// send "newFriend" packages to both sides
 	var invitee_socket = this.cm.get_socket_by_userid( invitee_id );
 	var inviter_socket = this.cm.get_socket_by_userid( inviter_id );
-	
+
 	invitee_socket.emit("newFriend", inviter_obj );
-	inviter_socket.emit("newFriend", invitee_obj );	
+	inviter_socket.emit("newFriend", invitee_obj );
     }
-    
+
     var index = invitee_obj['_requests_list'].indexOf( inviter_id );
     if( index >= 0 ){ // remove request from list
 	invitee_obj['_requests_list'].splice( index, 1 );
     }
-    this.udb.save_user_data( invitee_obj );    
-    this.udb.save_user_data( inviter_obj );    
-    
+    this.udb.save_user_data( invitee_obj );
+    this.udb.save_user_data( inviter_obj );
+
 }
 
 
 // handlers for conference management
 clientHandlers.prototype.conference_startHandler = function(packet, socket){
     var data = strip_data_object(packet);
-    
+
     console.log("CONFCREATEHANDLER: " + JSON.stringify(data));
 
     var admin_id = Number(data['my_id']);
     var first_friend = Number(data['user_id']);
     // @todo: retrieve and use visibilty information
     this.cfm.create_conference(admin_id);
-    
+
     // invite first friend
     var ff_sock = this.cm.get_socket_by_userid(first_friend);
     var to_send = {"admin_id": admin_id};
@@ -365,11 +365,11 @@ clientHandlers.prototype.conference_startHandler = function(packet, socket){
 
 clientHandlers.prototype.conference_invitationHandler = function(packet, socket){
     var data = strip_data_object(packet);
-    
+
     var admin_id = Number( data['my_id'] );
     var user_id = Number( data['user_id'] );
     // @todo: retrieve and use visibilty information
-    
+
     // invite friend
     var ff_sock = this.cm.get_socket_by_userid( user_id );
     var to_send = {"admin_id":admin_id};
@@ -382,7 +382,7 @@ clientHandlers.prototype.conference_invitationHandler = function(packet, socket)
 clientHandlers.prototype.conference_invitation_responseHandler = function(packet, socket){
 		console.log("CONINV_RESP_INTRO");
     var data = strip_data_object(packet);
-    
+
     var admin_id = Number( data['admin_id'] );
     var user_id = Number( data['user_id'] );
     var response = data['response'] ;
@@ -391,16 +391,16 @@ clientHandlers.prototype.conference_invitation_responseHandler = function(packet
 		this.cfm.add_user_to_conf(admin_id, user_id);
     } else{
 	// maybe notify inviter of the refusal
-	
-    }    
+
+    }
     // maybe notify inviter of the refusal
     var sock = this.cm.get_socket_by_userid(admin_id);
     if( sock != null ){
 		sock.emit("conference_invitation_result", data);
     }
-	
+
     console.log("conference "+ JSON.stringify(this.cfm.conferences));
-    
+
 }
 
 // for file sharing
@@ -418,28 +418,28 @@ clientHandlers.prototype.removeFriendHandler = function(packet, socket){
 
     var user_id = data['user_id'];
     var friend_id = data['friend_id'];
-    
+
     var user_obj = this.udb.read_user_data( parseInt(user_id ) );
     var friend_obj = this.udb.read_user_data( parseInt( friend_id) );
-	
-	var friend_obj_index = friend_obj['_friends_list'].indexOf( parseInt( user_id ) );	
-	var user_obj_index = user_obj['_friends_list'].indexOf( parseInt( friend_id ) );	
-	
-	
+
+	var friend_obj_index = friend_obj['_friends_list'].indexOf( parseInt( user_id ) );
+	var user_obj_index = user_obj['_friends_list'].indexOf( parseInt( friend_id ) );
+
+
 	if ( friend_obj_index >= 0 ){
 		friend_obj['_friends_list'].splice( user_obj_index, 1 );
 	}
-	
-	if ( user_obj_index >= 0 ){	
-		user_obj['_friends_list'].splice( friend_obj_index, 1 );
-	}	
 
-    this.udb.save_user_data( user_obj );    
-    this.udb.save_user_data( friend_obj );    
-    //TODO: in future if you want to notify "friend" that he was deleted then you must store that somewhere in serv in case 
+	if ( user_obj_index >= 0 ){
+		user_obj['_friends_list'].splice( friend_obj_index, 1 );
+	}
+
+    this.udb.save_user_data( user_obj );
+    this.udb.save_user_data( friend_obj );
+    //TODO: in future if you want to notify "friend" that he was deleted then you must store that somewhere in serv in case
     //he is not logged in but you still should check if he is logged now and send him some notification because he
     //has you on his list
-    
+
 }
 
 clientHandlers.prototype.remindPasswordHandler = function(packet, socket){
@@ -470,7 +470,7 @@ clientHandlers.prototype.remindPasswordHandler = function(packet, socket){
 	var mailOptions = {
 		from: "Jamii ✔ <jamiicommunity@gmail.com>", // sender address
 		to: ""+data['mail']+"", // list of receivers
-		
+
 		subject: "Hello ✔", // Subject line
 		text: "Hi, log in with this password: "+ generated_password+" and change it in settings. Jamii Team:)", // plaintext body
 		html:"Hi "+user_obj["_login"]+", log in with this password: <b>"+ generated_password+"</b> and change it in settings. <br>Jamii Team:)" // html body
