@@ -219,19 +219,26 @@ clientHandlers.prototype.password_changeHandler = function(packet, socket){
     var user_obj = this.udb.read_user_data(user_id);
 	console.log("password_changeHandler: " + JSON.stringify(user_obj));
     // check if current password matches
-    if (this.cm.user_login({'login': user_obj['_login'], 'passwd': data['current']}) > 0 && data["current"] != undefined) {
+	try {
+		if (this.cm.user_login({'login': user_obj['_login'], 'passwd': data['current']}) > 0 && data["current"] != undefined) {
 
-        // @todo: validate new password
+			// @todo: validate new password
+			
+			if (!data["new"])
+				throw "empty password";
 
-        // to be moved to separate function
-		user_obj["_password"] = this.udb.get_password_hash(user_obj, data["new"]);
-        this.udb.save_user_data( user_obj );
-		socket.emit("password_change_confirmation", {});
+			// to be moved to separate function
+			user_obj["_password"] = this.udb.get_password_hash(user_obj, data["new"]);
+			this.udb.save_user_data( user_obj );
+			socket.emit("password_change_confirmation", {});
 
-    }else{
-        // @todo: handle incorrect current password
+		} else {
+			// @todo: handle incorrect current password
+			throw "login error"
+		}
+	} catch (e) {
 		socket.emit("password_change_error", {});
-    }
+	}
 }
 
 clientHandlers.prototype.account_changeHandler = function(packet, socket){
