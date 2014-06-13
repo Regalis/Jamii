@@ -28,9 +28,10 @@ var AccountSettingsLogic = function() {
 		window.connection.registerHandler("account_change_response", this.account_change_response_handler);
       window.JamiiCore.signal_user_data_available.connect(function(){
          var user = window.JamiiCore.get_current_user_data();
-      //   alert("fromm options"+JSON.stringify(user));
-window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
+			window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
       });
+
+		window.JamiiCore.request_current_user_data();
 	}
 
 	this.account_change_response_handler = function (data) {
