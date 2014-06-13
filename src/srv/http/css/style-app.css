@@ -412,6 +412,7 @@ body > aside {
 	font-size: 14px;
 	text-align: right;
 	padding: 20px;
+	position: relative;
 }
 
 #account_settings > form > div {
@@ -423,6 +424,11 @@ body > aside {
 	display: block;
 	padding: 10px 0 10px 0;
 	font-variant: small-caps;
+}
+
+#account_settings form fieldset div.fields {
+	width: 300px;
+	display: inline-block;
 }
 
 #account_settings form input[type="text"], 
@@ -443,7 +449,9 @@ body > aside {
 	width: 150px;
 	height: 150px;
 	border: 1px solid #696969;
-	float: left;
+	position: absolute;
+	left: 20px;
+	top: 20px;
 }
 
 
