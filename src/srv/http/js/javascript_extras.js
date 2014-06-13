@@ -5,3 +5,7 @@ String.prototype.replaceAt = function (index, str) {
 	return left + str + right;
 }
 
+
+String.prototype.isEmpty = function() {
+    return (this.length === 0 || !this.trim());
+};

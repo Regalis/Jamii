@@ -17,7 +17,7 @@
  *
  * Contributors:
  *  -> Mateusz Zajac<matteo.zajac@gmail.com>
- * 
+ *
  */
 
 var ConferenceLogic = function (){
@@ -40,17 +40,17 @@ var ConferenceLogic = function (){
 		data["user_id"] = window.JamiiCore.get_current_user_data()['id'];
 		webrtc.joinRoom('jamiiroom');
 		//data["admin_id"]=data.admin_id;
-		window.connection.send("conference_invitation_response", data);	
+		window.connection.send("conference_invitation_response", data);
 	    // someone invited you, you're not admin
 
 	}
 
-	this.join_to_conference(conference_id){
-		var data {};
+	this.join_to_conference = function(conference_id){
+		var data = {};
 		data["user_id"] = window.JamiiCore.get_current_user_data()['id'];
 		data["conf_id"] = conference_id;
 		webrtc.joinRoom('jamiiroom');
-		window.connection.send("conference_join", data);	
+		window.connection.send("conference_join", data);
 	}
 
 	this.new_conference_request_handler = function(ev) {
@@ -68,7 +68,7 @@ var ConferenceLogic = function (){
 
 		window.webrtc.joinRoom("jamiiroom");
 		this.is_admin = true;
-		console.log("is_admin "+ this.is_admin);	    
+		console.log("is_admin "+ this.is_admin);
 
 		//window.webrtc.joinRoom("jamiiroom"+create_conf_data["my_id"] );
 
@@ -85,7 +85,7 @@ var ConferenceLogic = function (){
 	    if( data["response"] == true ){
 			this.is_in_conf = true;
 			this.is_admin = false;
-			console.log("is_admin "+ this.is_admin);	    
+			console.log("is_admin "+ this.is_admin);
 	    }
 	    console.log("is_in"+ this.is_in_conf);
 
@@ -135,10 +135,10 @@ var ConferenceLogic = function (){
 	var login = ev.dataTransfer.getData("Login");
 	ev.target.appendChild(document.getElementById(login).cloneNode(true));
 	console.log("Dodano kolejnego: my_id " + data["my_id"] + " user id " + data["user_id"]);
-	
+
 	// ev.target.appendChild(document.getElementById(data).cloneNode(true));
 	// console.log("Dodano: my_id " + info["my_id"] + " user id " + info["user_id"]);
-	
+
 	window.connection.send("conf_invitation", data);
     }
 

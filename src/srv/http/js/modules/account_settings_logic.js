@@ -17,15 +17,20 @@
  *
  * Contributors:
  *  -> Mateusz Zajac<matteo.zajac@gmail.com>
- * 
+ *
  */
 
 
 var AccountSettingsLogic = function() {
-	
+
 	this.init = function() {
 		this.gui.signal_settings_change.connect(this.account_change_request_handler);
 		window.connection.registerHandler("account_change_response", this.account_change_response_handler);
+      window.JamiiCore.signal_user_data_available.connect(function(){
+         var user = window.JamiiCore.get_current_user_data();
+      //   alert("fromm options"+JSON.stringify(user));
+window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
+      });
 	}
 
 	this.account_change_response_handler = function (data) {
@@ -34,17 +39,24 @@ var AccountSettingsLogic = function() {
 
 	this.account_change_request_handler = function (data) {
 
-		if (data ["confirm"] == data ["new"]) {
-			var pass = {
-		      "current": data ["current"],
-		      "new": data ["new"]
-		   };
-			window.connection.send("password_change", pass);
-		} else {
-		   alert("Your new passwords don't match");
-		}
+      window.connection.send("account_change",data);
+
+      if(!data["current"].isEmpty()){
+         if (data ["confirm"] == data ["new"]) {
+            var pass = {
+               "current": data ["current"],
+               "new": data ["new"]
+            };
+            window.connection.send("password_change", pass);
+         } else {
+            alert("Your new passwords don't match");
+         }
+      }
+
+
+
 	}
+   this.signal_current_settings = new Signal();
 
 	this.signal_account_change_response = new Signal();
 }
-
