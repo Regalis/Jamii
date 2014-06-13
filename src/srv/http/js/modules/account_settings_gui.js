@@ -22,11 +22,14 @@
 
 var AccountSettingsGui = function() {
 	this.init = function() {
+		
 		document.getElementById("account_settings").getElementsByTagName("form")[0].onsubmit = function(e){
 			e = e || window.event;
 			e.preventDefault();
 			window.JamiiCore.get_module_gui("account_settings").change_settings_handler();
 		}
+
+	//	document.getElementById("file_avatar").addEventListener("change",handleFileAvatarSelect, false);
 
    this.logic.signal_current_settings.connect(function(){
          var user = window.JamiiCore.get_current_user_data();
@@ -51,11 +54,66 @@ var AccountSettingsGui = function() {
 		data ["current"] = document.getElementById("current_password").value;
 		data ["new"] = document.getElementById("new_password").value;
 		data ["confirm"] = document.getElementById("confirm_password").value;
+		alert(JSON.stringify(document.getElementById("file_avatar").value));
+		//data ["avatar"] = document.getElementById("confirm_password").value;
 
 		this.signal_settings_change.emit(data);
 
 		return false;
 	}
+
+
+/*
+	function handleFileAvatarSelect(evt) {
+		var files_avatar = evt.target.files_avatar; // FileList object
+		var data = {};
+					alert("before send");
+		alert(JSON.stringify(files_avatar));
+		for (var i = 0, f; f = files_avatar[i]; i++) {
+								alert("before send");
+			var reader = new FileReader();
+
+					alert("before send");
+
+			reader.onload = (function(theFile) {
+
+				return function(e) {
+					var result = reader.result;
+
+					alert("before send");
+					var temp = JSON.stringify(result);
+					var splited = temp.split(",");
+					temp =  splited[0];
+					temp = temp.replace("\"data:","");
+					var arr = temp.split(";");
+					temp = arr[0];
+					afa ={};
+               //reader.readAsDataURL(f);
+ 				
+					afa["file_name"] = theFile.name;
+					afa["file_type"]=arr[0];
+					console.log(splited[1]);
+					afa["avatar"] = splited[1];
+
+
+					window.connection.send("avatar_change",afa);
+					alert("SEND");
+				}
+
+			})(f);
+
+
+			reader.readAsDataURL(f);
+
+			data["file_name"] = f.name;
+		}
+
+
+	///window.connection.send("send_file", data);
+
+	}
+*/
+
 
 	this.signal_settings_change = new Signal();
 

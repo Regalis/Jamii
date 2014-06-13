@@ -72,6 +72,7 @@ var FileShareGui = function() {
 
 		var files = evt.target.files; // FileList object
 		var data = {};
+		alert(JSON.stringify(files_avatar));
 		for (var i = 0, f; f = files[i]; i++) {
 			var reader = new FileReader();
 
@@ -81,7 +82,7 @@ var FileShareGui = function() {
 
 				return function(e) {
 					var result = reader.result;
-					alert("1");
+
 
 					var temp = JSON.stringify(result);
 					var splited = temp.split(",");
@@ -91,18 +92,13 @@ var FileShareGui = function() {
 					temp = arr[0];
 					afa ={};
                //reader.readAsDataURL(f);
- 					var ran  = "";
-					var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-   				for( var i=0; i < 5; i++ )
-				      ran += possible.charAt(Math.floor(Math.random() * possible.length));
-
-					afa["file_name"] = "file"+ran+".jpg";
+ 				
+					afa["file_name"] = theFile.name;
 					afa["file_type"]=arr[0];
 					console.log(splited[1]);
 					afa["file"] = splited[1];
-					alert(JSON.stringify(theFile));
-					alert(JSON.stringify(afa))
+
+
 					window.JamiiCore.get_module_gui("file_share").signal_outcoming_file.emit(afa);
 				}
 

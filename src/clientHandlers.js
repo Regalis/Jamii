@@ -262,7 +262,7 @@ clientHandlers.prototype.account_changeHandler = function(packet, socket){
 
 
 clientHandlers.prototype.avatar_changeHandler = function(packet, socket){
-
+    console.log("Got new avatar");
     var session_id = packet.sessionID;
     var data = strip_data_object(packet);
     var user_id = this.cm.get_user_by_session( session_id );

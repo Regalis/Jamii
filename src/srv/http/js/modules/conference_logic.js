@@ -33,6 +33,14 @@ var ConferenceLogic = function (){
 	        this.gui.signal_invite_to_conference.connect(this.invite_to_conference_handler);
 		window.connection.registerHandler("conference_invitation", this.invitation_handler);
 		window.connection.registerHandler("conference_invitation_result", this.invitation_result_handler);
+   	window.JamiiCore.signal_user_data_available.connect(function(){
+         var user = window.JamiiCore.get_current_user_data();
+			if(user.conference != null){
+				document.getElementById("conference_tools").style.visibility = "visible";
+				window.webrtc.joinRoom("jamiiroom");
+			}
+
+      });
 
 	}
 
