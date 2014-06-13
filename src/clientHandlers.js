@@ -73,7 +73,7 @@ clientHandlers.prototype.whoAmIHandler = function(packet, socket) {
 		user_obj.id = -1;
 	}
 
-	user_obj['conference'] = cm.get_conf_by_user(user_id);	
+	user_obj['conference'] = this.cfm.get_conf_by_user(user_id);	
     socket.emit("whoAmI_answer", user_obj);
 }
 

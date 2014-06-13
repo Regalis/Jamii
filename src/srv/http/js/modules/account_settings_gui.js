@@ -17,7 +17,7 @@
  *
  * Contributors:
  *  -> Mateusz Zajac<matteo.zajac@gmail.com>
- * 
+ *
  */
 
 var AccountSettingsGui = function() {
@@ -27,30 +27,33 @@ var AccountSettingsGui = function() {
 			e.preventDefault();
 			window.JamiiCore.get_module_gui("account_settings").change_settings_handler();
 		}
+
+   this.logic.signal_current_settings.connect(function(){
+         var user = window.JamiiCore.get_current_user_data();
+         document.getElementById("login_settings").value= user.login;
+         document.getElementById('first_name_settings').value =  user.first_name;
+         document.getElementById('last_name_settings').value =  user.last_name;
+         document.getElementById('email_settings').value =  user.email;
+         document.getElementById("avatar_settings").setAttribute("src",'data:image/gif;base64,'+user.avatar);
+         document.getElementById("avatar_settings").style.width = '150px';
+         document.getElementById("avatar_settings").style.height = '150px';
+      });
 	}
 
 	this.change_settings_handler = function (){
 
 		console.log("password_change()");
 		var data  = {};
-
+      data ["login"] = document.getElementById("login_settings").value;
+      data ["first"] = document.getElementById("first_name_settings").value;
+      data ["last"] = document.getElementById("last_name_settings").value;
+      data ["email"] = document.getElementById("email_settings").value;
 		data ["current"] = document.getElementById("current_password").value;
 		data ["new"] = document.getElementById("new_password").value;
 		data ["confirm"] = document.getElementById("confirm_password").value;
-		
+
 		this.signal_settings_change.emit(data);
-/*
-		if (confirm_pasword == new_password) {
-		   var current_password = document.getElementById("current_password").value;
-		   var data = {
-		      "current": current_password,
-		      "new": new_password
-		   };
-			window.connection.send("password_change", data);
-		} else {
-		   alert("Your new passwords don't match");
-		}
-*/
+
 		return false;
 	}
 
