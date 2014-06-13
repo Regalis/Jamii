@@ -132,7 +132,6 @@ var JamiiCore = function() {
 	}
 
 	this.request_current_user_data = function() {
-		current_user_data = undefined;
 		window.connection.send("whoAmI", {});
 	}
 
