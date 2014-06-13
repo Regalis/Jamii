@@ -156,9 +156,6 @@ var JamiiCore = function() {
 
 		window.connection.registerHandler("whoAmI_answer", current_user_data_handler); 
 
-
-		modules_to_load = ['friend_list', 'conference', 'chat', 'file_share', 'account_settings', 'whiteboard', 'stacks'];
-		
 		this.append_script("js/latest.js",function(){
 			window.webrtc = new SimpleWebRTC({
 				localVideoEl: 'localVideo',
@@ -168,11 +165,15 @@ var JamiiCore = function() {
 		
 		});
 
-		for (i in modules_to_load) {
-			this.load_module(modules_to_load[i]);
-		}
-		// this.request_current_user_data();
+		this.signal_user_data_available.connect(function() {
+			modules_to_load = ['friend_list', 'conference', 'chat', 'file_share', 'account_settings', 'whiteboard', 'stacks'];
+			for (i in modules_to_load) {
+				window.JamiiCore.load_module(modules_to_load[i]);
+			}
+		});
 
+		this.request_current_user_data();
+		
 	}
 
 	var register_module_object = function(name, type, obj) {
