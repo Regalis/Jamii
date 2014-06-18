@@ -31,9 +31,17 @@ var AccountSettingsLogic = function() {
 			window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
       });
 */
+	window.JamiiCore.signal_module_ready.connect(function(module){
 
-    var user = window.JamiiCore.get_current_user_data();
+		if(module=="account_settings"){
+		   var user = window.JamiiCore.get_current_user_data();
+
 			window.JamiiCore.get_module_logic("account_settings").signal_current_settings.emit(user);
+		alert("AAAAAAAAAAAA");
+		}
+
+	});
+ 
 	}
 
 	this.account_change_response_handler = function (data) {

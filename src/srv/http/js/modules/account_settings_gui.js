@@ -28,10 +28,12 @@ var AccountSettingsGui = function() {
 			e.preventDefault();
 			window.JamiiCore.get_module_gui("account_settings").change_settings_handler();
 		}
+		//document.getElementById("file_avatar").addEventListener("change",handleFileSelect, false);
 
 	//	document.getElementById("file_avatar").addEventListener("change",handleFileAvatarSelect, false);
 
-   this.logic.signal_current_settings.connect(function(){
+   window.JamiiCore.get_module_logic("account_settings").signal_current_settings.connect(function(){
+
          var user = window.JamiiCore.get_current_user_data();
          document.getElementById("login_settings").value= user.login;
          document.getElementById('first_name_settings').value =  user.first_name;
@@ -40,6 +42,7 @@ var AccountSettingsGui = function() {
          document.getElementById("avatar_settings").setAttribute("src",'data:image/gif;base64,'+user.avatar);
          document.getElementById("avatar_settings").style.width = '200px';
          document.getElementById("avatar_settings").style.height = '200px';
+			
       });
 	}
 
@@ -54,7 +57,19 @@ var AccountSettingsGui = function() {
 		data ["current"] = document.getElementById("current_password").value;
 		data ["new"] = document.getElementById("new_password").value;
 		data ["confirm"] = document.getElementById("confirm_password").value;
-		alert(JSON.stringify(document.getElementById("file_avatar").value));
+/*
+var reader = new FileReader();
+
+
+			var f = document.getElementById("file_avatar").files[0];
+			reader.onload = (function(theFile) {
+					return function(e) {
+					var result = reader.result;
+JSON.stringify(result);
+}
+				
+			})(f);*/
+	//	alert(JSON.stringify(document.getElementById("file_avatar").files[0].slice()));
 		//data ["avatar"] = document.getElementById("confirm_password").value;
 
 		this.signal_settings_change.emit(data);

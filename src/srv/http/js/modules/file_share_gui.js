@@ -72,7 +72,7 @@ var FileShareGui = function() {
 
 		var files = evt.target.files; // FileList object
 		var data = {};
-		alert(JSON.stringify(files_avatar));
+
 		for (var i = 0, f; f = files[i]; i++) {
 			var reader = new FileReader();
 
